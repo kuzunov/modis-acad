@@ -1,0 +1,10 @@
+{
+  "name": "01-intro",
+  "version": "1.0.0",
+  "description": "Intro to HTML, CSS and JS",
+  "main": "index.js",
+  "repository": "https://github.com/kuzunov/modis-acad.git",
+  "author": "Ku",
+  "license": "MIT",
+  "dependencies": {}
+}
