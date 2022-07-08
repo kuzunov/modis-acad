@@ -13,7 +13,7 @@ let fields = [new SearchField("Author"),
             new SearchField("Title"),
             new SearchField("Publisher"),
             new SearchField("Subject")];
-let searchBox = new SearchBox(fields,submit,searchWrapper);
+let searchBox = new SearchBox(fields,searchWrapper);
 const inputChange = () => {
    if (searchBox.value.length>2&&searchBy.value) { 
          errorBox.style.display= "none"; 

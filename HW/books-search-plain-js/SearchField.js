@@ -25,7 +25,7 @@ export class SearchField {
         label.appendChild(checkBox);
         newField.appendChild(label);
         newField.appendChild(textField);
-        this.type = type
+        this.type = type;
         this.checkBox = checkBox;
         this.textField = textField;
         this.html = newField;
