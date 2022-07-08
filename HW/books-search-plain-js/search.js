@@ -20,6 +20,7 @@ class SearchField {
         // checkBox.id = `search-${type.toLowerCase()}-check`
         // checkBox.innerHTML = type;
         checkBox = {...checkBox,...cbProps};
+        checkBox.addEventListener('change', this.toggleField())
         console.log(checkBox)
         const textField = document.createElement("input");
         textField.type = "text";
@@ -38,6 +39,9 @@ class SearchField {
     }
     handleSubmit = () => {
 
+    }
+    toggleField = () => {
+        console.log(this.textField.style.visibilty)
     }
 }
 let test = new SearchField("Author");
