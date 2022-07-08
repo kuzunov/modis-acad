@@ -24,12 +24,22 @@ nav a {
     line-height: 25px;
     border-radius: 4px;
   }
+
+  #search-wrapper{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .search-box{
+    flex-grow: 40%;
+    flex-basis: 100%;
+  }
+  .checks{
+    flex:10%
+  }
   .logo{
     flex:20%;
     background-color: burlywood;
-  }
-  #search-box{
-    flex: 60%;
   }
   main{
     flex: 70%

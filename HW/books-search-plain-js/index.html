@@ -14,22 +14,33 @@
     <header>header</header>
     <nav>
         <a href="#default" class="logo">CompanyLogo</a>
-        <input type="text" id="search-box"></input>
-        <input list="search-by" id="search-by-input">
-        <datalist id="search-by">
-            <option value="Author">
-            <option value="Title">
-            <option value="Publisher">
-            <option value="Subject">
-          </datalist>
-        <div id="error"></div>
         <div class="header-right">
             <a class="active" href="#home">Home</a>
             <a href="#contact">Contact</a>
             <a href="#about">About</a>
         </div>
     </nav>
-    <main>main</main>
+    <main>
+        <div id="search-wrapper">
+                <input type="checkbox" class = "checks">Author</input>
+                <input type="text" class="search-box"></input>
+                <input type="checkbox" class = "checks">Title</input>
+                <input type="text" class="search-box"></input>
+                <input type="checkbox" class = "checks">Publisher</input>
+                <input type="text" class="search-box"></input>
+                <input type="checkbox" class = "checks">Subject</input>
+                <input type="text" class="search-box"></input>
+                <button id="submit-btn">Search</button>
+            <!-- <input type="checkbox">Author</input>
+            <datalist id="search-by">
+                <option value="Author">
+                <option value="Title">
+                <option value="Publisher">
+                <option value="Subject">
+              </datalist> -->
+            <div id="error"></div>
+        </div>
+    </main>
     <footer>footer</footer>
 </body>
 </html>
