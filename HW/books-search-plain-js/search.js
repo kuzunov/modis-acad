@@ -1,52 +1,19 @@
-const searchBoxes = document.getElementsByClassName("search-box");
 const errorBox = document.getElementById("error");
 const searchBy = document.getElementById("search-by-input");
-const checks = document.getElementsByClassName("checks");
 const searchWrapper = document.getElementById("search-wrapper")
+const submit = document.getElementById("submit-btn");
 
+import { SearchField } from './SearchField.js';
+import { SearchBox } from './SearchBox.js';
 // searchBox.forEa.addEventListener("input", (e) => inputChange(e.target.value,searchBy.value));
 // searchBy.addEventListener("input", (e) => inputChange(searchBox.value,e.target.value));
 
-class SearchField {
-    constructor(type){
-        const submit = document.getElementById("submit-btn");
-        submit.addEventListener("click", this.handleSubmit())
-        const newEl = document.createElement('div');
-        newEl.className = type;
-        let checkBox = document.createElement("input");
-        const cbProps = {type: "checkBox", className:"checks",id:`search-${type.toLowerCase()}-check`,innerHTML:type}
-        // checkBox.type = "checkbox"
-        // checkBox.className = "checks";
-        // checkBox.id = `search-${type.toLowerCase()}-check`
-        // checkBox.innerHTML = type;
-        checkBox = {...checkBox,...cbProps};
-        checkBox.addEventListener('change', this.toggleField())
-        console.log(checkBox)
-        const textField = document.createElement("input");
-        textField.type = "text";
-        textField.className = "search-box";
-        textField.id = `search-${type.toLowerCase()}-field`
-        // newEl.innerHTML = `<input type="checkbox" class = "checks" id=search-${type.toLowerCase()}-check>${type}</input>
-        //                     <input type="text" class="search-box" id=search-${type.toLowerCase()}-field></input>`
-        checkBox.addEventListener();
-        // textField.addEventListener("input", (e) => {this.inputChange(e.target.value)})
-        newEl.appendChild(checkBox);
-        newEl.appendChild(textField);
-        searchWrapper.appendChild(newEl);
-    }
-    inputChange() {
 
-    }
-    handleSubmit = () => {
-
-    }
-    toggleField = () => {
-        console.log(this.textField.style.visibilty)
-    }
-}
-let test = new SearchField("Author");
-
-
+let fields = [new SearchField("Author"),
+            new SearchField("Title"),
+            new SearchField("Publisher"),
+            new SearchField("Subject")];
+let searchBox = new SearchBox(fields,submit,searchWrapper);
 const inputChange = () => {
    if (searchBox.value.length>2&&searchBy.value) { 
          errorBox.style.display= "none"; 
