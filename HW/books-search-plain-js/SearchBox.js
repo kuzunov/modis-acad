@@ -2,23 +2,25 @@ import { API_URL,GAPI_KEY } from "./config.js";
 export class SearchBox {
     //fields for specific search, wrapper and manager Fn from ContentManager
     constructor(fields,wrapper,managerFn) {
+        //get wrapper for specific search
         const specificWrapper = wrapper.querySelector('#specific-search')
         fields.map(f => {
             specificWrapper.appendChild(f.html);
         })
+        //submit button for specific search
         let submit = document.createElement("button")
         submit.id="submit-btn";
         submit.innerHTML= "Submit";
         submit.addEventListener("click",() => this.handleSubmit())
         specificWrapper.appendChild(submit);
         specificWrapper.style.display = "none";
-
+        //create broadsearch field
         let broadSearchField = document.createElement("input");
         broadSearchField.type = "text";
         broadSearchField.id = "broad-search-field"
         broadSearchField.addEventListener("keyup",() => this.handleBroadSearch())
         wrapper.appendChild(broadSearchField);
-
+        //button for toggling between searches
         let spcSearchBtn = document.createElement("button");
         spcSearchBtn.innerHTML = "Toggle specific search";
         spcSearchBtn.addEventListener("click", ()=>{
@@ -33,7 +35,7 @@ export class SearchBox {
         })
 
         wrapper.appendChild(spcSearchBtn)
-
+        //set properties
         this.broadSearchField = broadSearchField;
         this.fields = fields;
         this.manager = managerFn;
@@ -42,11 +44,15 @@ export class SearchBox {
     handleBroadSearch(){
         const errorBox = document.getElementById("error");
         if (this.broadSearchField.value.length>2){
+            //set search url
             let searchURL=`${API_URL}${this.broadSearchField.value.replace(" ","+")}&maxResults=10&key=${GAPI_KEY}`;
+            //hide errors
             errorBox.innerHTML="";
             errorBox.style.display = "none";
+            //call manager fn
             this.manager(searchURL);
         }else{
+            //show error
             errorBox.style.display= "flex";
             errorBox.innerHTML="Type 3 or more characters and select a category to search!";
         }

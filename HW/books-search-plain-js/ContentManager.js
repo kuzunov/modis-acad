@@ -38,6 +38,7 @@ export class ContentManager {
             descrText.innerHTML = description;
             descrText.style.display="none";
             descriptionH.append(descrText);
+            //add listener to toggle description
             descriptionH.addEventListener("click",()=>{
                 (descrText.style.display)
                     ?descrText.style.removeProperty("display")
@@ -45,6 +46,7 @@ export class ContentManager {
             })
             const authorH = document.createElement("h4");
             authorH.innerHTML = (authors)? authors.join(","):"No Data";
+            //append created elements to article
             article.append(img,titleH,authorH,descriptionH);
             article.setAttribute("class","book-container")
             //append to wrapper
