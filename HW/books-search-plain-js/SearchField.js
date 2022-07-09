@@ -17,6 +17,7 @@ export class SearchField {
             type: "text",
              className:"search-box",
              id:`search-${type.toLowerCase()}`,
+             disabled:""
             }
             setAttributes(textField,textAttrs)
         // textField.addEventListener("input", (e) => {this.inputChange(e.target.value)})
