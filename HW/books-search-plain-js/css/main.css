@@ -66,11 +66,14 @@ nav a {
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: stretch;
+    align-content: space-around;
+
   }
   .book-container{
     display: flex;
     flex-direction: row;
-    flex:40%;
+    flex:30%;
     flex-wrap: wrap;
     border-color: #000;
     background-color: rgb(161, 161, 151);
