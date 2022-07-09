@@ -1,21 +1,55 @@
-import { API_URL,GAPI_KEY } from "./constants.js";
+import { API_URL,GAPI_KEY } from "./config.js";
 export class SearchBox {
     //fields for specific search, wrapper and manager Fn from ContentManager
     constructor(fields,wrapper,managerFn) {
+        const specificWrapper = wrapper.querySelector('#specific-search')
         fields.map(f => {
-            wrapper.appendChild(f.html);
+            specificWrapper.appendChild(f.html);
         })
         let submit = document.createElement("button")
         submit.id="submit-btn";
         submit.innerHTML= "Submit";
         submit.addEventListener("click",() => this.handleSubmit())
-        wrapper.appendChild(submit);
+        specificWrapper.appendChild(submit);
+        specificWrapper.style.display = "none";
+
+        let broadSearchField = document.createElement("input");
+        broadSearchField.type = "text";
+        broadSearchField.id = "broad-search-field"
+        broadSearchField.addEventListener("keyup",() => this.handleBroadSearch())
+        wrapper.appendChild(broadSearchField);
+
+        let spcSearchBtn = document.createElement("button");
+        spcSearchBtn.innerHTML = "Toggle specific search";
+        spcSearchBtn.addEventListener("click", ()=>{
+            if (specificWrapper.style.display) {
+                specificWrapper.style.removeProperty("display");
+                broadSearchField.style.setProperty("display","none");
+            } 
+            else {
+                specificWrapper.style.setProperty("display","none");
+                broadSearchField.style.removeProperty("display");
+            }
+        })
+
+        wrapper.appendChild(spcSearchBtn)
+
+        this.broadSearchField = broadSearchField;
         this.fields = fields;
         this.manager = managerFn;
     }
     //search in all categories
-    broadSearch(){
-        let searchURL=API_URL;
+    handleBroadSearch(){
+        const errorBox = document.getElementById("error");
+        if (this.broadSearchField.value.length>2){
+            let searchURL=`${API_URL}${this.broadSearchField.value.replace(" ","+")}&maxResults=10&key=${GAPI_KEY}`;
+            errorBox.innerHTML="";
+            errorBox.style.display = "none";
+            this.manager(searchURL);
+        }else{
+            errorBox.style.display= "flex";
+            errorBox.innerHTML="Type 3 or more characters and select a category to search!";
+        }
     }
     //specific search
     handleSubmit(){
@@ -28,24 +62,9 @@ export class SearchBox {
             }
         })
         //remove last + and append API_KEY
-        searchURL=`${searchURL.slice(0,-1)}&key=${GAPI_KEY}`;
+        searchURL=`${searchURL.slice(0,-1)}&maxResults=10&key=${GAPI_KEY}`;
         //call manager Fn with URL
         this.manager(searchURL);
         
     }
-    // const inputChange = () => {
-//    if (searchBox.value.length>2&&searchBy.value) { 
-//          errorBox.style.display= "none"; 
-//         handleSearch(searchBox.value,searchBy.value); 
-//     } 
-//     else {
-//         errorBox.style.display= "flex";
-//         errorBox.innerHTML="Type 3 or more characters and select a category to search!";
-//     }
-// }
-// const handleSearch = (searchStr)=>{
-//     let searchIn = "in";
-//         searchIn=searchIn+searchBy.toLowerCase()+":"+searchStr.toLowerCase();
-//     console.log(API_URL+searchIn+"&key="+GAPI_KEY);
-// };
 }

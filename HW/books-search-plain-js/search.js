@@ -1,4 +1,3 @@
-const errorBox = document.getElementById("error");
 const searchWrapper = document.getElementById("search-wrapper")
 const contentWrapper = document.getElementById("content-wrapper")
 

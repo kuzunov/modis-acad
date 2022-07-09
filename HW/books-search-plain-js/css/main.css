@@ -43,11 +43,20 @@ nav a {
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
     flex:10%
   }
-   #search-wrapper div:not(#error){
+  #specific-search{
+    display:flex;
+    flex:100%;
+    
+  }
+  #specific-search div:not(#error){
     flex: 15%;
     margin:5px
+  }
+  #broad-search-field{
+    flex:100%
   }
   /* #search-wrapper div>input{
     flex: 80%

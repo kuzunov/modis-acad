@@ -26,7 +26,7 @@ export class ContentManager {
          if(!this.error&&this.books){
             //createDOMElements
             this.books.map(book => {
-            const {imageLinks="No Image", title="No Data", description="No Data", authors="No Data"} = book.volumeInfo;
+            const {imageLinks="No Image", title="No Data", description="No Data", authors} = book.volumeInfo;
             const article = document.createElement("article");
             const img = new Image();
             img.src = imageLinks.thumbnail;
@@ -44,7 +44,7 @@ export class ContentManager {
                     :descrText.style.setProperty("display","none")
             })
             const authorH = document.createElement("h4");
-            authorH.innerHTML = authors.join(" ");
+            authorH.innerHTML = (authors)? authors.join(","):"No Data";
             article.append(img,titleH,authorH,descriptionH);
             article.setAttribute("class","book-container")
             //append to wrapper
