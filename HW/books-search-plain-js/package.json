@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "eslint": "^8.19.0"
+  },
+  "name": "yarn",
+  "version": "1",
+  "main": "index.html",
+  "license": "MIT",
+  "description": "Google API",
+  "author": "Ku",
+  "private": false
+}
