@@ -13,5 +13,4 @@ let fields = [
 	new SearchField("Publisher"),
 	new SearchField("Subject"),
 ];
-
-new SearchBox(fields, searchWrapper, new ContentManager([], contentWrapper).getBooks);
+new SearchBox(fields, searchWrapper,new ContentManager([], contentWrapper).getBooks);

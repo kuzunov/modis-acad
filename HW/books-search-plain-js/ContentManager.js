@@ -10,6 +10,7 @@ export class ContentManager {
 
 	//query API for Books
 	getBooks = async (query) => {
+    console.log(query)
 		try {
 			const p = await fetch(query);
 			const books = await p.json();
@@ -27,14 +28,14 @@ export class ContentManager {
 			//createDOMElements
 			this.books.map((book) => {
 				const {
-					imageLinks = "No Image",
+					imageLinks = "No Data",
 					title = "No Data",
 					description = "No Data",
 					authors,
 				} = book.volumeInfo;
 				const article = document.createElement("article");
 				const img = new Image();
-				img.src = imageLinks.thumbnail;
+				img.src = imageLinks.thumbnail || "images/no-image.jpg";
 				const titleH = document.createElement("h3");
 				titleH.innerHTML = title;
 				const descriptionH = document.createElement("p");

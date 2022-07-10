@@ -41,7 +41,8 @@ export class SearchBox {
 		this.manager = managerFn;
 	}
 	//search in all categories
-	handleBroadSearch(){
+	handleBroadSearch = () =>{
+
 		const errorBox = document.getElementById("error");
 		if (this.broadSearchField.value.length>2){
 			//set search url
@@ -58,7 +59,7 @@ export class SearchBox {
 		}
 	}
 	//specific search
-	handleSubmit(){
+	handleSubmit = () =>{
 		//build url
 		let searchURL=API_URL;
 		this.fields.forEach((f)=> {
