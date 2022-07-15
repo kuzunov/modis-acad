@@ -5,7 +5,20 @@
 
 }
 .post-item {
+    display: flex;
+    flex-flow: row wrap;
     width: 180px;
     height: 120px;
     border-color: black;
+    border-style: dotted;
+    padding: 5px 5px;
+    align-items: center;
+    justify-content: space-between;
+}
+.del-btn {
+    align-self:stretch;
+    margin-left: 5px;
+}
+#error {
+    color:red;
 }

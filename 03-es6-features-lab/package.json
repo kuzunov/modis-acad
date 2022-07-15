@@ -1,0 +1,8 @@
+{
+  "name": "es6-features-lab",
+  "version": "1.0.0",
+  "description": "Lab work for ES6+ features",
+  "main": "index.js",
+  "author": "Konstantin Uzunov",
+  "license": "Apache-2.0"
+}

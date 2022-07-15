@@ -7,9 +7,13 @@
   "author": "K.Uz.",
   "license": "MIT",
   "scripts": {
+    "start": "lite-server",
     "api": "json-server --watch db.json --routes routes.json"
   },
   "devDependencies": {
     "json-server": "^0.17.0"
+  },
+  "dependencies": {
+    "lite-server": "^2.6.1"
   }
 }
