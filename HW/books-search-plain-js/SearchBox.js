@@ -62,10 +62,10 @@ export class SearchBox {
 	handleSubmit = () =>{
 		//build url
 		let searchURL=API_URL;
-		this.fields.forEach((f)=> {
+		searchURL += this.fields.map((f)=> {
 			if (!f.textField.hasAttribute("disabled")&&f.textField.value!=="") { 
 				//category:split+keywords
-				searchURL+=`in${f.type.toLowerCase()}:${f.textField.value.replace(" ","+")}+`;
+				return `in${f.type.toLowerCase()}:${f.textField.value.replace(" ","+")}+`;
 			}
 		});
 		//remove last + and append API_KEY

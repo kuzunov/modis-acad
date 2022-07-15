@@ -4,7 +4,11 @@ function demo() {
         .then(usersResp => usersResp.json())
         .then(users => {
             console.log(users);
-            return fetch(`https://api.github.com/users/${users[0].username}`);
+            return Promise.all(users.map(user => {
+                return fetch(`https://api.github.com/users/${users[0].username}`)
+                .then (userResp => userResp.json())
+            }));
+
         }).then(githubResp => githubResp.json())
         .then(gitUser => {
             console.log(gitUser);

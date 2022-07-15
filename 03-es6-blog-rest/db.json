@@ -1,0 +1,55 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    },
+    {
+      "id": 2,
+      "title": "FF",
+      "author": "typicode"
+    },
+    {
+      "title": "json-server3",
+      "author": "typicode",
+      "id": 3
+    },
+    {
+      "title": null,
+      "id": 4
+    },
+    {
+      "title": "sfdsdf",
+      "name": null,
+      "id": 5
+    },
+    {
+      "title": "asd",
+      "author": "asd",
+      "id": 6
+    },
+    {
+      "title": "asdasd",
+      "author": "asdad",
+      "id": 7
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "fname": "Json",
+      "lname": "Serve",
+      "username": "SerJ",
+      "password": "ES6+",
+      "role": "admin"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "rest-blog",
+  "version": "1",
+  "description": "Blog demo using ES6",
+  "main": "index.js",
+  "repository": "https://github.com/kuzunov/modis-acad.git",
+  "author": "K.Uz.",
+  "license": "MIT",
+  "scripts": {
+    "api": "json-server --watch db.json --routes routes.json"
+  },
+  "devDependencies": {
+    "json-server": "^0.17.0"
+  }
+}
