@@ -8,5 +8,13 @@
   "license": "MIT",
   "description": "Google API",
   "author": "Ku",
-  "private": false
+  "private": false,
+  "scripts": {
+    "start": "lite-server",
+    "api": "json-server --watch db.json --routes routes.json"
+  },
+  "dependencies": {
+    "json-server": "^0.17.0",
+    "lite-server": "^2.6.1"
+  }
 }
