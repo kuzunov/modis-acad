@@ -1,33 +1,33 @@
 export class Annotation {
-    constructor (id, bookId,title,body,created,modified,manager) {
+    constructor (id, bookId,title,body,created,modified) {
             this.id = id;
             this.bookId = bookId;
             this.body = body;
             this.title = title;
             this.created = created;
             this.modified = modified;
-            this.manager = manager;
+            this.annotWrapper = document.createElement("div");
     }
     render = (wrapper) => {
         if (this.id) {
-            const annotWrapper = document.createElement("div");
-            const annotTitle = document.createElement("h6");
+            const annotTitle = document.createElement("p");
+            annotTitle.className = "annot-fields";
+            annotTitle.dataset.type = "title";
             annotTitle.innerHTML = `${this.title}`;
             const annotBody = document.createElement("p");
+            annotBody.className = "annot-fields";
+            annotBody.dataset.type = "body";
             annotBody.innerHTML = `${this.body}`;
             const dates = document.createElement("div");
-            dates.innerHTML = `C: ${this.created} // M: ${this.modified}`
+            dates.innerHTML = `C: ${new Date(this.created).toLocaleString()} // M: ${new Date(this.modified).toLocaleString()}`
             const del = document.createElement("button");
             del.innerHTML = "X";
-            del.addEventListener("click", () => {
-                this.manager.deleteAnnotation(this.id);
-                annotWrapper.remove();
-            });
-            annotWrapper.appendChild(annotTitle);
-            annotWrapper.appendChild(annotBody);
-            annotWrapper.appendChild(dates);
-            annotWrapper.appendChild(del);
-            wrapper.appendChild(annotWrapper);
+            del.className = "delete-btn"
+            const edit = document.createElement("button");
+            edit.innerHTML = "Edit";
+            edit.className = "edit-btn"
+            this.annotWrapper.append(annotTitle, annotBody, dates, edit, del);
+            wrapper.appendChild(this.annotWrapper);
         }
         else {
             const notAnnotated = document.createElement("div");

@@ -42,7 +42,7 @@ export class SearchBox {
 	}
 	//search in all categories
 	handleBroadSearch = () =>{
-
+		window.history.replaceState(null,"","/search")
 		const errorBox = document.getElementById("error");
 		if (this.broadSearchField.value.length>2){
 			//set search url
@@ -60,6 +60,7 @@ export class SearchBox {
 	}
 	//specific search
 	handleSubmit = () =>{
+		window.history.replaceState(null,"","/search")
 		//build url
 		let searchURL=API_URL;
 		searchURL += this.fields.map((f)=> {

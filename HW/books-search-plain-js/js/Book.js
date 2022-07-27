@@ -1,4 +1,5 @@
 import { Annotation } from "./Annotation.js";
+import { FAV_URL } from "./config.js";
 export class Book {
   constructor(
     {
@@ -8,18 +9,22 @@ export class Book {
       authors,
     },
     id,
-    annotations = [new Annotation()],annotationManager
+    fav,
+    annotations = [new Annotation()],
+    annotationManager
   ) {
     this.thumbnail = imageLinks.thumbnail || "images/no-image.jpg";
     this.title = title;
     this.description = description;
     this.authors = authors;
     this.id = id;
+    this.fav = fav;
     this.annotations = annotations;
     this.annotationManager = annotationManager;
+    this.article;
   }
   getBookArticle() {
-    const article = document.createElement("article");
+    this.article = document.createElement("div");
     const img = new Image();
     img.src = this.thumbnail;
     const titleH = document.createElement("h3");
@@ -37,52 +42,78 @@ export class Book {
     const authorH = document.createElement("h4");
     authorH.innerHTML = this.authors ? this.authors.join(",") : "No Data";
 
+    const favbtn = document.createElement("div");
+    favbtn.innerHTML = this.fav ? "Remove from favs" : "Add to favs";
+    favbtn.onclick = this.handleFav;
+
     const annotations = document.createElement("div");
     annotations.innerHTML = "Show/Hide annotations.";
     annotations.setAttribute("class", "book-annotation");
-    const annotationsContent = document.createElement("div");
-    //list annotations
-
-    this.annotationManager.displayAnnotations(this.annotations, annotationsContent);
-
-    //add annot form
-    const antTitle = document.createElement("input");
-    antTitle.type = "text";
-    const antBody = document.createElement("input");
-    antBody.type = "text";
-    const sbmtAnnot = document.createElement("button");
-    sbmtAnnot.innerHTML = "Submit Annotation";
-    sbmtAnnot.addEventListener("click", () => {
-      const newAnnot = new Annotation(undefined,this.id,antTitle.value,antBody.value,Date.now(),Date.now(),this.annotationManager)
-      newAnnot.id = this.annotationManager.addAnnotation(newAnnot);
-      newAnnot.render(annotationsContent);
-    }
-
-
-    );
-
-    const annDiv = document.createElement("div");
-    annDiv.append(annotationsContent,antTitle,antBody,sbmtAnnot);
-    annDiv.style.display = "none";
-    annotations.appendChild(annDiv);
     annotations.addEventListener("click", (e) => {
       this.toggleElement(e);
-    });
+    })
+    //list annotations
+    
+    annotations.appendChild(this.annotationManager.renderAnnotations(this.annotations,this.id));
 
+    //add annot form
+    
     //append created elements to article
-    article.append(img, titleH, authorH, descriptionH, annotations);
-    article.setAttribute("class", "book-container");
-    return article;
-  }
-  handleAnnotField() {
-    return field;
+    this.article.append(
+      img,
+      titleH,
+      authorH,
+      descriptionH,
+      favbtn,
+      annotations
+    );
+    this.article.setAttribute("class", "book-container");
+    return this.article;
   }
   toggleElement(e) {
     const toToggle = e.target.firstElementChild;
-    if (toToggle){
-    toToggle.style.display
-      ? toToggle.style.removeProperty("display")
-      : toToggle.style.setProperty("display", "none");
+    if (toToggle) {
+      toToggle.style.display
+        ? toToggle.style.removeProperty("display")
+        : toToggle.style.setProperty("display", "none");
     }
   }
+  handleFav = async () => {
+    try {
+      if (this.fav) {
+        fetch(`${FAV_URL}/${this.id}`, {
+          method: "DELETE",
+        });
+        this.fav = false;
+        this.article.children[4].innerHTML = "Add to favs.";
+        if(window.location.pathname==="/favourites") {
+          this.article.remove();
+        } ;
+
+      } else {
+        this.fav = true;
+        this.article.children[4].innerHTML = "Remove from favs.";
+        fetch(FAV_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            volumeInfo: {
+              imageLinks: {
+                thumbnail: this.thumbnail,
+              },
+              title: this.title,
+              description: this.description,
+              authors: this.authors,
+            },
+            id: this.id,
+            fav: this.fav,
+          }),
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 }

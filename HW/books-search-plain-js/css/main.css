@@ -97,10 +97,24 @@ footer {
   border-radius: 1rem 1rem 0rem 0rem;
   background-color: aquamarine;
 }
+.annotations-wrapper{
+  overflow-y: scroll;
+  height: 90px;
+}
 #error {
   color: red;
   display: none;
 }
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.blinks {
+  animation: blink 1s linear infinite;
+  color: red;
+}
+
 @media (max-width: 900px) {
   #specific-search {
     flex-direction: column;
