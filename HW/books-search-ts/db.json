@@ -1,0 +1,63 @@
+{
+  "annotations": [
+    {
+      "bookId": "CsgPAQAAMAAJ",
+      "body": "asdasd",
+      "title": "asdasd",
+      "created": 1658832628026,
+      "modified": 1658832628026,
+      "manager": {},
+      "annotWrapper": {},
+      "id": 1
+    },
+    {
+      "bookId": "CsgPAQAAMAAJ",
+      "body": "asdasd",
+      "title": "asdasd",
+      "created": 1658832690907,
+      "modified": 1658832690907,
+      "manager": {},
+      "annotWrapper": {},
+      "id": 2
+    },
+    {
+      "bookId": "mI5DEAAAQBAJ",
+      "body": "asdads",
+      "title": "asdasd",
+      "created": 1658832719263,
+      "modified": 1658832719263,
+      "manager": {},
+      "annotWrapper": {},
+      "id": 3
+    },
+    {
+      "bookId": "N2USBQAAQBAJ",
+      "body": "asd",
+      "title": "asd",
+      "created": 1658832757058,
+      "modified": 1658832757058,
+      "manager": {},
+      "annotWrapper": {},
+      "id": 4
+    },
+    {
+      "id": 5,
+      "bookId": "YFbXWQJSQ0YC",
+      "body": "",
+      "title": "as",
+      "created": 1658912953992,
+      "modified": 1658913076174,
+      "annotWrapper": {}
+    },
+    {
+      "bookId": "YFbXWQJSQ0YC",
+      "body": "",
+      "title": "asda",
+      "created": 1658912963288,
+      "modified": 1658912963288,
+      "annotWrapper": {},
+      "id": 6
+    }
+  ],
+  "favs": []
+}
