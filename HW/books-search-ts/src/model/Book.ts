@@ -48,7 +48,7 @@ export class BookImpl implements Book{
   }
   getBookArticle():HTMLElement {
     const img = new Image();
-    img.src = this.volumeInfo.imageLinks.thumbnail || "images/no-image.jpg";
+    img.src = (this.volumeInfo.imageLinks)? this.volumeInfo.imageLinks.thumbnail : "images/no-image.jpg";
     const titleH = document.createElement("h3");
     titleH.innerHTML = this.title;
     const descriptionH = document.createElement("p");
@@ -81,7 +81,7 @@ export class BookImpl implements Book{
     //add annot form
     
     //append created elements to article
-    this.article.append(
+    this.article.replaceChildren(
       img,
       titleH,
       authorH,
@@ -90,6 +90,7 @@ export class BookImpl implements Book{
       annotations
     );
     this.article.setAttribute("class", "book-container");
+    
     return this.article;
   }
   toggleElement(e:Event):void {

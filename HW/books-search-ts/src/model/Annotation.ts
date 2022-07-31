@@ -43,7 +43,7 @@ export class AnnotationImpl implements Annotation {
       const edit = document.createElement("button");
       edit.innerHTML = "Edit";
       edit.className = "edit-btn";
-      this.annotWrapper.append(annotTitle, annotBody, dates, edit, del);
+      this.annotWrapper.replaceChildren(annotTitle, annotBody, dates, edit, del);
       wrapper.appendChild(this.annotWrapper);
     } else {
       const notAnnotated = document.createElement("div");

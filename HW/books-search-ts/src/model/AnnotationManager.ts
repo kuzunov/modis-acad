@@ -40,24 +40,6 @@ export class AnnotationManagerImpl implements AnnotationManager {
               ),...returnMap.get(key)!]):returnMap.set(key,[])
         }
       );
-      // returnMap = annotations.reduce((returnMap:Map<string,AnnotationImpl[]>, ann:AnnotationImpl) => {
-      //   const key = ann["bookId"];
-      //   if (!returnMap.has(key)) {
-      //     returnMap.set(key, []);
-      //   }
-      //   returnMap.set(key,[
-      //     new AnnotationImpl(
-      //       ann.id,
-      //       ann.bookId,
-      //       ann.title,
-      //       ann.body,
-      //       ann.created,
-      //       ann.modified
-      //     ),...returnMap.get(key)]
-      //   );
-      //   return returnMap;
-      // }, []);
-      console.log(returnMap)
     } catch (error) {
       console.log(error);
     }

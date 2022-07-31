@@ -7,6 +7,9 @@ export interface ContentManager {
   wrapper:HTMLElement;
   annotationManager: AnnotationManagerImpl;
   lastSearched: Map<string,BookImpl>;
+  getBooks(q:string):void,
+  displayBooks():void,
+  getFavs():void,
   error:any;
 
 }
@@ -21,19 +24,23 @@ export class ContentManagerImpl implements ContentManager {
   }
   //clearWrapper...duh
   clearWrapper() {
-    this.wrapper.innerHTML = "";
+    while (this.wrapper.firstChild) {
+      this.wrapper.removeChild(this.wrapper.firstChild);
+    }
   }
 
   //query API for Books
   getBooks = async (query?:string) => {
     if (this.lastSearched.size>0 && !query) {
-      this.books = this.lastSearched;
+      this.books = new Map(this.lastSearched);
+      this.lastSearched.clear();
     } else {
       if (query) {
         let fetchAnnotationURL = `${ANNO_URL}/?`;
         try {
-          const bookPromise = await fetch(query);
-          const books = await bookPromise.json();
+          const bookP = await fetch(query);
+          const books = await bookP.json();
+      if (books.items) {
 		  books.items.forEach((book:BookImpl) => {
 			fetchAnnotationURL += `&bookId=${book.id}`;
 		  });
@@ -43,14 +50,16 @@ export class ContentManagerImpl implements ContentManager {
           const favsPromise = await fetch(FAV_URL);
           const favs = await favsPromise.json();
           this.books = new Map<string, BookImpl>();
-          books.items.forEach((book:BookImpl) => {
-            this.books.set(book.id, new BookImpl(book.id,
+          books.items.map((book:BookImpl) => {
+            this.books.set(book.id, new BookImpl(
+              book.id,
               book.volumeInfo,
               favs.find((b:Book) => b.id === book.id) ? true : false,
               annotations.get(book.id),
               this.annotationManager
             )
           )})
+        }
           
         } catch (err:any) {
           this.error = err;
@@ -67,9 +76,12 @@ export class ContentManagerImpl implements ContentManager {
     //check for errors or undef
     if (!this.error && this.books) {
       //createDOMElements
-      this.books.forEach((book) => {
-        this.wrapper.append(book.getBookArticle());
+      
+      const newBooks = Array.from(this.books).map((book) => {
+        return book[1].getBookArticle();
       });
+      console.log(newBooks)
+      this.wrapper.replaceChildren(...newBooks);
     } else {
       const error = document.createElement("p");
       error.innerHTML = this.error || "Nothing here";
@@ -78,23 +90,34 @@ export class ContentManagerImpl implements ContentManager {
     }
   };
   getFavs = async () => {
-    this.lastSearched = this.books;
+    this.lastSearched = new Map(this.books);
+    this.books.clear();
+    let fetchAnnotationURL = `${ANNO_URL}/?`;
     try {
-      const p = await fetch(FAV_URL);
-      const books = await p.json();
+      
+      const bookP = await fetch(FAV_URL);
+      const books = await bookP.json();
       this.books = new Map<string, BookImpl>();
+      
+        books.forEach((book:BookImpl) => {
+        fetchAnnotationURL += `&bookId=${book.id}`;
+        });
+        const annotations = await this.annotationManager.getAnnotations(
+              fetchAnnotationURL
+      );
       books.map((book:BookImpl) => {
         this.books.set(book.id, new BookImpl(
           book.id,
           book.volumeInfo,
           true,
-          [],
+          annotations.get(book.id),
           this.annotationManager
         ))
       });
       // results.forEach()
       this.displayBooks();
-    } catch (e) {
+    } catch (e:any) {
+      this.error =e;
       console.log(e);
     }
   };
