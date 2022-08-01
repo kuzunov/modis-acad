@@ -1,17 +1,21 @@
-import { IdType } from "../model/Shared";
+import Identifiable, { IdType } from "../model/Shared";
 
-interface Repositry<T> {
+interface Repositry<T extends Identifiable> {
     getAll():Map<IdType,T>
     getById(id:IdType):T,
+    getByQuery(q:string):Promise<Map<string,T>>,
     create(entity: T): T;
     update(entity: T): T;
     deleteById(id: IdType): void;
     count(): number;
 }
-class RepositoryImpl<T> implements Repositry<T>{
+class RepositoryImpl<T extends Identifiable> implements Repositry<T>{
+   async getByQuery(q:string):Promise<Map<string,T>>{
+    }
     getAll(): Map<IdType,T> {
         throw new Error("Method not implemented.");
     }
+
     getById(id: IdType): T {
         throw new Error("Method not implemented.");
     }

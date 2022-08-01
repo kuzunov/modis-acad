@@ -79,7 +79,7 @@ main {
   background-color: rgb(161, 161, 151);
   border-radius: 1rem;
   margin: 5px;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 .book-container h3,
 h4 {

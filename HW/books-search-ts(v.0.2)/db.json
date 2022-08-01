@@ -1,0 +1,87 @@
+{
+  "annotations": [
+    {
+      "bookId": "YFbXWQJSQ0YC",
+      "title": "asd",
+      "body": "asd",
+      "created": 1659354114876,
+      "modified": 1659354114876,
+      "annotWrapper": {},
+      "id": 1
+    },
+    {
+      "bookId": "CsgPAQAAMAAJ",
+      "title": "asd",
+      "body": "asd",
+      "created": 1659354134228,
+      "modified": 1659354134228,
+      "annotWrapper": {},
+      "id": 2
+    },
+    {
+      "id": 7,
+      "bookId": "YFbXWQJSQ0YC",
+      "title": "asd",
+      "body": "asd",
+      "created": 1659354489357,
+      "modified": 1659354489357,
+      "annotWrapper": {}
+    },
+    {
+      "id": 8,
+      "bookId": "YFbXWQJSQ0YC",
+      "title": "asd1234",
+      "body": "kins123135245",
+      "created": 1659354789043,
+      "modified": 1659358292768,
+      "annotWrapper": {}
+    },
+    {
+      "id": 9,
+      "bookId": "CsgPAQAAMAAJ",
+      "title": "asd41422143",
+      "body": "asd213",
+      "created": 1659356822234,
+      "modified": 1659358319615,
+      "annotWrapper": {}
+    },
+    {
+      "bookId": "N2USBQAAQBAJ",
+      "title": "123",
+      "body": "4321",
+      "created": 1659358329555,
+      "modified": 1659358329555,
+      "annotWrapper": {},
+      "id": 10
+    }
+  ],
+  "favs": [
+    {
+      "volumeInfo": {
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=u3AeAAAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "title": "Kinse Shiriaku",
+        "authors": [
+          "Ken Yamaguchi"
+        ]
+      },
+      "id": "u3AeAAAAMAAJ",
+      "fav": true
+    },
+    {
+      "volumeInfo": {
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=qGCWDgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "title": "Evidence-Based Assessment in ASD (Autism Spectrum Disorder)",
+        "description": "Advocating for an increased emphasis on evidence-based practice, this book describes and analyses a wide range of available Autism Spectrum Disorder (ASD) assessment measures. The author offers guidance on how to evaluate services and programmes and how to recognise which will be most effective in different scenarios for people with differing needs. A wide range of measures are reviewed in detail, including assessments used in situations often ignored in overviews relevant to ASD, such as assessments of internet addiction, response to traumatic stress, and criminal offending risk and witness credibility. This book is an invaluable resource to professionals who support people with ASDs, including social workers and teachers, and who are under increasing pressure to reliably assess which services, programmes and therapies are effective and fit-for-purpose.",
+        "authors": [
+          "Kenneth Aitken"
+        ]
+      },
+      "id": "qGCWDgAAQBAJ",
+      "fav": true
+    }
+  ]
+}

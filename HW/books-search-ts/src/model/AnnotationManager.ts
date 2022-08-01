@@ -21,7 +21,7 @@ export class AnnotationManagerImpl implements AnnotationManager {
     this.annotations = annotations;
   }
 
-  getAnnotations = async (fetchURL:string) => {
+  getAnnotations = async (fetchURL:string):Promise<Map<string,AnnotationImpl[]>> => {
     let returnMap = new Map<string,AnnotationImpl[]>();
     try {
       const response = await fetch(fetchURL);
