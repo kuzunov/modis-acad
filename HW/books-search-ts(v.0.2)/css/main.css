@@ -86,11 +86,17 @@ h4 {
   flex: 30%;
 }
 .book-container p {
-  flex: 40%;
+  flex: 100%;
+  padding: 5px;
 }
 .book-container img {
   align-self: flex-start;
   border-radius: 1rem;
+  padding:10px;
+}
+.book-container .book-annotation{
+flex: 80%;
+padding: 5px;
 }
 footer {
   flex: 5%;

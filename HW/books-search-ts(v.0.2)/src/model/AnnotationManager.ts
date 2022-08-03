@@ -109,11 +109,11 @@ export class AnnotationManagerImpl implements AnnotationManager {
   editAnnotation = (annotation:Annotation) => {
     this.template.editAnnotationFields(annotation);
     const btn = annotation.annotWrapper.querySelector(".edit-btn")!;
-    const newBtn = document.createElement("button");
-    newBtn.innerHTML = "Submit";
+    const newBtn = new Image(16,16);
+    newBtn.src = "/images/submit-edit.gif";
     newBtn.classList.add('edit-btn');
     newBtn.addEventListener("click", async () => {
-      const newFields =<NodeListOf<HTMLInputElement>>annotation.annotWrapper.querySelectorAll(".annot-field");
+      const newFields =<NodeListOf<HTMLInputElement>>annotation.annotWrapper.querySelectorAll(".annot-fields");
       annotation.body = newFields.item(0).value;
       annotation.title = newFields.item(1).value;
       annotation.modified = Date.now();
@@ -124,19 +124,19 @@ export class AnnotationManagerImpl implements AnnotationManager {
           oldButton.innerHTML = "Edit";
           oldButton.className = "edit-btn";
           const editedFields =
-          <NodeListOf<HTMLInputElement>>annotation.annotWrapper.querySelectorAll(".annot-field");
+          <NodeListOf<HTMLInputElement>>annotation.annotWrapper.querySelectorAll(".annot-fields");
           editedFields.forEach((f) => {
             const newElement = document.createElement("p");
             newElement.dataset.type = f.name;
             newElement.innerHTML = f.value;
-            newElement.className = "annot-field";
+            newElement.className = "annot-fields";
             annotation.annotWrapper.replaceChild(newElement, f);
            // ###newFields[newElement.dataset.type] = newElement;
           });
-          oldButton.addEventListener("click", () => {
+          btn.addEventListener("click", () => {
             this.editAnnotation(annotation)
           })
-          annotation.annotWrapper.replaceChild(oldButton,newBtn)
+          annotation.annotWrapper.replaceChild(btn,newBtn)
     
       }
     })

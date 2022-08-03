@@ -30,8 +30,8 @@ export class BookTemplateImpl extends TemplateImpl<Book> implements BookTemplate
     const authorH = document.createElement("h4");
     authorH.innerHTML = book.authors ? book.authors.join(",") : "No Data";
 
-    const favbtn = document.createElement("div");
-    favbtn.innerHTML = book.fav ? "Remove from favs" : "Add to favs";
+    const favbtn = new Image(32,32);
+    favbtn.src = book.fav ? "/images/favd.png" : "/images/not-favd.png";
     favbtn.addEventListener("click", () => this.handleFav(book));
 
     const annotations = document.createElement("div");
@@ -72,6 +72,7 @@ export class BookTemplateImpl extends TemplateImpl<Book> implements BookTemplate
             } ;
     
           } else {
+
             book.fav = true;
             book.article.children[4].innerHTML = "Remove from favs.";
             const created = this.repo.create(book);

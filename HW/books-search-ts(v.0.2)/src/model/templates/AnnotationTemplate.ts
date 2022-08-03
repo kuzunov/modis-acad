@@ -26,11 +26,11 @@ export class AnnotationTemplateImpl extends TemplateImpl<Annotation> implements 
       dates.innerHTML = `C: ${new Date(
         annotation.created
       ).toLocaleString()} // M: ${new Date(annotation.modified).toLocaleString()}`;
-      const del = document.createElement("button");
-      del.innerHTML = "X";
+      const del = new Image(16,16);
+      del.src = "/images/trash.png";
       del.className = "delete-btn";
-      const edit = document.createElement("button");
-      edit.innerHTML = "Edit";
+      const edit = new Image(16,16);
+      edit.src = "/images/edit.png";
       edit.className = "edit-btn";
       del.addEventListener("click", () => {
         this.repo.deleteById(annotation.id);
@@ -40,13 +40,14 @@ export class AnnotationTemplateImpl extends TemplateImpl<Annotation> implements 
     }
     editAnnotationFields(ann:Annotation) {
       const fields = <NodeListOf<HTMLElement>>ann.annotWrapper.querySelectorAll(".annot-fields");
+      console.log(fields);
       fields.forEach((f) => {
         const newElement = document.createElement("input");
         if(f.dataset.type !== undefined){
           newElement.name = f.dataset.type;
         }
         newElement.value = f.innerHTML;
-        newElement.className = "annot-field";
+        newElement.className = "annot-fields";
         ann.annotWrapper.replaceChild(newElement, f);
       });
       return ann;
