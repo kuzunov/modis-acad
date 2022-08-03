@@ -1,5 +1,5 @@
-import { User } from "../model/user";
-import { Repository, RepositoryImpl } from "./repository";
+import { User } from "../model/user.js";
+import { Repository, RepositoryImpl } from "./repository.js";
 
 export interface UserRepository extends Repository<User> {
     findByEmail(email: string): User|undefined

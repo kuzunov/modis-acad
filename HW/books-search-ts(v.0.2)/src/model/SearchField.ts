@@ -1,4 +1,4 @@
-interface SearchField {
+export interface SearchField {
 	type:string;
 	checkBox:HTMLInputElement;
 	textField:HTMLInputElement;

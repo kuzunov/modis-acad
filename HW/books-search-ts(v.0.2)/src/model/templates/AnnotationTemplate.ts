@@ -1,19 +1,19 @@
-import { AnnotationRepositoryImpl } from "../../dao/AnnotationRepository.js";
+import { AnnotationRepository } from "../../dao/AnnotationRepository.js";
 import { Annotation, AnnotationImpl } from "../Annotation.js";
 import { Template, TemplateImpl } from "./Template.js";
 
-export interface AnnotationTemplate<AnnotationImpl> extends Template<AnnotationImpl>{
-    repo:AnnotationRepositoryImpl;
-    createDOMElements(annotation:AnnotationImpl):void
-    editAnnotationFields(annotation:AnnotationImpl):AnnotationImpl;
+export interface AnnotationTemplate extends Template<Annotation>{
+    repo:AnnotationRepository;
+    createDOMElements(annotation:Annotation):void
+    editAnnotationFields(annotation:Annotation):Annotation;
 }
-export class AnnotationTemplateImpl extends TemplateImpl<Annotation> implements AnnotationTemplate<Annotation>{
-    repo:AnnotationRepositoryImpl;
-    constructor(repo:AnnotationRepositoryImpl){
+export class AnnotationTemplateImpl extends TemplateImpl<Annotation> implements AnnotationTemplate{
+    repo:AnnotationRepository;
+    constructor(repo:AnnotationRepository){
         super();
         this.repo = repo;
     }
-    createDOMElements(annotation: AnnotationImpl) {
+    createDOMElements(annotation: Annotation) {
       const annotTitle = document.createElement("p");
       annotTitle.className = "annot-fields";
       annotTitle.dataset.type = "title";
@@ -38,11 +38,13 @@ export class AnnotationTemplateImpl extends TemplateImpl<Annotation> implements 
       })
       this.DOMElements = [annotTitle,annotBody,dates,del,edit]
     }
-    editAnnotationFields(ann:AnnotationImpl) {
+    editAnnotationFields(ann:Annotation) {
       const fields = <NodeListOf<HTMLElement>>ann.annotWrapper.querySelectorAll(".annot-fields");
       fields.forEach((f) => {
         const newElement = document.createElement("input");
-        newElement.name = f.dataset.type!;
+        if(f.dataset.type !== undefined){
+          newElement.name = f.dataset.type;
+        }
         newElement.value = f.innerHTML;
         newElement.className = "annot-field";
         ann.annotWrapper.replaceChild(newElement, f);

@@ -1,29 +1,37 @@
-import { BookImpl } from "../model/Book.js";
+import { BookImpl,Book } from "../model/Book.js";
 import { IdType } from "../model/Shared.js";
 import { RepositoryImpl, Repositry } from "./Repository.js";
 
-export class BookRepositoryImpl extends RepositoryImpl<BookImpl>{
+export interface BookRepository extends Repositry<Book> {
+  getById(id:IdType):Promise<Book>,
+  getByQuery(q:string):Promise<Map<IdType,Book>>,
+  create(book: Book): Promise<Book>;
+  update(Book: Book): Promise<Book>;
+  deleteById(id: IdType): Promise<object>;
+  getFavs(): Promise<Book[]>
+  count(): number;
+  endpoint:string;
+}
+
+export class BookRepositoryImpl extends RepositoryImpl<Book> implements BookRepository{
     constructor(public endpoint:string,public favEndpoint:string){
         super(endpoint);
 
     };
-    getAll(): Promise<Map<IdType, BookImpl>> {
-        throw new Error("Method not implemented.");
-    }
-    async getFavs(): Promise<BookImpl[]>{
+    async getFavs(): Promise<Book[]>{
         const favsPromise = await fetch(this.favEndpoint);
         const favs = await favsPromise.json();
         return favs;
     }
-    async getByQuery(q: string): Promise<Map<IdType, BookImpl>> {
+    async getByQuery(q: string): Promise<Map<IdType, Book>> {
         const bookP = await fetch(q);
         const books = await bookP.json();
         return books.items;
     }
-    getById(id: IdType): Promise<BookImpl> {
+    getById(id: IdType): Promise<Book> {
         throw new Error("Method not implemented.");
     }
-    async create(book: BookImpl): Promise<BookImpl> {
+    async create(book: Book): Promise<Book> {
         const p = await fetch(this.favEndpoint, {
             method: "POST",
             headers: {
@@ -46,7 +54,7 @@ export class BookRepositoryImpl extends RepositoryImpl<BookImpl>{
           return result;
 
     }
-    update(entity: BookImpl): Promise<BookImpl> {
+    update(entity: Book): Promise<Book> {
         throw new Error("Method not implemented.");
     }
     async deleteById(id: IdType): Promise<any> {

@@ -1,8 +1,8 @@
 import { API_URL,GAPI_KEY } from "./config.js";
-import { SearchFieldImpl } from "./SearchField.js"
+import { SearchField } from "./SearchField.js"
 
-interface SearchBox{
-	fields:SearchFieldImpl[],
+export interface SearchBox {
+	fields:SearchField[],
 	wrapper:HTMLElement,
 	broadSearchField:HTMLInputElement,
 	manager(q:string):void;
@@ -11,7 +11,7 @@ interface SearchBox{
 export class SearchBoxImpl implements SearchBox{
 	broadSearchField: HTMLInputElement;
 	//fields for specific search, wrapper and manager Fn from ContentManager
-	constructor(public fields:SearchFieldImpl[],public wrapper:HTMLElement,public manager: (q:string)=>void) {
+	constructor(public fields:SearchField[],public wrapper:HTMLElement,public manager: (q:string)=>void) {
 		//get wrapper for specific search
 		const specificWrapper = <HTMLElement>wrapper.querySelector("#specific-search");
 		fields.map(f => {
@@ -53,7 +53,8 @@ export class SearchBoxImpl implements SearchBox{
 	//search in all categories
 	handleBroadSearch = () =>{
 		window.history.replaceState(null,"","/search")
-		const errorBox = document.getElementById("error")!;
+		const errorBox = document.getElementById("error");
+		if (errorBox!==null){
 		if (this.broadSearchField.value.length>2){
 			//set search url
 			let searchURL=`${API_URL}${this.broadSearchField.value.replace(" ","+")}&maxResults=10&key=${GAPI_KEY}`;
@@ -67,6 +68,7 @@ export class SearchBoxImpl implements SearchBox{
 			errorBox.style.display= "flex";
 			errorBox.innerHTML="Type 3 or more characters and select a category to search!";
 		}
+	}
 	}
 	//specific search
 	handleSubmit = () =>{

@@ -1,18 +1,18 @@
-import { BookRepositoryImpl } from "../../dao/BookRepository.js";
-import { AnnotationManagerImpl } from "../AnnotationManager.js";
-import { BookImpl } from "../Book.js";
+import { BookRepository, BookRepositoryImpl } from "../../dao/BookRepository.js";
+import { AnnotationManager, AnnotationManagerImpl } from "../AnnotationManager.js";
+import { Book } from "../Book.js";
 import { Template, TemplateImpl } from "./Template.js";
-export interface BookTemplate<BookImpl> extends Template<BookImpl>{
-    repo:BookRepositoryImpl;
-    annotationManager: AnnotationManagerImpl;
-    createDOMElements(books:BookImpl):void
+export interface BookTemplate extends Template<Book>{
+    repo:BookRepository;
+    annotationManager: AnnotationManager;
+    createDOMElements(books:Book):void
 
 }
-export class BookTemplateImpl extends TemplateImpl<BookImpl> implements BookTemplate<BookImpl>{
-    constructor(public repo:BookRepositoryImpl,public annotationManager:AnnotationManagerImpl){
+export class BookTemplateImpl extends TemplateImpl<Book> implements BookTemplate{
+    constructor(public repo:BookRepository,public annotationManager:AnnotationManager){
         super();
     }
-    createDOMElements(book: BookImpl): void {
+    createDOMElements(book: Book): void {
     const img = new Image();
     img.src = (book.volumeInfo.imageLinks)? book.volumeInfo.imageLinks.thumbnail : "images/no-image.jpg";
     const titleH = document.createElement("h3");
@@ -41,7 +41,7 @@ export class BookTemplateImpl extends TemplateImpl<BookImpl> implements BookTemp
       this.toggleElement(e);
     })
     //list annotations
-    
+    if (typeof book.id === "string")
     annotations.appendChild(this.annotationManager.renderAnnotations(book.annotations,book.id));
 
     
@@ -61,7 +61,7 @@ export class BookTemplateImpl extends TemplateImpl<BookImpl> implements BookTemp
          favbtn,
          annotations]
     }
-    handleFav = (book:BookImpl) => {
+    handleFav = (book:Book) => {
         try {
           if (book.fav) {
             this.repo.deleteById(book.id)

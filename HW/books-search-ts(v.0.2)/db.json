@@ -37,15 +37,6 @@
       "annotWrapper": {}
     },
     {
-      "id": 9,
-      "bookId": "CsgPAQAAMAAJ",
-      "title": "asd41422143",
-      "body": "asd213",
-      "created": 1659356822234,
-      "modified": 1659358319615,
-      "annotWrapper": {}
-    },
-    {
       "bookId": "N2USBQAAQBAJ",
       "title": "123",
       "body": "4321",
@@ -53,6 +44,24 @@
       "modified": 1659358329555,
       "annotWrapper": {},
       "id": 10
+    },
+    {
+      "bookId": "iXCaCwAAQBAJ",
+      "title": "dsf",
+      "body": "sdf",
+      "created": 1659498466617,
+      "modified": 1659498466617,
+      "annotWrapper": {},
+      "id": 11
+    },
+    {
+      "bookId": "8jUEAwAAQBAJ",
+      "title": "123",
+      "body": "4321",
+      "created": 1659498514093,
+      "modified": 1659498514093,
+      "annotWrapper": {},
+      "id": 12
     }
   ],
   "favs": [
@@ -81,6 +90,61 @@
         ]
       },
       "id": "qGCWDgAAQBAJ",
+      "fav": true
+    },
+    {
+      "volumeInfo": {
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=YFbXWQJSQ0YC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "title": "Kinsey and Me",
+        "description": "From the #1 New York Times bestselling author of the acclaimed Alphabet series comes a collection of stories that “combines glimpses of her series detective, Kinsey Millhone, with a revealing self-portrait” (Publishers Weekly). In 1982, Sue Grafton introduced Kinsey Millhone and created an iconic female detective. Here, in a story collection divided into two parts, Sue Grafton provides a glimpse of her own early life in the guise of the character Kit Blue, and enriches our understanding of Kinsey Millhone, one of the spunkiest, smartest, and most entertaining private investigators in all of mystery fiction. “Terrific...The Kinsey stories and the Kit stories together open a window into Grafton's soul.”—USA Today",
+        "authors": [
+          "Sue Grafton"
+        ]
+      },
+      "id": "YFbXWQJSQ0YC",
+      "fav": true
+    },
+    {
+      "volumeInfo": {
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=iXCaCwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "title": "Bisexual Perspectives on the Life and Work of Alfred C. Kinsey",
+        "description": "The books commonly known as the Kinsey Report were Dr Alfred C. Kinsey’s monumental scientific publishing achievement in 1948, often compared to the atomic bomb for its impact on the American public. On the sexagennial anniversary of the publication of Sexual Behavior in the Human Male, this book focuses on Alfred C. Kinsey’s work and life. Sixteen chapters consider the Kinsey legacy, tracing the development of modern American bisexuality, and posing an intriguing and illuminating look at many aspects of bisexuality in Kinsey’s life as depicted and lived in popular biographical culture and media. Contributors to this stellar collection of outstanding writing include the final surviving member of Kinsey's original research team, Dr Paul H. Gebhard, PhD, as well as leading names in the fields of sex research, GLBTIQA activism, and bisexual writing. This book was published as a special issue of the Journal of Bisexuality and was a Finalist for the Lambda Literary Award for Excellence in Bisexual Literature.",
+        "authors": [
+          "Ron Suresha"
+        ]
+      },
+      "id": "iXCaCwAAQBAJ",
+      "fav": true
+    },
+    {
+      "volumeInfo": {
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=8jUEAwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "title": "Alfred C. Kinsey: A Life",
+        "description": "James H. Jones reveals in this biography that the public image of disinterested biologist, Alfred Kinsey, was in fact a carefully crafted persona. The Kinsey who emerges in these pages was a social reformer and a zealot, who devoted his every waking hour to the destruction of sexual repression.",
+        "authors": [
+          "James H. Jones"
+        ]
+      },
+      "id": "8jUEAwAAQBAJ",
+      "fav": true
+    },
+    {
+      "volumeInfo": {
+        "imageLinks": {
+          "thumbnail": "http://books.google.com/books/content?id=CsgPAQAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+        },
+        "title": "Kinsey",
+        "authors": [
+          "Judith A. Reisman"
+        ]
+      },
+      "id": "CsgPAQAAMAAJ",
       "fav": true
     }
   ]

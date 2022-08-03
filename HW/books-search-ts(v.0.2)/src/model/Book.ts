@@ -33,8 +33,7 @@ export class BookImpl implements Book{
     public fav:boolean,
     public annotations: Annotation[] = []
   ) {
-    //this.thumbnail = volumeInfo.imageLinks.thumbnail || ;
-    this.title = volumeInfo.title;
+        this.title = volumeInfo.title;
     this.description = volumeInfo.description;
     this.authors = volumeInfo.authors;
     this.article = document.createElement("div");

@@ -1,30 +1,30 @@
-import { BookRepositoryImpl } from "../dao/BookRepository.js";
+import { BookRepository, BookRepositoryImpl } from "../dao/BookRepository.js";
 import { AnnotationManager, AnnotationManagerImpl } from "./AnnotationManager.js";
 import { Book, BookImpl } from "./Book.js";
 import { ANNO_URL, API_URL, FAV_URL } from "./config.js";
-import { BookTemplateImpl } from "./templates/BookTemplate.js";
+import { BookTemplate, BookTemplateImpl } from "./templates/BookTemplate.js";
 
 export interface ContentManager {
-  books: Map<string,BookImpl>;
+  books: Map<string,Book>;
   wrapper:HTMLElement;
-  annotationManager: AnnotationManagerImpl;
-  lastSearched: Map<string,BookImpl>;
-  getBooks(q:string):void,
+  annotationManager: AnnotationManager;
+  lastSearched: Map<string,Book>;
+  getBooks(q?:string):void,
   displayBooks():void,
   getFavs():void,
   error:any;
-  template:BookTemplateImpl;
-  repository:BookRepositoryImpl;
+  template:BookTemplate;
+  repository:BookRepository;
 
 }
 
 export class ContentManagerImpl implements ContentManager {
-  public annotationManager: AnnotationManagerImpl;
-  public repository:BookRepositoryImpl = new BookRepositoryImpl(API_URL,FAV_URL);
-  public template:BookTemplateImpl;
-  public lastSearched: Map<string, BookImpl>;
+  public annotationManager: AnnotationManager;
+  public repository:BookRepository = new BookRepositoryImpl(API_URL,FAV_URL);
+  public template:BookTemplate;
+  public lastSearched: Map<string, Book>;
   public error:any;
-  constructor(public books: Map<string,BookImpl>, public wrapper: HTMLElement) {
+  constructor(public books: Map<string,Book>, public wrapper: HTMLElement) {
     this.annotationManager = new AnnotationManagerImpl();
     this.lastSearched = new Map<string, BookImpl>();
     this.template = new BookTemplateImpl(this.repository,this.annotationManager)
@@ -54,15 +54,16 @@ export class ContentManagerImpl implements ContentManager {
           const annotations = await this.annotationManager.getAnnotations(
               fetchAnnotationURL
             );
-            this.books = new Map<string, BookImpl>();
+            this.books = new Map<string, Book>();
             books.forEach((book) => {
+              (typeof book.id==="string")?
               this.books.set(book.id, new BookImpl(
                 book.id,
                 book.volumeInfo,
-                favs.find((b:BookImpl) => b.id === book.id) ? true : false,
+                favs.find((b:Book) => b.id === book.id) ? true : false,
                 annotations.get(book.id),
               )
-            )})
+            ):book.id = "InvalidID"})
         }
           
         } catch (err:any) {
@@ -113,15 +114,16 @@ export class ContentManagerImpl implements ContentManager {
       
       const bookP = await fetch(FAV_URL);
       const books = await bookP.json();
-      this.books = new Map<string, BookImpl>();
+      this.books = new Map<string, Book>();
       
-        books.forEach((book:BookImpl) => {
+        books.forEach((book:Book) => {
         fetchAnnotationURL += `&bookId=${book.id}`;
         });
         const annotations = await this.annotationManager.getAnnotations(
               fetchAnnotationURL
       );
-      books.map((book:BookImpl) => {
+      books.map((book:Book) => {
+        if(typeof book.id!=="string") {book.id="invalid"}
         this.books.set(book.id, new BookImpl(
           book.id,
           book.volumeInfo,

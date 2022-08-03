@@ -2,7 +2,7 @@ import { Annotation, AnnotationImpl } from "../model/Annotation.js";
 import { IdType } from "../model/Shared.js";
 import { RepositoryImpl, Repositry } from "./Repository.js";
 
-interface AnnotationRepository extends Repositry<Annotation> {
+export interface AnnotationRepository extends Repositry<Annotation> {
     getByQuery(q:string):Promise<Map<IdType,Annotation[]>>
 };
 

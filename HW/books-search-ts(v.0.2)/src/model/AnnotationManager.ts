@@ -1,31 +1,31 @@
 import { ANNO_URL } from "./config.js";
-import { AnnotationImpl } from "./Annotation.js";
-import { AnnotationRepositoryImpl } from "../dao/AnnotationRepository.js";
+import { Annotation, AnnotationImpl } from "./Annotation.js";
+import { AnnotationRepository, AnnotationRepositoryImpl } from "../dao/AnnotationRepository.js";
 import { IdType } from "../model/Shared.js";
-import { AnnotationTemplateImpl } from "./templates/AnnotationTemplate.js";
+import { AnnotationTemplate, AnnotationTemplateImpl } from "./templates/AnnotationTemplate.js";
 
 
-type A = Promise<Map<IdType,AnnotationImpl[]>>;
+type A = Promise<Map<IdType,Annotation[]>>;
 
 export interface AnnotationManager {
-  annotations: AnnotationImpl[];
-  repository: AnnotationRepositoryImpl;
-  template:AnnotationTemplateImpl;
+  annotations: Annotation[];
+  repository: AnnotationRepository;
+  template:AnnotationTemplate;
   getAnnotations(url:string):A;
-  addAnnotation(annotation:AnnotationImpl):Promise<IdType>;
-  deleteAnnotation(annotation:AnnotationImpl):void;
-  editAnnotation(annotation:AnnotationImpl):void;
-  displayAllAnnotations(annotations:AnnotationImpl[], wrapper:HTMLDivElement):void;
+  addAnnotation(annotation:Annotation):Promise<IdType>;
+  deleteAnnotation(annotation:Annotation):any;
+  editAnnotation(annotation:Annotation):void;
+  displayAllAnnotations(annotations:Annotation[], wrapper:HTMLDivElement):void;
   getAnnotationForm(bookId:string,wrapper:HTMLDivElement): HTMLDivElement;
-  renderAnnotations(bookAnnotations:AnnotationImpl[],bookId:string):HTMLElement;
-  validateInput(annotation:AnnotationImpl, wrapper:HTMLElement):boolean;
+  renderAnnotations(bookAnnotations:Annotation[],bookId:string):HTMLElement;
+  validateInput(annotation:Annotation, wrapper:HTMLElement):boolean;
 }
 
 export class AnnotationManagerImpl implements AnnotationManager {
-  public annotations:AnnotationImpl[]
-  public repository:AnnotationRepositoryImpl = new AnnotationRepositoryImpl(ANNO_URL)
-  public template: AnnotationTemplateImpl = new AnnotationTemplateImpl(this.repository);
-  constructor(annotations:AnnotationImpl[] = []) {
+  public annotations:Annotation[]
+  public repository:AnnotationRepository = new AnnotationRepositoryImpl(ANNO_URL)
+  public template: AnnotationTemplate = new AnnotationTemplateImpl(this.repository);
+  constructor(annotations:Annotation[] = []) {
     this.annotations = annotations;
   }
 
@@ -34,13 +34,15 @@ export class AnnotationManagerImpl implements AnnotationManager {
    return annotations;
   };
 
-  displayAllAnnotations = (annotations:AnnotationImpl[], wrapper:HTMLDivElement) => {
+  displayAllAnnotations = (annotations:Annotation[], wrapper:HTMLDivElement) => {
     if (annotations.length>0) {
       annotations.forEach((ann) => {
       this.template.createDOMElements(ann);
       this.template.render(ann.annotWrapper);
-      const btn = ann.annotWrapper.querySelector(".edit-btn")!;
-      btn.addEventListener("click", () => this.editAnnotation(ann))
+      const btn = ann.annotWrapper.querySelector(".edit-btn");
+      if(btn){
+        btn.addEventListener("click", () => this.editAnnotation(ann))
+      }
       wrapper.appendChild(ann.annotWrapper);
     });
   } else {
@@ -49,13 +51,13 @@ export class AnnotationManagerImpl implements AnnotationManager {
     wrapper.appendChild(div);
   }
   };
-  addAnnotation = async (annotation:AnnotationImpl) => {
+  addAnnotation = async (annotation:Annotation) => {
     const newAnnot = await this.repository.create(annotation);
     const newId = await newAnnot.id;
     return newId;
   };
-  deleteAnnotation = async (annotation:AnnotationImpl) => {
-    const r = this.repository.deleteById(annotation.id);
+  deleteAnnotation = async (annotation:Annotation) => {
+    const r = await this.repository.deleteById(annotation.id);
     return r;
   };
 
@@ -94,7 +96,7 @@ export class AnnotationManagerImpl implements AnnotationManager {
     annotForm.append(antTitle, antBody, sbmtAnnot);
     return annotForm;
   };
-  renderAnnotations = (bookAnn:AnnotationImpl[], bookId:string) => {
+  renderAnnotations = (bookAnn:Annotation[], bookId:string) => {
     const annotationsContent = document.createElement("div");
     //list annotations
     this.displayAllAnnotations(bookAnn, annotationsContent);
@@ -104,7 +106,7 @@ export class AnnotationManagerImpl implements AnnotationManager {
     annotationsContent.classList.add("hide")
     return annotationsContent;
   };
-  editAnnotation = (annotation:AnnotationImpl) => {
+  editAnnotation = (annotation:Annotation) => {
     this.template.editAnnotationFields(annotation);
     const btn = annotation.annotWrapper.querySelector(".edit-btn")!;
     const newBtn = document.createElement("button");
@@ -140,7 +142,7 @@ export class AnnotationManagerImpl implements AnnotationManager {
     })
     annotation.annotWrapper.replaceChild(newBtn, btn);
   };
-  validateInput(annotation:AnnotationImpl, wrapper:HTMLElement) {
+  validateInput(annotation:Annotation, wrapper:HTMLElement) {
     const err = wrapper.querySelector(".error");
     if (annotation.title.length > 40 || annotation.body.length > 256) {
       if (!err) {
