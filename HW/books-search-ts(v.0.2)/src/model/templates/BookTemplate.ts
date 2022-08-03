@@ -1,5 +1,5 @@
-import { BookRepository, BookRepositoryImpl } from "../../dao/BookRepository.js";
-import { AnnotationManager, AnnotationManagerImpl } from "../AnnotationManager.js";
+import { BookRepository } from "../../dao/BookRepository.js";
+import { AnnotationManager } from "../AnnotationManager.js";
 import { Book } from "../Book.js";
 import { Template, TemplateImpl } from "./Template.js";
 export interface BookTemplate extends Template<Book>{

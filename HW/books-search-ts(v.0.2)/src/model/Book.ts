@@ -1,5 +1,5 @@
 import { Annotation, AnnotationImpl } from "./Annotation.js";
-import Identifiable, { IdType } from "./Shared.js";
+import Identifiable from "./Shared.js";
 interface GoogleBookData {
   imageLinks:imageLinks,
   title:string,

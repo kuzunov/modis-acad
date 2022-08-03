@@ -1,5 +1,5 @@
 import { AnnotationRepository } from "../../dao/AnnotationRepository.js";
-import { Annotation, AnnotationImpl } from "../Annotation.js";
+import { Annotation } from "../Annotation.js";
 import { Template, TemplateImpl } from "./Template.js";
 
 export interface AnnotationTemplate extends Template<Annotation>{

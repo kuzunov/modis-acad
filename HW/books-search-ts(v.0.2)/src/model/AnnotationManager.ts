@@ -120,9 +120,6 @@ export class AnnotationManagerImpl implements AnnotationManager {
       if (this.validateInput(annotation, annotation.annotWrapper)) {
 
           const a = await this.repository.update(annotation);
-          const oldButton = document.createElement("button");
-          oldButton.innerHTML = "Edit";
-          oldButton.className = "edit-btn";
           const editedFields =
           <NodeListOf<HTMLInputElement>>annotation.annotWrapper.querySelectorAll(".annot-fields");
           editedFields.forEach((f) => {

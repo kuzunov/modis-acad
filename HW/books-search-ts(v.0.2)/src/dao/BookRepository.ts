@@ -1,4 +1,4 @@
-import { BookImpl,Book } from "../model/Book.js";
+import { Book } from "../model/Book.js";
 import { IdType } from "../model/Shared.js";
 import { RepositoryImpl, Repositry } from "./Repository.js";
 
