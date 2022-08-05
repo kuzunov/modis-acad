@@ -19,15 +19,6 @@
       "id": 2
     },
     {
-      "id": 7,
-      "bookId": "YFbXWQJSQ0YC",
-      "title": "asd123",
-      "body": "asd123",
-      "created": 1659354489357,
-      "modified": 1659508195441,
-      "annotWrapper": {}
-    },
-    {
       "bookId": "N2USBQAAQBAJ",
       "title": "123",
       "body": "4321",
@@ -53,6 +44,42 @@
       "modified": 1659498514093,
       "annotWrapper": {},
       "id": 12
+    },
+    {
+      "bookId": "qGCWDgAAQBAJ",
+      "title": "asd",
+      "body": "asd",
+      "created": 1659585396033,
+      "modified": 1659585396033,
+      "annotWrapper": {},
+      "id": 14
+    },
+    {
+      "bookId": "u3AeAAAAMAAJ",
+      "title": "asd",
+      "body": "asd",
+      "created": 1659676269014,
+      "modified": 1659676269014,
+      "annotWrapper": {},
+      "id": 15
+    },
+    {
+      "id": 19,
+      "bookId": "YFbXWQJSQ0YC",
+      "title": "asdasd",
+      "body": "asdas",
+      "created": 1659679066437,
+      "modified": 1659679070354,
+      "annotWrapper": {}
+    },
+    {
+      "id": 20,
+      "bookId": "CsgPAQAAMAAJ",
+      "title": "asd",
+      "body": "asd",
+      "created": 1659680083546,
+      "modified": 1659680087475,
+      "annotWrapper": {}
     }
   ],
   "favs": [
@@ -72,15 +99,15 @@
     {
       "volumeInfo": {
         "imageLinks": {
-          "thumbnail": "http://books.google.com/books/content?id=qGCWDgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+          "thumbnail": "http://books.google.com/books/content?id=8jUEAwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        "title": "Evidence-Based Assessment in ASD (Autism Spectrum Disorder)",
-        "description": "Advocating for an increased emphasis on evidence-based practice, this book describes and analyses a wide range of available Autism Spectrum Disorder (ASD) assessment measures. The author offers guidance on how to evaluate services and programmes and how to recognise which will be most effective in different scenarios for people with differing needs. A wide range of measures are reviewed in detail, including assessments used in situations often ignored in overviews relevant to ASD, such as assessments of internet addiction, response to traumatic stress, and criminal offending risk and witness credibility. This book is an invaluable resource to professionals who support people with ASDs, including social workers and teachers, and who are under increasing pressure to reliably assess which services, programmes and therapies are effective and fit-for-purpose.",
+        "title": "Alfred C. Kinsey: A Life",
+        "description": "James H. Jones reveals in this biography that the public image of disinterested biologist, Alfred Kinsey, was in fact a carefully crafted persona. The Kinsey who emerges in these pages was a social reformer and a zealot, who devoted his every waking hour to the destruction of sexual repression.",
         "authors": [
-          "Kenneth Aitken"
+          "James H. Jones"
         ]
       },
-      "id": "qGCWDgAAQBAJ",
+      "id": "8jUEAwAAQBAJ",
       "fav": true
     },
     {
@@ -100,29 +127,29 @@
     {
       "volumeInfo": {
         "imageLinks": {
-          "thumbnail": "http://books.google.com/books/content?id=iXCaCwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+          "thumbnail": "http://books.google.com/books/content?id=T4PlAwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        "title": "Bisexual Perspectives on the Life and Work of Alfred C. Kinsey",
-        "description": "The books commonly known as the Kinsey Report were Dr Alfred C. Kinsey’s monumental scientific publishing achievement in 1948, often compared to the atomic bomb for its impact on the American public. On the sexagennial anniversary of the publication of Sexual Behavior in the Human Male, this book focuses on Alfred C. Kinsey’s work and life. Sixteen chapters consider the Kinsey legacy, tracing the development of modern American bisexuality, and posing an intriguing and illuminating look at many aspects of bisexuality in Kinsey’s life as depicted and lived in popular biographical culture and media. Contributors to this stellar collection of outstanding writing include the final surviving member of Kinsey's original research team, Dr Paul H. Gebhard, PhD, as well as leading names in the fields of sex research, GLBTIQA activism, and bisexual writing. This book was published as a special issue of the Journal of Bisexuality and was a Finalist for the Lambda Literary Award for Excellence in Bisexual Literature.",
+        "title": "The Classification of Sex",
+        "description": "Alfred C. Kinsey’s revolutionary studies of human sexual behavior are world-renowned. His meticulous methods of data collection, from comprehensive entomological assemblies to personal sex history interviews, raised the bar for empirical evidence to an entirely new level. In The Classification of Sex, Donna J. Drucker presents an original analysis of Kinsey’s scientific career in order to uncover the roots of his research methods. She describes how his enduring interest as an entomologist and biologist in the compilation and organization of mass data sets structured each of his classification projects. As Drucker shows, Kinsey’s lifelong mission was to find scientific truth in numbers and through observation—and to record without prejudice in the spirit of a true taxonomist. Kinsey’s doctoral work included extensive research of the gall wasp, where he gathered and recorded variations in over six million specimens. His classification and reclassification of Cynips led to the speciation of the genus that remains today. During his graduate training, Kinsey developed a strong interest in evolution and the links between entomological and human behavior studies. In 1920, he joined Indiana University as a professor in zoology, and soon published an introductory text on biology, followed by a coauthored field guide to edible wild plants. In 1938, Kinsey began teaching a noncredit course on marriage, where he openly discussed sexual behavior and espoused equal opportunity for orgasmic satisfaction in marital relationships. Soon after, he began gathering case histories of sexual behavior. As a pioneer in the nascent field of sexology, Kinsey saw that the key to its cogency was grounded in observation combined with the collection and classification of mass data. To support the institutionalization of his work, he cofounded the Institute for Sex Research at Indiana University in 1947. He and his staff eventually conducted over eighteen thousand personal interviews about sexual behavior, and in 1948 he published Sexual Behavior in the Human Male, to be followed in 1953 by Sexual Behavior in the Human Female. As Drucker’s study shows, Kinsey’s scientific rigor and his early use of data recording methods and observational studies were unparalleled in his field. Those practices shaped his entire career and produced a wellspring of new information, whether he was studying gall wasp wings, writing biology textbooks, tracing patterns of evolution, or developing a universal theory of human sexuality.",
         "authors": [
-          "Ron Suresha"
+          "Donna J. Drucker"
         ]
       },
-      "id": "iXCaCwAAQBAJ",
+      "id": "T4PlAwAAQBAJ",
       "fav": true
     },
     {
       "volumeInfo": {
         "imageLinks": {
-          "thumbnail": "http://books.google.com/books/content?id=8jUEAwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+          "thumbnail": "http://books.google.com/books/content?id=N2USBQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
         },
-        "title": "Alfred C. Kinsey: A Life",
-        "description": "James H. Jones reveals in this biography that the public image of disinterested biologist, Alfred Kinsey, was in fact a carefully crafted persona. The Kinsey who emerges in these pages was a social reformer and a zealot, who devoted his every waking hour to the destruction of sexual repression.",
+        "title": "The ASD Workbook",
+        "description": "This workbook helps parents to explain ASDs to their child and provide practical and emotional support following diagnosis. It is presented in a clear and positive way. As the workbook is completed an invaluable record of development will be created for parent and child to look back on together.",
         "authors": [
-          "James H. Jones"
+          "Penny Kershaw"
         ]
       },
-      "id": "8jUEAwAAQBAJ",
+      "id": "N2USBQAAQBAJ",
       "fav": true
     },
     {

@@ -1,0 +1,26 @@
+{
+  "name": "05-ts-blogs-rest",
+  "version": "1.0.0",
+  "description": "TS intro",
+  "main": "index.js",
+  "repository": "https://github.com/kuzunov/modis-acad/tree/main/05-ts-blogs-rest",
+  "author": "Konstantin Uzunov",
+  "license": "APACHE 2",
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "eslint": "^8.20.0",
+    "global": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^8.3.4",
+    "concurrently": "^7.3.0",
+    "json-server": "^0.17.0",
+    "lite-server": "^2.6.1"
+  },
+  "scripts": {
+    "start": "concurrently --kill-others \"tsc -w\" \"lite-server\"",
+    "api": "json-server db.json --port 4000 --routes routes.json",
+    "lint": "eslint ./src --ext .ts"
+  }
+}

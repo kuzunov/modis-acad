@@ -1,17 +1,14 @@
-import { AnnotationRepository } from "../../dao/AnnotationRepository.js";
-import { Annotation } from "../Annotation.js";
+import { AnnotationRepository } from "../../model/dao/AnnotationRepository.js";
+import { Annotation } from "../../model/Annotation.js";
 import { Template, TemplateImpl } from "./Template.js";
 
 export interface AnnotationTemplate extends Template<Annotation>{
-    repo:AnnotationRepository;
     createDOMElements(annotation:Annotation):void
     editAnnotationFields(annotation:Annotation):Annotation;
 }
-export class AnnotationTemplateImpl extends TemplateImpl<Annotation> implements AnnotationTemplate{
-    repo:AnnotationRepository;
-    constructor(repo:AnnotationRepository){
+class AnnotationTemplateImpl extends TemplateImpl<Annotation> implements AnnotationTemplate{
+    constructor(){
         super();
-        this.repo = repo;
     }
     createDOMElements(annotation: Annotation) {
       const annotTitle = document.createElement("p");
@@ -32,10 +29,6 @@ export class AnnotationTemplateImpl extends TemplateImpl<Annotation> implements 
       const edit = new Image(16,16);
       edit.src = "/images/edit.png";
       edit.className = "edit-btn";
-      del.addEventListener("click", () => {
-        this.repo.deleteById(annotation.id);
-        annotation.annotWrapper.remove();
-      })
       this.DOMElements = [annotTitle,annotBody,dates,del,edit]
     }
     editAnnotationFields(ann:Annotation) {
@@ -53,3 +46,4 @@ export class AnnotationTemplateImpl extends TemplateImpl<Annotation> implements 
       return ann;
     }
 }
+export const AnnotationTemplate = new AnnotationTemplateImpl()

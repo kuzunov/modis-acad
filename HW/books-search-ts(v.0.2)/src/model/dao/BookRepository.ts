@@ -1,5 +1,6 @@
-import { Book } from "../model/Book.js";
-import { IdType } from "../model/Shared.js";
+import {API_URL, FAV_URL } from "../../config.js";
+import { Book } from "../Book.js";
+import { IdType } from "../../Shared.js";
 import { RepositoryImpl, Repositry } from "./Repository.js";
 
 export interface BookRepository extends Repositry<Book> {
@@ -13,7 +14,7 @@ export interface BookRepository extends Repositry<Book> {
   endpoint:string;
 }
 
-export class BookRepositoryImpl extends RepositoryImpl<Book> implements BookRepository{
+class BookRepositoryImpl extends RepositoryImpl<Book> implements BookRepository{
     constructor(public endpoint:string,public favEndpoint:string){
         super(endpoint);
 
@@ -69,3 +70,4 @@ export class BookRepositoryImpl extends RepositoryImpl<Book> implements BookRepo
         throw new Error("Method not implemented.");
     }
 }
+export const BookRepository = new BookRepositoryImpl(API_URL, FAV_URL);

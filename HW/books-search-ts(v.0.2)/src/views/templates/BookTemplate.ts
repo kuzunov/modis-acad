@@ -1,15 +1,10 @@
-import { BookRepository } from "../../dao/BookRepository.js";
-import { AnnotationManager } from "../AnnotationManager.js";
-import { Book } from "../Book.js";
+import { Book } from "../../model/Book.js";
 import { Template, TemplateImpl } from "./Template.js";
 export interface BookTemplate extends Template<Book>{
-    repo:BookRepository;
-    annotationManager: AnnotationManager;
     createDOMElements(books:Book):void
-
 }
-export class BookTemplateImpl extends TemplateImpl<Book> implements BookTemplate{
-    constructor(public repo:BookRepository,public annotationManager:AnnotationManager){
+class BookTemplateImpl extends TemplateImpl<Book> implements BookTemplate{
+    constructor(){
         super();
     }
     createDOMElements(book: Book): void {
@@ -32,17 +27,18 @@ export class BookTemplateImpl extends TemplateImpl<Book> implements BookTemplate
 
     const favbtn = new Image(32,32);
     favbtn.src = book.fav ? "/images/favd.png" : "/images/not-favd.png";
-    favbtn.addEventListener("click", () => this.handleFav(book));
+    favbtn.classList.add("fav-btn");
+    
 
     const annotations = document.createElement("div");
     annotations.innerHTML = "Show/Hide annotations.";
-    annotations.setAttribute("class", "book-annotation");
+    annotations.setAttribute("class", "book-annotations");
     annotations.addEventListener("click", (e) => {
       this.toggleElement(e);
     })
     //list annotations
-    if (typeof book.id === "string")
-    annotations.appendChild(this.annotationManager.renderAnnotations(book.annotations,book.id));
+    // if (typeof book.id === "string")
+    // annotations.appendChild(this.annotationManager.renderAnnotations(book.annotations,book.id));
 
     
     //append created elements to article
@@ -61,26 +57,7 @@ export class BookTemplateImpl extends TemplateImpl<Book> implements BookTemplate
          favbtn,
          annotations]
     }
-    handleFav = (book:Book) => {
-        try {
-          if (book.fav) {
-            this.repo.deleteById(book.id)
-            book.fav = false;
-            book.article.children[4].innerHTML = "Add to favs.";
-            if(window.location.pathname==="/favourites") {
-              book.article.remove();
-            } ;
-    
-          } else {
 
-            book.fav = true;
-            book.article.children[4].innerHTML = "Remove from favs.";
-            const created = this.repo.create(book);
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      };
       toggleElement(e:Event):void {
         if (e.target){
         const toToggle = (e.target as HTMLDivElement).firstElementChild;
@@ -90,3 +67,4 @@ export class BookTemplateImpl extends TemplateImpl<Book> implements BookTemplate
       }
 
 }
+export const BookTemplate = new BookTemplateImpl();

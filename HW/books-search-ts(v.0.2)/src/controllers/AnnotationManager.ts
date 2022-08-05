@@ -1,48 +1,40 @@
-import { ANNO_URL } from "./config.js";
-import { Annotation, AnnotationImpl } from "./Annotation.js";
-import { AnnotationRepository, AnnotationRepositoryImpl } from "../dao/AnnotationRepository.js";
-import { IdType } from "../model/Shared.js";
-import { AnnotationTemplate, AnnotationTemplateImpl } from "./templates/AnnotationTemplate.js";
+import { Annotation, AnnotationImpl } from "../model/Annotation.js";
+import { AnnotationRepository } from "../model/dao/AnnotationRepository.js";
+import { IdType } from "../Shared.js";
+import { AnnotationTemplate} from "../views/templates/AnnotationTemplate.js";
 
 
 type A = Promise<Map<IdType,Annotation[]>>;
 
 export interface AnnotationManager {
   annotations: Annotation[];
-  repository: AnnotationRepository;
-  template:AnnotationTemplate;
   getAnnotations(url:string):A;
   addAnnotation(annotation:Annotation):Promise<IdType>;
   deleteAnnotation(annotation:Annotation):any;
   editAnnotation(annotation:Annotation):void;
   displayAllAnnotations(annotations:Annotation[], wrapper:HTMLDivElement):void;
   getAnnotationForm(bookId:string,wrapper:HTMLDivElement): HTMLDivElement;
-  renderAnnotations(bookAnnotations:Annotation[],bookId:string):HTMLElement;
+  renderAnnotations(bookAnnotations:Annotation[],bookId:IdType):HTMLElement;
   validateInput(annotation:Annotation, wrapper:HTMLElement):boolean;
 }
 
-export class AnnotationManagerImpl implements AnnotationManager {
+class AnnotationManagerImpl implements AnnotationManager {
   public annotations:Annotation[]
-  public repository:AnnotationRepository = new AnnotationRepositoryImpl(ANNO_URL)
-  public template: AnnotationTemplate = new AnnotationTemplateImpl(this.repository);
   constructor(annotations:Annotation[] = []) {
     this.annotations = annotations;
   }
 
   getAnnotations = async (fetchURL:string):A => {
-   const annotations  = await this.repository.getByQuery(fetchURL)
+   const annotations  = await AnnotationRepository.getByQuery(fetchURL)
    return annotations;
   };
 
   displayAllAnnotations = (annotations:Annotation[], wrapper:HTMLDivElement) => {
     if (annotations.length>0) {
       annotations.forEach((ann) => {
-      this.template.createDOMElements(ann);
-      this.template.render(ann.annotWrapper);
-      const btn = ann.annotWrapper.querySelector(".edit-btn");
-      if(btn){
-        btn.addEventListener("click", () => this.editAnnotation(ann))
-      }
+      AnnotationTemplate.createDOMElements(ann);
+      AnnotationTemplate.render(ann.annotWrapper);
+      this.addEventListeners(ann);
       wrapper.appendChild(ann.annotWrapper);
     });
   } else {
@@ -52,16 +44,16 @@ export class AnnotationManagerImpl implements AnnotationManager {
   }
   };
   addAnnotation = async (annotation:Annotation) => {
-    const newAnnot = await this.repository.create(annotation);
+    const newAnnot = await AnnotationRepository.create(annotation);
     const newId = await newAnnot.id;
     return newId;
   };
   deleteAnnotation = async (annotation:Annotation) => {
-    const r = await this.repository.deleteById(annotation.id);
+    const r = await AnnotationRepository.deleteById(annotation.id);
     return r;
   };
 
-  getAnnotationForm = (bookId:string, wrapper:HTMLDivElement) => {
+  getAnnotationForm = (bookId:IdType, wrapper:HTMLDivElement) => {
     const antTitle = document.createElement("input");
     antTitle.className = "annot-fields";
     antTitle.type = "text";
@@ -84,8 +76,10 @@ export class AnnotationManagerImpl implements AnnotationManager {
       if (this.validateInput(newAnnot, wrapper)) {
         const newId = this.addAnnotation(newAnnot);
         newAnnot.id = await newId;
-        this.template.createDOMElements(newAnnot);
-        this.template.render(newAnnot.annotWrapper);
+        AnnotationTemplate.createDOMElements(newAnnot);
+
+        AnnotationTemplate.render(newAnnot.annotWrapper);
+        this.addEventListeners(newAnnot)
         wrapper.insertBefore(newAnnot.annotWrapper,annotForm)
       } else {
         //wrapper.appendChild(newAnnot.annotWrapper);
@@ -96,8 +90,9 @@ export class AnnotationManagerImpl implements AnnotationManager {
     annotForm.append(antTitle, antBody, sbmtAnnot);
     return annotForm;
   };
-  renderAnnotations = (bookAnn:Annotation[], bookId:string) => {
+  renderAnnotations = (bookAnn:Annotation[], bookId:IdType) => {
     const annotationsContent = document.createElement("div");
+    annotationsContent.classList.add('annotations-wrapper')
     //list annotations
     this.displayAllAnnotations(bookAnn, annotationsContent);
     annotationsContent.appendChild(
@@ -107,7 +102,7 @@ export class AnnotationManagerImpl implements AnnotationManager {
     return annotationsContent;
   };
   editAnnotation = (annotation:Annotation) => {
-    this.template.editAnnotationFields(annotation);
+    AnnotationTemplate.editAnnotationFields(annotation);
     const btn = annotation.annotWrapper.querySelector(".edit-btn")!;
     const newBtn = new Image(16,16);
     newBtn.src = "/images/submit-edit.gif";
@@ -119,7 +114,7 @@ export class AnnotationManagerImpl implements AnnotationManager {
       annotation.modified = Date.now();
       if (this.validateInput(annotation, annotation.annotWrapper)) {
 
-          const a = await this.repository.update(annotation);
+          const a = await AnnotationRepository.update(annotation);
           const editedFields =
           <NodeListOf<HTMLInputElement>>annotation.annotWrapper.querySelectorAll(".annot-fields");
           editedFields.forEach((f) => {
@@ -130,13 +125,13 @@ export class AnnotationManagerImpl implements AnnotationManager {
             annotation.annotWrapper.replaceChild(newElement, f);
            // ###newFields[newElement.dataset.type] = newElement;
           });
-          btn.addEventListener("click", () => {
-            this.editAnnotation(annotation)
-          })
+          annotation.annotWrapper.querySelector(".delete-btn")?.classList.toggle("hide");
+          this.addEventListeners(annotation);
           annotation.annotWrapper.replaceChild(btn,newBtn)
     
       }
     })
+    annotation.annotWrapper.querySelector(".delete-btn")?.classList.toggle("hide");
     annotation.annotWrapper.replaceChild(newBtn, btn);
   };
   validateInput(annotation:Annotation, wrapper:HTMLElement) {
@@ -156,4 +151,16 @@ export class AnnotationManagerImpl implements AnnotationManager {
       return true;
     }
   }
+
+  addEventListeners(ann:Annotation){
+    const editbtn = ann.annotWrapper.querySelector(".edit-btn")!;
+    const delbtn = ann.annotWrapper.querySelector(".delete-btn");
+    if(delbtn){delbtn.addEventListener("click", () => {
+      this.deleteAnnotation(ann);
+      ann.annotWrapper.remove();
+    })}
+      
+        editbtn.addEventListener("click", () => this.editAnnotation(ann))
+  }
 }
+export const AnnotationManager = new AnnotationManagerImpl();

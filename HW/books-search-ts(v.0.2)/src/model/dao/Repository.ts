@@ -1,4 +1,4 @@
-import Identifiable, { IdType } from "../model/Shared.js";
+import Identifiable, { IdType } from "../../Shared.js";
 
 export interface Repositry<T extends Identifiable> {
     getAll():Promise<Map<IdType,T>>

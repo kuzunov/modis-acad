@@ -1,22 +1,24 @@
-import { Annotation, AnnotationImpl } from "../model/Annotation.js";
-import { IdType } from "../model/Shared.js";
+import { Annotation, AnnotationImpl } from "../Annotation.js";
+import { IdType } from "../../Shared.js";
 import { RepositoryImpl, Repositry } from "./Repository.js";
+import { ANNO_URL } from "../../config.js";
 
 export interface AnnotationRepository extends Repositry<Annotation> {
     getByQuery(q:string):Promise<Map<IdType,Annotation[]>>
 };
 
-export class AnnotationRepositoryImpl extends RepositoryImpl<Annotation> implements AnnotationRepository{
+class AnnotationRepositoryImpl extends RepositoryImpl<Annotation> implements AnnotationRepository{
     constructor(public endpoint:string){
         super(endpoint);
     }
     async getByQuery(q: string): Promise<Map<IdType, Annotation[]>> {
-        let returnMap = new Map<string,AnnotationImpl[]>();
+        let returnMap = new Map<string,Annotation[]>();
         try {
             const response = await fetch(`${this.endpoint}/?${q}`);
-            const annotations:AnnotationImpl[] = await response.json();
+            const annotations:Annotation[] = await response.json();
             annotations.forEach(ann => {
-              const key = ann.bookId;
+              const key = ann.bookId?.toString();
+              if (key) 
               (returnMap.get(key))?
               returnMap.set(key,[
                     new AnnotationImpl(
@@ -35,3 +37,4 @@ export class AnnotationRepositoryImpl extends RepositoryImpl<Annotation> impleme
           return returnMap
     }
 }
+export const AnnotationRepository = new AnnotationRepositoryImpl(ANNO_URL);

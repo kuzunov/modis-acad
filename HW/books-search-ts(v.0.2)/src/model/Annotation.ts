@@ -1,7 +1,7 @@
-import Identifiable, { IdType } from "./Shared.js";
+import Identifiable, { IdType } from "../Shared.js";
 
 export interface Annotation extends Identifiable{
-  bookId: string;
+  bookId: IdType;
   body: string;
   title: string;
   created: number;
@@ -12,7 +12,7 @@ export class AnnotationImpl implements Annotation  {
   public annotWrapper: HTMLDivElement;
   constructor(
     public id:IdType,
-    public bookId: string,
+    public bookId: IdType,
     public title: string,
     public body: string,
     public created: number,

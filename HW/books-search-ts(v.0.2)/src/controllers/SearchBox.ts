@@ -1,14 +1,7 @@
-import { API_URL,GAPI_KEY } from "./config.js";
-import { SearchField } from "./SearchField.js"
+import { API_URL,GAPI_KEY } from "../config.js";
+import { SearchField } from "../views/SearchField.js"
 
-export interface SearchBox {
-	fields:SearchField[],
-	wrapper:HTMLElement,
-	broadSearchField:HTMLInputElement,
-	manager(q:string):void;
-}
-
-export class SearchBoxImpl implements SearchBox{
+export class SearchBoxImpl {
 	broadSearchField: HTMLInputElement;
 	//fields for specific search, wrapper and manager Fn from ContentManager
 	constructor(public fields:SearchField[],public wrapper:HTMLElement,public manager: (q:string)=>void) {

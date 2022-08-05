@@ -1,5 +1,5 @@
-import { Annotation, AnnotationImpl } from "./Annotation.js";
-import Identifiable from "./Shared.js";
+import { Annotation} from "./Annotation.js";
+import Identifiable, { IdType } from "../Shared.js";
 interface GoogleBookData {
   imageLinks:imageLinks,
   title:string,
@@ -28,12 +28,12 @@ export class BookImpl implements Book{
  public authors: string[];
  public article: HTMLDivElement;
   constructor(
-    public id: string,
+    public id: IdType,
     public volumeInfo: GoogleBookData,
     public fav:boolean,
     public annotations: Annotation[] = []
   ) {
-        this.title = volumeInfo.title;
+    this.title = volumeInfo.title;
     this.description = volumeInfo.description;
     this.authors = volumeInfo.authors;
     this.article = document.createElement("div");

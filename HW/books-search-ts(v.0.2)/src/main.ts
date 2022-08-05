@@ -1,9 +1,9 @@
 const searchWrapper = document.getElementById("search-wrapper")!;
 const contentWrapper = document.getElementById("content-wrapper")!;
 
-import { SearchField, SearchFieldImpl } from "./model/SearchField.js";
-import { SearchBoxImpl, SearchBox } from "./model/SearchBox.js";
-import { ContentManager, ContentManagerImpl } from "./model/ContentManager.js";
+import { SearchField, SearchFieldImpl } from "./views/SearchField.js";
+import { SearchBoxImpl} from "./controllers/SearchBox.js";
+import { ContentManagerImpl } from "./controllers/ContentManager.js";
 import { BookImpl } from "./model/Book.js";
 
 const navBar = document.getElementsByTagName("nav")[0];
@@ -30,8 +30,8 @@ let fields:SearchField[] = [
 	new SearchFieldImpl("Publisher"),
 	new SearchFieldImpl("Subject"),
 ];
-const cM:ContentManager = new ContentManagerImpl(new Map<string, BookImpl>(), contentWrapper);
-const sb:SearchBox = new SearchBoxImpl(fields, searchWrapper,cM.getBooks);
+const cM = new ContentManagerImpl(new Map<string, BookImpl>(), contentWrapper);
+const sb = new SearchBoxImpl(fields, searchWrapper,cM.getBooks);
 if (window.location.pathname==="/favourites") {
 	cM.getFavs();
 }

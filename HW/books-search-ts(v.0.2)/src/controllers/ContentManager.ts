@@ -1,33 +1,17 @@
-import { BookRepository, BookRepositoryImpl } from "../dao/BookRepository.js";
-import { AnnotationManager, AnnotationManagerImpl } from "./AnnotationManager.js";
-import { Book, BookImpl } from "./Book.js";
-import { ANNO_URL, API_URL, FAV_URL } from "./config.js";
-import { BookTemplate, BookTemplateImpl } from "./templates/BookTemplate.js";
+import { BookRepository} from "../model/dao/BookRepository.js";
+import { AnnotationManager} from "./AnnotationManager.js";
+import { Book, BookImpl } from "../model/Book.js";
+import { ANNO_URL, FAV_URL } from "../config.js";
+import { BookTemplate} from "../views/templates/BookTemplate.js";
 
 export interface ContentManager {
-  books: Map<string,Book>;
-  wrapper:HTMLElement;
-  annotationManager: AnnotationManager;
-  lastSearched: Map<string,Book>;
-  getBooks(q?:string):void,
-  displayBooks():void,
-  getFavs():void,
-  error:any;
-  template:BookTemplate;
-  repository:BookRepository;
-
+  
 }
 
-export class ContentManagerImpl implements ContentManager {
-  public annotationManager: AnnotationManager;
-  public repository:BookRepository = new BookRepositoryImpl(API_URL,FAV_URL);
-  public template:BookTemplate;
-  public lastSearched: Map<string, Book>;
+export class ContentManagerImpl{
+  public lastSearched = new Map<string, Book>();
   public error:any;
   constructor(public books: Map<string,Book>, public wrapper: HTMLElement) {
-    this.annotationManager = new AnnotationManagerImpl();
-    this.lastSearched = new Map<string, BookImpl>();
-    this.template = new BookTemplateImpl(this.repository,this.annotationManager)
   }
   //clearWrapper...duh
   clearWrapper() {
@@ -45,13 +29,13 @@ export class ContentManagerImpl implements ContentManager {
       if (query) {
         let fetchAnnotationURL='';
         try {
-          const books = await this.repository.getByQuery(query);
-          const favs = await this.repository.getFavs();
+          const books = await BookRepository.getByQuery(query);
+          const favs = await BookRepository.getFavs();
         if (books) {
         books.forEach((book) => {
         fetchAnnotationURL += `&bookId=${book.id}`;
         });
-          const annotations = await this.annotationManager.getAnnotations(
+          const annotations = await AnnotationManager.getAnnotations(
               fetchAnnotationURL
             );
             this.books = new Map<string, Book>();
@@ -89,14 +73,16 @@ export class ContentManagerImpl implements ContentManager {
       // this.wrapper.replaceChildren(...newBooks);
       let newBooks:HTMLDivElement[] = [];
       this.books.forEach((book) => {
-        this.template.createDOMElements(book);
-        this.template.render(book.article);
+        BookTemplate.createDOMElements(book);
+        BookTemplate.render(book.article);
+        book.article.querySelector('.fav-btn')?.addEventListener("click", () => this.handleFav(book));
+        book.article.querySelector('.book-annotations')?.appendChild(AnnotationManager.renderAnnotations(book.annotations,book.id))
         newBooks.push(book.article);
       })
       this.wrapper.replaceChildren(...newBooks);
       // const newBooks = this.books.forEach((book) => {
-      //   this.template.createDOMElements(book);
-      //   this.template.render(book.article);
+      //   BookTemplate.createDOMElements(book);
+      //   BookTemplate.render(book.article);
 
       // })
     } else {
@@ -119,7 +105,7 @@ export class ContentManagerImpl implements ContentManager {
         books.forEach((book:Book) => {
         fetchAnnotationURL += `&bookId=${book.id}`;
         });
-        const annotations = await this.annotationManager.getAnnotations(
+        const annotations = await AnnotationManager.getAnnotations(
               fetchAnnotationURL
       );
       books.map((book:Book) => {
@@ -135,6 +121,27 @@ export class ContentManagerImpl implements ContentManager {
       this.displayBooks();
     } catch (e:any) {
       this.error =e;
+      console.log(e);
+    }
+  };
+  handleFav = (book:Book) => {
+    let favIcon = <HTMLImageElement>book.article.querySelector('.fav-btn')!;
+    try {
+      if (book.fav) {
+        BookRepository.deleteById(book.id)
+        book.fav = false;
+        favIcon.src = "/images/not-favd.png"
+        if(window.location.pathname==="/favourites") {
+          book.article.remove();
+        } ;
+
+      } else {
+
+        book.fav = true;
+        favIcon.src = "/images/favd.png";
+        const created = BookRepository.create(book);
+      }
+    } catch (e) {
       console.log(e);
     }
   };
