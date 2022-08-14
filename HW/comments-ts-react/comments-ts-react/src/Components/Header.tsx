@@ -1,5 +1,3 @@
-import React, { useContext } from 'react'
-import { CommentContext } from '../App';
 import { CommentT } from '../model/CommentT';
 import LatestComment from './LatestComment'
 type HeaderProps = {

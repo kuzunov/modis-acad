@@ -1,11 +1,7 @@
-import React, { FormEvent, useEffect, useState, useRef, useContext } from "react";
+import React, { FormEvent, useEffect, useState, useRef} from "react";
 import { CommentsError, CommentT, Status } from "../model/CommentT";
-import { Filter, Order } from "../model/Filter";
-import CommentList from "./CommentsList";
 import CommentsFilter from "./CommentsFilter";
 import ErrorHandler from "./ErrorHandler";
-import CommentInputs from "./CommentInputs";
-import { CommentContext } from "../App";
 type CommentsControllerT = React.FC & { nextId: number, };
 type CommentControllerP = {
   latest:CommentT,

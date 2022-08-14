@@ -1,6 +1,5 @@
 import React from 'react'
 import { CommentT } from '../model/CommentT'
-import CommentsList from './CommentsList'
 
 type Props = {comment: CommentT}
 

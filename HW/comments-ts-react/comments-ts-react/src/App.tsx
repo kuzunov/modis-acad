@@ -1,9 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
-import logo from './logo.svg';
-import Comment from './Components/Comment';
-import {CommentT, Status} from './model/CommentT'
+import React, { createContext, useState } from 'react';
+import {CommentT} from './model/CommentT'
 import './App.css';
-import CommentList from './Components/CommentsList';
 import CommentsController from './Components/CommentsController';
 import Header from './Components/Header';
 
