@@ -1,13 +1,13 @@
-import React, { createContext, useState } from 'react';
+import React, { useState } from 'react';
 import {CommentT} from './model/CommentT'
 import './App.css';
 import CommentsController from './Components/CommentsController';
 import Header from './Components/Header';
 
-type CommentContextT = {
-  latest:CommentT,
-  setLatest:(c:CommentT) => void
-}
+// type CommentContextT = {
+//   latest:CommentT,
+//   setLatest:(c:CommentT) => void
+// }
 // export const CommentContext = createContext<CommentContextT>({
 //   latest: {} as CommentT,
 //   setLatest: () => {}

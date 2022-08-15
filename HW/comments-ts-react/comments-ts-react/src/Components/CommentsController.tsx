@@ -5,7 +5,7 @@ import ErrorHandler from "./ErrorHandler";
 type CommentsControllerT = React.FC & { nextId: number, };
 type CommentControllerP = {
   latest:CommentT,
-setLatest:(c:CommentT)=>void
+  setLatest:(c:CommentT)=>void
 }
 type FieldName = "title" | "body";
 

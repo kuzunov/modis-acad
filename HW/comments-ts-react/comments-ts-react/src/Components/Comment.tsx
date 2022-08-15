@@ -1,5 +1,7 @@
-import React, { MouseEventHandler, useState } from 'react'
+import React from 'react'
 import { CommentT, Status } from '../model/CommentT';
+import ReactMarkdown from 'react-markdown'
+
 type CommentProps = {
    comment: CommentT,
    onStatusChange:(c:CommentT)=>void,
@@ -20,8 +22,8 @@ const  Comment = ({comment,onStatusChange,handleDelete,handleEdit}:CommentProps)
     }
     return (
     <div className='comment-wrapper'>
-        <div className='title'> {comment.title} </div>
-        <div className='body'>{comment.body}</div>
+        <div className='title'> <ReactMarkdown>{comment.title}</ReactMarkdown></div>
+        <div className='body'><ReactMarkdown>{comment.body}</ReactMarkdown></div>
         <div className='dates'>
         C: {new Date(comment.created).toLocaleString('bg-BG')}; M: {new Date(comment.modified).toLocaleString('bg-BG')}
         </div>

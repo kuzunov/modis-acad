@@ -1,8 +1,6 @@
-import React, { ChangeEvent, FormEvent } from 'react'
-import { CommentT, Status } from '../model/CommentT'
-import { Filter } from '../model/Filter'
+import React from 'react'
+import { CommentT} from '../model/CommentT'
 import Comment from './Comment'
-import CommentInputs from './CommentInputs'
 
 type CommentsListProps = {
     comments: CommentT[],

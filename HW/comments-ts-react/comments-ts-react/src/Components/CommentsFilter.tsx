@@ -20,7 +20,7 @@ const CommentsFilter = ({comments,handleSubmitComment,...rest}:CommentsFilterPro
   
   const [filteredComments, setFilteredComments] = useState<CommentT[]>(comments);
     useEffect(() => {
-      (filter.status===2)?setFilteredComments(comments):handleFilterChange(filter.status)
+      (filter.status===2)?setFilteredComments(comments.sort((a,b)=>b.modified-a.modified)):handleFilterChange(filter.status)
     }, [comments] )
   
   const handleFilterChange = async (status:number) => {
