@@ -5,7 +5,7 @@ import ErrorHandler from "./ErrorHandler";
 type CommentsControllerT = React.FC & { nextId: number, };
 type CommentControllerP = {
   latest:CommentT,
-  setLatest:(c:CommentT)=>void
+setLatest:(c:CommentT)=>void
 }
 type FieldName = "title" | "body";
 
@@ -88,8 +88,7 @@ function CommentsController({setLatest,latest}:CommentControllerP) {
     if (commentToDel.id === latest.id) {
       if (newComments.length>0) {
         setLatest(newComments.reduce((prevC, currentC) => (+prevC.modified > +currentC.modified) ? prevC : currentC))}
-      else 
-        setLatest({} as CommentT)
+      else setLatest({} as CommentT)
     }
   };
   const handleEdit = (commentToEdit: CommentT) => {
