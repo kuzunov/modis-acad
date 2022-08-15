@@ -1,11 +1,12 @@
 #root {
-  min-height: 100vh
+  min-height: 100vh;
+  background-image: radial-gradient(grey,rgb(114, 114, 180))
 }
 .App {
   display: flex;
   align-content: center;
   flex-direction: column;
-  background-image: radial-gradient(grey,rgb(114, 114, 180));
+  /* background-image: radial-gradient(grey,rgb(114, 114, 180)); */
   height: 100%;
   
 }
@@ -31,7 +32,7 @@ header .comment-wrapper {
   flex-direction: row;
 }
 .comment-form form * {
-  padding:5px
+  margin:5px
 }
 .comment-form form input[type="text"]{
   flex:0.5;
@@ -54,11 +55,13 @@ header .comment-wrapper {
   border-width: 3px;
   border-color: rgba(2, 58, 169, 0.764);
 }
-.filter-fields{
-  display: flex;
-  align-content: center;
+.filter-fields {
+  display:flex;
   flex-direction: column;
-  margin: 5px
+  align-items: center;
+}
+.filter-fields *{
+  margin: 5px;
 }
 .comments-wrapper * {
   padding:2px;

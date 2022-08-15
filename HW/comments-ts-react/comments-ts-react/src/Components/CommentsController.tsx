@@ -26,7 +26,7 @@ function CommentsController({setLatest,latest}:CommentControllerP) {
     if (cJson) {
       const commentsDB:CommentT[] = await JSON.parse(cJson)
       setComments(commentsDB);
-      setLatest(commentsDB.reduce((prev, current) => (+prev.modified > +current.modified) ? prev : current));
+      setLatest(commentsDB.reduce((prevC, currentC) => (+prevC.modified > +currentC.modified) ? prevC : currentC));
     }
   } 
     fetchComments().catch((err) => console.log(err));
@@ -83,7 +83,14 @@ function CommentsController({setLatest,latest}:CommentControllerP) {
     }
   };
   const handleDelete = (commentToDel: CommentT) => {
-    setComments(comments.filter((comment) => comment.id !== commentToDel.id));
+    let newComments = comments.filter((comment) => comment.id !== commentToDel.id)
+    setComments(newComments);
+    if (commentToDel.id === latest.id) {
+      if (newComments.length>0) {
+        setLatest(newComments.reduce((prevC, currentC) => (+prevC.modified > +currentC.modified) ? prevC : currentC))}
+      else 
+        setLatest({} as CommentT)
+    }
   };
   const handleEdit = (commentToEdit: CommentT) => {
     const formEl = document.querySelector("form") as HTMLFormElement;

@@ -8,10 +8,10 @@ type CommentContextT = {
   latest:CommentT,
   setLatest:(c:CommentT) => void
 }
-export const CommentContext = createContext<CommentContextT>({
-  latest: {} as CommentT,
-  setLatest: () => {}
-})
+// export const CommentContext = createContext<CommentContextT>({
+//   latest: {} as CommentT,
+//   setLatest: () => {}
+// })
 
 
 function App() {
