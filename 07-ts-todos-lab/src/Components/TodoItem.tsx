@@ -7,9 +7,10 @@ interface TodoItemProps {
   todo: Todo;
   onUpdateTodo: TodoListener;
   onDeleteTodo: TodoListener;
+  onEditTodo: TodoListener
 }
 
-const TodoItem = ({ todo, onUpdateTodo, onDeleteTodo}: TodoItemProps) => {
+const TodoItem = ({ todo, onUpdateTodo, onDeleteTodo, onEditTodo}: TodoItemProps) => {
   function handleCompletion(e:React.MouseEvent) {
     onUpdateTodo({...todo, status:TodoStatus.Completed});
   }
@@ -20,7 +21,7 @@ const TodoItem = ({ todo, onUpdateTodo, onDeleteTodo}: TodoItemProps) => {
     <div className="TodoItem">
       <span className="TodoItem-text">
         <span className="TodoItem-id">{todo.id}</span>
-        {todo.text}
+        {todo.text} [{todo.deadline}]
         <span className="TodoItem-right">
           <span className="TodoItem-status">{TodoStatus[todo.status]}</span>
           {todo.status ===TodoStatus.Active? 
@@ -28,6 +29,8 @@ const TodoItem = ({ todo, onUpdateTodo, onDeleteTodo}: TodoItemProps) => {
           
           :<span className="TodoItem-button" onClick={handleDelete}>Delete</span>  
         }
+          <span className="TodoItem-button" onClick={() => onEditTodo(todo)}>Edit</span>
+
           </span>
       </span>
     </div>

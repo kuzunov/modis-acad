@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "id": 0,
+      "firstName": "Gosho",
+      "lastName": "Mosho",
+      "username": "Gosho69",
+      "password": "1234",
+      "gender": "f",
+      "role": 1,
+      "status": 1,
+      "avatar": "",
+      "registered": 123,
+      "modified": 321
+    },
+    {
+      "username": "aeonbg",
+      "password": "asd",
+      "firstName": "asd",
+      "lastName": "asd",
+      "description": "asd",
+      "gender": "f",
+      "id": 1
+    },
+    {
+      "username": "Ima user",
+      "password": "nemauser",
+      "firstName": "Ima",
+      "lastName": "Nema",
+      "avatar": "bez",
+      "description": "malemale",
+      "gender": "m",
+      "id": 2
+    },
+    {
+      "username": "asd",
+      "password": "asd",
+      "firstName": "asd",
+      "lastName": "asd",
+      "gender": "f",
+      "role": 1,
+      "status": 1,
+      "registered": 1660914038871,
+      "modified": 1660914038871,
+      "id": 3
+    }
+  ]
+}
