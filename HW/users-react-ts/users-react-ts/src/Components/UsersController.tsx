@@ -1,96 +1,196 @@
-import React, { useContext, useEffect, useState } from "react";
-import { UserListener, USER_GENDER, Guest } from "../sharedTypes";
+import React, { useEffect, useState } from "react";
+import { FilterT, UserListener } from "./model/sharedTypes";
 import { UserT } from "./model/UserT";
 import { UsersApi } from "./rest-api-client";
-import { UserContext } from "../App";
-import {Routes, Route} from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import SearchField from "./Search";
 import UsersList from "./UsersList";
-import RegisterForm from "./RegisterForm";
+import UserForm from "./UserForm";
 import LogIn from "./LogIn";
-
+import Filter from "./Filter";
 
 type Props = {
   children?: JSX.Element | JSX.Element[];
+  setCurrentUser: (user: UserT) => void;
+  currentUser: UserT;
 };
 
-const UsersController: React.FC<Props> = ({ children }) => {
-    const currentUser = useContext(UserContext);
-    const [users,setUsers] = useState([] as UserT[]);
-    const [error,setError] = useState('');
-    const [filter, setFilter] = useState();
-    useEffect(() => {
-        try{
-        const fetchUsers = async () => {
-            const usrs = await UsersApi.findAll();
-            setUsers(usrs);
-        };
-        fetchUsers();
-    }
-        catch (err:any) {
-        setError(err);}
-    },[]);
-  const emptyUser:UserT = {
-    id: undefined,
-    firstName: "Gosho",
-    lastName: "Mosho",
-    username: "Gosho69",
-    password: "1234",
-    gender: "f" as USER_GENDER,
-    role: 1,
-    status: 1,
-    avatar: undefined,
-    registered: 123,
-    modified: 321,
-  }
-
-  const onEditUser:UserListener = (user:UserT) => {
-    UsersApi.update(user);
-  }
-  const onRegisterUser:UserListener = (user:UserT) => {
-    const newUser = {...user,
-        role: 1,
-        status: 1,
-        registered: Date.now(),
-        modified: Date.now()
-    }
-    UsersApi.create(newUser);
-  }
-
-  const handleLogin = async (user:Partial<UserT>) => {
+const UsersController: React.FC<Props> = ({ setCurrentUser, currentUser }) => {
+  // const currentUser = useContext(UserContext);
+  const [users, setUsers] = useState([] as UserT[]);
+  const [error, setError] = useState("");
+  const [filter, setFilter] = useState<FilterT>({ role: 0, status: 0 });
+  const navigate = useNavigate();
+  //fetch all users
+  useEffect(() => {
     try {
-    const dbUser = await UsersApi.findByUsername(user.username!);
-        currentUser.setCurrentUser(dbUser)
-        if (currentUser.user.password !== user.password) {
-            currentUser.setCurrentUser(Guest as UserT);
-            setError("invalid login");
-        } 
-        
+      const fetchUsers = async () => {
+        const usrs = await UsersApi.findAll();
+        setUsers(usrs);
+      };
+      fetchUsers();
+      const sessUser = localStorage.getItem("user");
+      if (sessUser) {
+        const loggedUser = JSON.parse(sessUser);
+        setCurrentUser(loggedUser);
+      }
+    } catch (err: any) {
+      setError(err);
     }
-    catch(err:any) {
-        setError(err);
+  }, []);
+  //edit user and return to /
+  const onEditUser: UserListener = (user: UserT) => {
+    try {
+      const newUser = { ...user, modified: Date.now() };
+      UsersApi.update(newUser);
+      setUsers(users.map((currU) => (currU.id === user.id ? newUser : currU)));
+      navigate("/");
+    } catch (err: any) {
+      setError(err);
     }
-  }; 
-
-  const handleSearch = async (term:string) => {
-    const user = await UsersApi.findByName(term);
-    setUsers([user]);
+  };
+  //register user (check valid username), log the new user and return to /
+  const onRegisterUser: UserListener = async (user: UserT) => {
+    const newUser = {
+      ...user,
+      description: user.description ? user.description : "",
+      avatar: user.avatar ? user.avatar : "",
+      role: 1,
+      status: 1,
+      registered: Date.now(),
+      modified: Date.now(),
+    };
+    try {
+      let userNameFree = await UsersApi.checkUsernameUniqueness(
+        newUser.username
+      );
+      if (userNameFree) {
+        const loggedUser = await UsersApi.create(newUser);
+        setError("");
+        //noId?!
+        setCurrentUser(loggedUser);
+        navigate("/");
+      } else setError(`User with username ${newUser.username} already exists.`);
+    } catch (error: any) {
+      setError(error);
+    }
+  };
+  //login -> check pass match (puke) and set in localStorage(incl pass :@)
+  const handleLogin = async (user: Partial<UserT>) => {
+    try {
+      //feeling dirty doing this
+      if (user.username && user.password) {
+        let dbUser = await UsersApi.login(user.username);
+        if (dbUser[0]) {
+          if (dbUser[0].password === user.password) {
+            setCurrentUser(dbUser[0]);
+            navigate("/");
+            localStorage.setItem("user", JSON.stringify(dbUser[0]));
+            setError("");
+          } else {
+            setError("Credentials do not match.");
+          }
+        } else setError("No such user in DB");
+      } else {
+        setError("Type in your username and password");
+      }
+    } catch (err: any) {
+      setError(err);
+      console.log(err);
+    }
   };
 
+  const handleSearch = async (term: string) => {
+    try {
+      const user = await UsersApi.findByName(term);
+      if (user.length > 0) {
+        setError("");
+      } else {
+        setError("Found nothing :C");
+      }
+      setUsers(user);
+    } catch (err: any) {
+      setError(err);
+    }
+  };
+  const handleDelete = async (user: UserT) => {
+    if (user.id === currentUser.id) {
+      setError("You cant delete yourself");
+    } else {
+      try {
+        await UsersApi.deleteById(user.id);
+        setUsers([...users].filter((userC) => userC.id !== user.id));
+      } catch (err: any) {
+        setError(err);
+      }
+    }
+    navigate("/");
+  };
   return (
     <>
-     <Routes >
-        <Route path="/" element={<> <SearchField searchFn={handleSearch}/>
-                                    <UsersList users={users}/>
-                                 </>} />
-        <Route path="register" element={<RegisterForm
-                                            onEditUser={onEditUser}
-                                            onRegisterUser={onRegisterUser}
-                                            userP={emptyUser}
-                                        />} />
-        <Route path= "login" element = {<LogIn handleLogin={handleLogin} />} />
-        <Route path= "users" element = {<UsersList users = {users}/>} />
-        <Route path= "search" element = {<SearchField searchFn={handleSearch}/>}/>
+      {error && <div className="error">{error.toString()}</div>}
+      <Routes>
+        <Route
+          path="/"
+          element={ <> 
+            <div className="search-filter">
+              <SearchField searchFn={handleSearch} />
+              <Filter filter={filter} handleFilterChange={setFilter} />
+              </div>
+              <UsersList
+                filter={filter}
+                users={users}
+                handleDelete={handleDelete}
+              />
+            
+            </>
+          }
+        />
+        <Route
+          path="register"
+          element={
+            <UserForm
+              onEditUser={onEditUser}
+              onRegisterUser={onRegisterUser}
+              currentUser={currentUser}
+              setError={setError}
+            />
+          }
+        />
+        <Route path="login" element={<LogIn handleLogin={handleLogin} />} />
+        <Route
+          path="users"
+          element={<>
+          <div className="search-filter">
+              <SearchField searchFn={handleSearch} />
+              <Filter filter={filter} handleFilterChange={setFilter} />
+              </div>
+            <UsersList
+              filter={filter}
+              users={users}
+              handleDelete={handleDelete}
+            /></>
+          }
+        />
+        <Route
+          path="search"
+          element={<>   <SearchField searchFn={handleSearch} /><UsersList
+            filter={filter}
+            users={users}
+            handleDelete={handleDelete}
+          /></>}
+        />
+        <Route
+          path="edit"
+          element={
+            <UserForm
+              setError={setError}
+              onEditUser={onEditUser}
+              onRegisterUser={onRegisterUser}
+              currentUser={currentUser}
+            />
+          }
+        />
       </Routes>
     </>
   );

@@ -1,48 +1,31 @@
 {
   "users": [
     {
-      "id": 0,
-      "firstName": "Gosho",
-      "lastName": "Mosho",
-      "username": "Gosho69",
-      "password": "1234",
+      "username": "aeonbg",
+      "password": "aeonbg1!",
+      "firstName": "asd",
+      "lastName": "asd",
+      "description": "asdasd",
       "gender": "f",
-      "role": 1,
+      "role": 2,
+      "id": 1,
+      "status": 1,
+      "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/481px-Cat03.jpg",
+      "modified": 1661087390313
+    },
+    {
+      "username": "nqmaivancho",
+      "firstName": "Ivan",
+      "lastName": "Ivan",
+      "password": "ivannqmago1!",
+      "gender": "m",
       "status": 1,
       "avatar": "",
-      "registered": 123,
-      "modified": 321
-    },
-    {
-      "username": "aeonbg",
-      "password": "asd",
-      "firstName": "asd",
-      "lastName": "asd",
-      "description": "asd",
-      "gender": "f",
-      "id": 1
-    },
-    {
-      "username": "Ima user",
-      "password": "nemauser",
-      "firstName": "Ima",
-      "lastName": "Nema",
-      "avatar": "bez",
-      "description": "malemale",
-      "gender": "m",
-      "id": 2
-    },
-    {
-      "username": "asd",
-      "password": "asd",
-      "firstName": "asd",
-      "lastName": "asd",
-      "gender": "f",
+      "registered": 1661087449209,
+      "modified": 1661087775129,
+      "id": 2,
       "role": 1,
-      "status": 1,
-      "registered": 1660914038871,
-      "modified": 1660914038871,
-      "id": 3
+      "description": ""
     }
   ]
 }

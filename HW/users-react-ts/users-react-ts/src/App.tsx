@@ -1,28 +1,26 @@
-import React, { Dispatch, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Header from './Components/Header';
 import { UserT } from './Components/model/UserT';
-import RegisterForm from './Components/RegisterForm';
-import User from './Components/User';
 import UsersController from './Components/UsersController';
-import { Guest, UserListener, USER_GENDER } from './sharedTypes';
+import { Guest} from './Components/model/sharedTypes';
 
-type userStateT = {
-  user:UserT,
-  setCurrentUser:Dispatch<React.SetStateAction<UserT>>,
-}
-
-export const UserContext = React.createContext<userStateT>({} as userStateT);
+export const UserContext = React.createContext<UserT>(Guest as UserT);
 
 
 function App() {
-  const [user, setCurrentUser] = useState(Guest as UserT);
-
+  const [currentUser, setCurrentUser] = useState(Guest as UserT);
+  useEffect(() => {
+    
+  },[currentUser]);
+const logUser = (user:UserT) => {
+  setCurrentUser(user);
+} 
     return (
     <div className="App">
-      <UserContext.Provider value = {{user,setCurrentUser}}>
-      <Header />
-      <UsersController />
+      <UserContext.Provider value = {currentUser}>
+      <Header currentUser = {currentUser} setCurrentUser={setCurrentUser}/>
+      <UsersController currentUser = {currentUser} setCurrentUser = {logUser}/>
       </UserContext.Provider>
     </div>
   );

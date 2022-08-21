@@ -6,13 +6,27 @@
   height: 40vmin;
   pointer-events: none;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.user-form{
+  display:flex;
+  flex-direction: column;
 }
-
+.user-form * {
+  margin:10px;
+}
+.users-list{
+  display: flex;
+  flex-wrap: wrap;
+}
+.users-list * {
+  margin:5px;
+}
+.search-filter * {
+  margin:5px;
+}
+.error{
+  color:red;
+  font-size: large;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -26,13 +40,4 @@
 
 .App-link {
   color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
