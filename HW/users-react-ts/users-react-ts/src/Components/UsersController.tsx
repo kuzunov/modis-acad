@@ -43,6 +43,7 @@ const UsersController: React.FC<Props> = ({ setCurrentUser, currentUser }) => {
     try {
       const newUser = { ...user, modified: Date.now() };
       UsersApi.update(newUser);
+      if (user.id === currentUser.id) {setCurrentUser(newUser);}
       setUsers(users.map((currU) => (currU.id === user.id ? newUser : currU)));
       navigate("/");
     } catch (err: any) {
@@ -68,7 +69,7 @@ const UsersController: React.FC<Props> = ({ setCurrentUser, currentUser }) => {
         const loggedUser = await UsersApi.create(newUser);
         setError("");
         //noId?!
-        setCurrentUser(loggedUser);
+        handleLogin(loggedUser);
         navigate("/");
       } else setError(`User with username ${newUser.username} already exists.`);
     } catch (error: any) {
@@ -102,13 +103,15 @@ const UsersController: React.FC<Props> = ({ setCurrentUser, currentUser }) => {
 
   const handleSearch = async (term: string) => {
     try {
+      if (term.length === 0) {const usrs = await UsersApi.findAll();
+      setUsers(usrs)} else {
       const user = await UsersApi.findByName(term);
       if (user.length > 0) {
         setError("");
       } else {
         setError("Found nothing :C");
       }
-      setUsers(user);
+      setUsers(user);}
     } catch (err: any) {
       setError(err);
     }

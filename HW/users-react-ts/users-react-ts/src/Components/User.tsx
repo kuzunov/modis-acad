@@ -21,7 +21,6 @@ export type UserP = {
 const User = ({ user, handleDelete }: UserP) => {
   const currentUser = useContext(UserContext);
   const navigate = useNavigate();
-  console.log(user)
   const handleEdit = () => {
     //edit user (ADMINs only)
     navigate("/edit", { state: { user: user } });
