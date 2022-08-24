@@ -24,7 +24,6 @@ const LogIn = ({ handleLogin }: Props) => {
   };
   return (
     <div className="register-form">
-      <FormControl>
         <TextField
           inputRef={usnmRef}
           id="text-username"
@@ -47,7 +46,6 @@ const LogIn = ({ handleLogin }: Props) => {
             Register
           </Button>
         </Link>
-      </FormControl>
     </div>
   );
 };

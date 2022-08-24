@@ -2,7 +2,7 @@ import { IdType, USER_GENDER, USER_ROLE, USER_STATUS } from "./sharedTypes";
 
 export type UserT = {
   [key: string]: any;
-  id: IdType;
+  id: IdType|undefined;
   firstName: string;
   lastName: string;
   username: string;

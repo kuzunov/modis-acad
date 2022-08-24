@@ -69,7 +69,12 @@ this.setState({filter:filter});
       <h2>
         {this.state.errors && <div className='errors'>{this.state.errors}</div>}
         React TODOs Demo!
-        <TodoInput key = {this.state.editedTodo?.id} todo = {this.state.editedTodo}onCreateTodo={this.handleTodoSubmit} onTodoEdit= {this.handleTodoEdit}/>
+        <TodoInput key = {this.state.editedTodo?.id} todo = {this.state.editedTodo}onCreateTodo={this.handleTodoSubmit} onTodoEdit= {this.handleTodoEdit}>
+          <label htmlFor='id'>Todo ID</label>
+          <label htmlFor='status'>Todo Status</label>
+          <label htmlFor='deadline'>Todo Deadline</label>
+          <label htmlFor='text'>Todo Text</label>
+        </TodoInput>
         <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange}/>
         <TodoList todos={this.state.todos} filter = {this.state.filter}
         onUpdateTodo = {this.handleTodoSubmit}

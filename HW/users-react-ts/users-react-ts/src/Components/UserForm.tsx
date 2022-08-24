@@ -10,7 +10,7 @@ import {
   InputLabel,
   MenuItem,
   SelectChangeEvent,
-  Paper,
+
 } from "@mui/material";
 import { UserT } from "./model/UserT";
 
@@ -37,7 +37,7 @@ const UserForm = ({
   onEditUser,
   setError,
 }: Props) => {
-  const [user, setUser] = useState<UserT>(Guest as UserT);
+  const [user, setUser] = useState<UserT>(Guest);
   const location = useLocation();
   const navigate = useNavigate();
   //check if editing user?
@@ -47,9 +47,10 @@ const UserForm = ({
       const passedUser = locationState.user;
       setUser(passedUser);
     }
-  }, []);
+  }, [location.state]);
   //validate user fields and user for registration or editing
   const handleSubmit = (event: React.MouseEvent) => {
+    if (user){
     event.preventDefault();
     if (validate(user)) {
       setError("");
@@ -57,6 +58,7 @@ const UserForm = ({
     } else {
       setError("Invalid user input.");
     }
+  }
   };
   //validate fn; returns bool
   const validate = (user: UserT) => {
@@ -96,7 +98,7 @@ const UserForm = ({
       (old) => ({ ...old, [fieldName]: event.target.value } as unknown as UserT)
     );
   };
-  return (
+  return ( (user)?
     <div className="user-form">
       <TextField
         name="username"
@@ -166,7 +168,7 @@ const UserForm = ({
         id="text-description"
         label="Description(Optional)"
         variant="outlined"
-        value={user.description}
+        value={user.description || ''}
       />
       <FormLabel id="radio-gender-label">Gender</FormLabel>
       <RadioGroup
@@ -221,7 +223,8 @@ const UserForm = ({
       <Button variant="contained" type="submit" onClick={handleCancel}>
         {"Cancel"}
       </Button>
-    </div>
+    </div>:
+    <div className='errors'>Invalid User passed. Return to home.<Button onClick={()=>{navigate('/')}}>Home</Button></div>
   );
 };
 export default UserForm;

@@ -19,7 +19,8 @@ export interface Identifiable<IdType> {
 export type IdType = number | undefined;
 
 export type UserListener = (user: UserT) => void;
-export const Guest: Partial<UserT> = {
+export const Guest: UserT = {
+  id:0,
   username: "Guest",
   firstName: "",
   lastName: "",
@@ -29,7 +30,6 @@ export const Guest: Partial<UserT> = {
   avatar: "",
   registered: 0,
   modified: 0,
-    id:0,
   role: 1,
 };
 export type FilterT = {
