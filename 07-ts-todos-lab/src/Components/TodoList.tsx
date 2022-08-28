@@ -1,5 +1,5 @@
 import { keyboard } from '@testing-library/user-event/dist/keyboard';
-import React from 'react'
+import React, { useMemo } from 'react'
 import { TodoListener } from './shared-types';
 import Todo, { TodoStatus } from './todo-model'
 import { FilterType } from './TodoApp'
@@ -17,10 +17,11 @@ type TodoListProps = {
 }
 
 export default function TodoList({todos,filter,onCreateTodo,...rest}: TodoListProps) {
+  const filteredTodos = useMemo(()=>todos.filter(todo => !filter? true : todo.status === filter),[todos,filter])
+
   return (
     <div className='TodoList'>
-            
-        {todos.filter(todo => !filter? true : todo.status === filter)
+        {filteredTodos
         .map((todo) => 
             <TodoItem key = {todo.id} todo={todo} {...rest}/>
             )

@@ -1,7 +1,7 @@
 import React from "react";
 import { FilterT, UserListener } from "./model/sharedTypes";
 import { UserT } from "./model/UserT";
-import User from "./User";
+import User from "./UserCard";
 
 type UListP = {
   users: UserT[];

@@ -10,16 +10,16 @@ export const UserContext = React.createContext<UserT>(Guest as UserT);
 
 function App() {
   const [currentUser, setCurrentUser] = useState(Guest as UserT);
-  useEffect(() => {
+  // useEffect(() => {
     
-  },[currentUser]);
+  // },[currentUser]);
 const logUser = (user:UserT) => {
   setCurrentUser(user);
 } 
     return (
     <div className="App">
       <UserContext.Provider value = {currentUser}>
-      <Header currentUser = {currentUser} setCurrentUser={setCurrentUser}/>
+      <Header currentUser = {currentUser} setCurrentUser={logUser}/>
       <UsersController currentUser = {currentUser} setCurrentUser = {logUser}/>
       </UserContext.Provider>
     </div>
