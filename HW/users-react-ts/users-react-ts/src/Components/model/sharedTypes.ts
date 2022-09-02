@@ -6,6 +6,7 @@ export enum USER_STATUS {
   DEACTIVATED,
 }
 export enum USER_ROLE {
+  GUEST = 0,
   USER = 1,
   ADMIN = 2,
 }
@@ -28,9 +29,10 @@ export const Guest: UserT = {
   gender: "f",
   status: USER_STATUS.ACTIVE,
   avatar: "",
+  description:"",
   registered: 0,
   modified: 0,
-  role: 1,
+  role: USER_ROLE.GUEST,
 };
 export type FilterT = {
   [key: string]: USER_ROLE | USER_STATUS | undefined;

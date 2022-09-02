@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FilterT, UserListener } from "./model/sharedTypes";
 import { UserT } from "./model/UserT";
-import { UsersApi } from "./rest-api-client";
+import { UsersApi } from "./service/rest-api-client";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import SearchField from "./Search";
 import UsersList from "./UsersList";
 import UserForm from "./UserForm";
 import LogIn from "./LogIn";
 import Filter from "./Filter";
+import {sha256} from "crypto-hash";
 
 type Props = {
   children?: JSX.Element | JSX.Element[];
@@ -41,7 +42,7 @@ const UsersController: React.FC<Props> = ({ setCurrentUser, currentUser }) => {
   //edit user and return to /
   const onEditUser: UserListener = (user: UserT) => {
     try {
-      const newUser = { ...user, modified: Date.now() };
+      let newUser = { ...user, modified: Date.now() };
       UsersApi.update(newUser);
       if (user.id === currentUser.id) {setCurrentUser(newUser);}
       setUsers(users.map((currU) => (currU.id === user.id ? newUser : currU)));
@@ -54,6 +55,7 @@ const UsersController: React.FC<Props> = ({ setCurrentUser, currentUser }) => {
   const onRegisterUser: UserListener = async (user: UserT) => {
     const newUser = {
       ...user,
+      // password: await sha256(user.password),
       description: user.description ? user.description : "",
       avatar: user.avatar ? user.avatar : "",
       role: 1,
@@ -82,6 +84,9 @@ const UsersController: React.FC<Props> = ({ setCurrentUser, currentUser }) => {
       //feeling dirty doing this
       if (user.username && user.password) {
         let dbUser = await UsersApi.login(user.username);
+        // let givenPW = await sha256(user.password)
+        // console.log(givenPW);
+
         if (dbUser[0]) {
           if (dbUser[0].password === user.password) {
             setCurrentUser(dbUser[0]);

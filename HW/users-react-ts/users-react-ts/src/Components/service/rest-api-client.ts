@@ -1,6 +1,6 @@
-import { API_ENDPOINT } from "../config";
-import { Identifiable, IdType } from "./model/sharedTypes";
-import { UserT } from "./model/UserT";
+import { API_ENDPOINT } from "../../config";
+import { Identifiable, IdType } from "../model/sharedTypes";
+import { UserT } from "../model/UserT";
 
 const API_BASE_URL = `${API_ENDPOINT}`;
 

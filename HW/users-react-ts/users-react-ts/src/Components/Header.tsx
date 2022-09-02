@@ -42,7 +42,7 @@ const Header = ({ currentUser, setCurrentUser }: Props) => {
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {currentUser.id
-              ? `Hello ${currentUser.username}! You're logged in as ${
+              ? `Hello ${currentUser.firstName}! You're logged in as ${
                   USER_ROLE[currentUser.role]
                 }`
               : "Use the button to Login or Register..."}

@@ -1,8 +1,14 @@
-import React, { useRef, useState } from "react";
-import { Button, TextField} from "@mui/material";
+import React, { BaseSyntheticEvent, useRef, useState } from "react";
+import { Box, Button, TextField} from "@mui/material";
 import { UserListener } from "./model/sharedTypes";
 import { UserT } from "./model/UserT";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import UserFormInputTextField from "./UserFormInputTextField";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { USER_FORM_SCHEMA, USER_LOGIN_SCHEMA } from "../config";
+import SendIcon from '@mui/icons-material/Send';
+
 
 type Props = {
   handleLogin: UserListener;
@@ -12,75 +18,47 @@ type loginFormInput = {
   password:string,
 }
 
-const LogIn = ({ handleLogin }: Props) => {
-  //refs for fields
-  // const usnmRef = useRef<HTMLInputElement>();
-  // const pwdRef = useRef<HTMLInputElement>();
-  const [formInput, setFormInput] = useState<loginFormInput>({username:"",password:""});
-  //build partial user for logging in
-  // const handleSubmit = (e: React.MouseEvent) => {
-  //   if (usnmRef.current && pwdRef.current) {
-  //     const user = {
-  //       username: usnmRef.current.value,
-  //       password: pwdRef.current.value,
-  //     } as UserT;
-  //     handleLogin(user);
-  //   }
-  // };
-  const handleInputChanage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormInput({
-      ...formInput,
-      [name]: value,
-    });
-  }
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    if (formInput.username && formInput.password) {
+const LogIn = ({ handleLogin }: Props) => {  
+  const { control, handleSubmit, formState: {errors } } = useForm<loginFormInput>({
+    defaultValues: {username:"",password:""},
+    mode: 'onChange',
+    resolver: yupResolver(USER_LOGIN_SCHEMA),
+});
+
+const onSubmit = (data: loginFormInput, event: BaseSyntheticEvent<object, any, any> | undefined) => {
+  event?.preventDefault();
+    if (data.username && data.password) {
       const user = {
-        username: formInput.username,
-        password: formInput.password,
+        username: data.username,
+        password: data.password,
       } as UserT;
       handleLogin(user);
     }
   };
   return (
-
-    //do with form!!!!!!!!!!
-    <div className="register-form">
-      <form onSubmit={handleSubmit}>
-        <TextField
-        name = "username"
-          // inputRef={usnmRef}
-          id="text-username"
-          label="Username"
-          variant="outlined"
-          type="required"
-          value = {formInput.username}
-          onChange = {handleInputChanage}
-        />
-        <TextField
-        name = "password"
-          // inputRef={pwdRef}
-          id="text-password"
-          label="Password"
-          variant="outlined"
-          type="password"
-          value = {formInput.password}
-          onChange = {handleInputChanage}
-
-
-        />
-        <Button variant="contained" type="submit">
-          Log in
-        </Button>
-        </form>
+<Box
+    component="form"
+    sx={{
+        padding: '20px',
+        '& .MuiTextField-root': { m: 1, width: 'calc(100% - 20px)' },
+        '& .MuiButton-root': { m: 1, width: '25ch' },
+        '& .MuiInputLabel-root': {m:1, margin: '5px'},
+    }}
+    noValidate
+    autoComplete="off"
+    onSubmit={handleSubmit(onSubmit)}
+>
+    <UserFormInputTextField name='username' label='Username' control={control} error={errors.username?.message} />
+    <UserFormInputTextField name='password' label='Password' password control={control} error={errors.password?.message} />
+    <Button variant="contained" endIcon={<SendIcon />} type='submit'>
+                Log in
+            </Button>
         <Link to="/register">
-          <Button variant="contained">
+          <Button variant="contained" type="button">
             Register
           </Button>
         </Link>
-    </div>
+    </Box>
   );
 };
 

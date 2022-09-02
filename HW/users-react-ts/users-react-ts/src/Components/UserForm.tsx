@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { BaseSyntheticEvent, FormEvent, useState } from "react";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { USER_FORM_SCHEMA } from "../config";
+import SendIcon from '@mui/icons-material/Send';
+import CancelIcon from '@mui/icons-material/Cancel';
 import {
   Button,
-  TextField,
-  FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
   Select,
-  InputLabel,
   MenuItem,
-  SelectChangeEvent,
+  Box,
+  InputLabel,
 
 } from "@mui/material";
 import { UserT } from "./model/UserT";
@@ -17,17 +19,31 @@ import { UserT } from "./model/UserT";
 import {
   Guest,
   UserListener,
+  USER_GENDER,
   USER_ROLE,
   USER_STATUS,
 } from "./model/sharedTypes";
 import { useLocation, useNavigate } from "react-router-dom";
-import { validation } from "../config";
+import { Controller, useForm } from "react-hook-form";
+import UserFormInputTextField from "./UserFormInputTextField";
 
 type Props = {
   currentUser: UserT;
   onEditUser: UserListener;
   onRegisterUser: UserListener;
   setError: (err: any) => void;
+};
+type FormData = {
+  id: number;
+  username: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  avatar: string;
+  description: string;
+  gender: USER_GENDER;
+  role: USER_ROLE;
+  status: USER_STATUS
 };
 type LocationState = { user: UserT };
 
@@ -37,194 +53,139 @@ const UserForm = ({
   onEditUser,
   setError,
 }: Props) => {
-  const [user, setUser] = useState<UserT>(Guest);
+  // const [user, setUser] = useState<UserT>(Guest);
   const location = useLocation();
   const navigate = useNavigate();
   //check if editing user?
-  useEffect(() => {
+  const determineUser = () => {
     if (location.state) {
       const locationState = location.state as LocationState;
       const passedUser = locationState.user;
-      setUser(passedUser);
+      return passedUser;}
+      else return Guest;
     }
-  }, [location.state]);
+  const { control, getValues, handleSubmit, reset, formState: {errors } } = useForm<FormData>({
+    defaultValues: determineUser(),
+    mode: 'onChange',
+    resolver: yupResolver(USER_FORM_SCHEMA),
+});
+  
   //validate user fields and user for registration or editing
-  const handleSubmit = (event: React.MouseEvent) => {
-    if (user){
-    event.preventDefault();
-    if (validate(user)) {
-      setError("");
-      user.id ? onEditUser(user) : onRegisterUser(user);
+  const onSubmit = (data: FormData, event: BaseSyntheticEvent<object, any, any> | undefined) => {
+    event?.preventDefault();
+    if (data.role === USER_ROLE.GUEST)
+    {
+      const userToReg = { ...data} as unknown as UserT;
+      onRegisterUser(userToReg) ;
     } else {
-      setError("Invalid user input.");
+      const userToEdit = { ...data} as unknown as UserT;
+      onEditUser(userToEdit);
+
     }
   }
-  };
-  //validate fn; returns bool
-  const validate = (user: UserT) => {
-    //get field names for validation
-    let fields = Object.keys(validation);
-    let isValid: boolean = true;
-    //for each field -> test value with validation regex in config.ts
-    fields.forEach((field) => {
-      if (
-        (field === "description" || field === "avatar") &&
-        user[field] === ""
-      ) {
-        isValid = isValid && true;
-      } else {
-        isValid =
-          validation[field as keyof typeof validation].test(user[field]) &&
-          isValid;
-      }
-    });
-
-    return isValid;
-  };
+  const onReset = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    reset();
+}
   const handleCancel = () => {
     navigate("/");
   };
-  //bind change to state
-  const handleFieldChange = (
-    event:
-      | React.ChangeEvent<
-          HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-        >
-      | SelectChangeEvent<USER_STATUS>
-      | SelectChangeEvent<USER_ROLE>
-  ) => {
-    const fieldName = event.target.name;
-    setUser(
-      (old) => ({ ...old, [fieldName]: event.target.value } as unknown as UserT)
-    );
-  };
-  return ( (user)?
-    <div className="user-form">
-      <TextField
-        name="username"
-        onChange={handleFieldChange}
-        error={!validation.username.test(user.username)}
-        id="text-username"
-        label="Username"
-        helperText="Should be between 5 and 15 letters (lower or upper case); cannot be changed"
-        variant="outlined"
-        type="required"
-        value={user.username}
-        disabled={user.id === currentUser.id && user.id ? true : false}
+  return ((getValues("id")>=0)?
+    <Box
+    component="form"
+    sx={{
+        padding: '20px',
+        '& .MuiTextField-root': { m: 1, width: 'calc(100% - 20px)' },
+        '& .MuiButton-root': { m: 1, width: '25ch' },
+        '& .MuiInputLabel-root': {m:1, margin: '5px'},
+    }}
+    noValidate
+    autoComplete="off"
+    onSubmit={handleSubmit(onSubmit)} onReset={onReset}
+>
+  <UserFormInputTextField name='id' label='ID' control={control} disabled size='small'/>
+  <UserFormInputTextField name='username' label='Username' control={control} error={errors.username?.message} />
+  <UserFormInputTextField name='password' label='Password' control={control} password disabled={getValues("id") !== currentUser.id ? true : false} error={errors.password?.message}/>
+  <UserFormInputTextField name='firstName' label='First Name' control={control}error={errors.firstName?.message}/>
+  <UserFormInputTextField name='lastName' label='Last Name' control={control} error={errors.lastName?.message}/>
+  <UserFormInputTextField name='avatar' label='Avatar' control={control} error={errors.avatar?.message}/>
+  <UserFormInputTextField name='description' label='Description' control={control} error={errors.description?.message}/>
+  <Controller 
+    control = {control}
+    name= "gender"
+    rules = {{required:true}}
+    render = {({field}) => (
+      <InputLabel>Gender
+    <RadioGroup
+      {...field}
+      defaultValue={getValues("gender") === "f"?"f":"m"}
+    >
+      <FormControlLabel
+        value="f"
+        control={<Radio />}
+        label="Female"
       />
-      <TextField
-        name="password"
-        onChange={handleFieldChange}
-        error={!validation.password.test(user.password)}
-        id="text-password"
-        label="Password"
-        helperText="Should be at least 8 characters (one digit and one special character) "
-        variant="outlined"
-        type="password"
-        disabled={user.id !== currentUser.id ? true : false}
-        value={user.password}
+      <FormControlLabel
+        value="m"
+        control={<Radio />}
+        label="Male"
       />
-      <TextField
-        name="firstName"
-        onChange={handleFieldChange}
-        helperText="Should be between 2 and 15 letters"
-        error={!validation.firstName.test(user.firstName)}
-        id="text-firstname"
-        label="First Name"
-        variant="outlined"
-        type="required"
-        value={user.firstName}
-      />
-      <TextField
-        name="lastName"
-        onChange={handleFieldChange}
-        helperText="Should be between 2 and 15 letters"
-        error={!validation.lastName.test(user.lastName)}
-        id="text-lastname"
-        label="Last Name"
-        variant="outlined"
-        type="required"
-        value={user.lastName}
-      />
-      <TextField
-        name="avatar"
-        onChange={handleFieldChange}
-        helperText="Should be a valid image url (jpg or png)"
-        error={user.avatar ? !validation.avatar.test(user.avatar) : false}
-        id="text-avatar"
-        label="Avatar URL"
-        variant="outlined"
-        value={user.avatar}
-      />
-      <TextField
-        name="description"
-        onChange={handleFieldChange}
-        helperText="Max 512 characters"
-        error={
-          user.description
-            ? !validation.description.test(user.description)
-            : false
-        }
-        id="text-description"
-        label="Description(Optional)"
-        variant="outlined"
-        value={user.description || ''}
-      />
-      <FormLabel id="radio-gender-label">Gender</FormLabel>
-      <RadioGroup
-        aria-labelledby="radio-gender"
-        defaultValue="m"
-        onChange={handleFieldChange}
-      >
-        <FormControlLabel
-          name="gender"
-          value="f"
-          control={<Radio checked={user.gender === "f"} />}
-          label="Female"
-        />
-        <FormControlLabel
-          name="gender"
-          value="m"
-          control={<Radio checked={user.gender === "m"} />}
-          label="Male"
-        />
-      </RadioGroup>
+    </RadioGroup>
+    </InputLabel>)}
+  />
+  
+  
       {currentUser.role === 2 && (
         <>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
-          <Select
-            labelId="user-status-label"
-            id="user-status"
-            value={user.status}
-            label="Status"
-            name="status"
-            onChange={handleFieldChange}
-          >
+        <InputLabel>Status: 
+          <Controller control = {control}
+            name = "status"
+            rules = {{required:true}}
+            render = {({field}) => (
+              
+              <Select
+                {...field}
+                id="user-status"
+                defaultValue={getValues("status")}
+                label="Status"
+                >
+                        <InputLabel>Status</InputLabel>
+
             <MenuItem value={USER_STATUS.ACTIVE}>Active</MenuItem>
             <MenuItem value={USER_STATUS.DEACTIVATED}>Deactivated</MenuItem>
             <MenuItem value={USER_STATUS.SUSPENDED}>Suspended</MenuItem>
           </Select>
-          <Select
-            labelId="user-role-label"
-            id="user-role"
-            value={user.role}
-            label="Role"
-            name="role"
-            onChange={handleFieldChange}
-          >
+            )} />
+          </InputLabel>
+          <InputLabel>Role: 
+          <Controller control = {control}
+            name = "role"
+            rules = {{required:true}}
+            render = {({field}) => (
+              <Select {...field}
+                id="user-role"
+                defaultValue={getValues("role")}
+                label="Role"
+              >
             <MenuItem value={USER_ROLE.ADMIN}>Admin</MenuItem>
             <MenuItem value={USER_ROLE.USER}>User</MenuItem>
-          </Select>
+          </Select> 
+          )} /></InputLabel>
+          
         </>
       )}
-      <Button variant="contained" type="submit" onClick={handleSubmit}>
-        {user.id ? "Edit" : "Register"}
+      <Button variant="contained" endIcon={<SendIcon />} type='submit'>
+                Submit
+            </Button>
+            <Button variant="contained" endIcon={<CancelIcon />} color='warning' type='reset'>
+                Reset
+            </Button>
+
+<Button variant="contained" onClick={handleCancel}>
+        Cancel
       </Button>
-      <Button variant="contained" type="submit" onClick={handleCancel}>
-        {"Cancel"}
-      </Button>
-    </div>:
-    <div className='errors'>Invalid User passed. Return to home.<Button onClick={()=>{navigate('/')}}>Home</Button></div>
+</Box>
+    :<div className='errors'>Invalid User passed. Return to home.<Button onClick={()=>{navigate('/')}}>Home</Button></div>
   );
 };
 export default UserForm;
