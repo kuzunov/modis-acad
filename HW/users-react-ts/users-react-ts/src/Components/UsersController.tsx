@@ -8,7 +8,6 @@ import UsersList from "./UsersList";
 import UserForm from "./UserForm";
 import LogIn from "./LogIn";
 import Filter from "./Filter";
-import {sha256} from "crypto-hash";
 
 type Props = {
   children?: JSX.Element | JSX.Element[];
@@ -84,9 +83,6 @@ const UsersController: React.FC<Props> = ({ setCurrentUser, currentUser }) => {
       //feeling dirty doing this
       if (user.username && user.password) {
         let dbUser = await UsersApi.login(user.username);
-        // let givenPW = await sha256(user.password)
-        // console.log(givenPW);
-
         if (dbUser[0]) {
           if (dbUser[0].password === user.password) {
             setCurrentUser(dbUser[0]);

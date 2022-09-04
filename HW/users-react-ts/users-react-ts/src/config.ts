@@ -19,7 +19,7 @@ export const validation = {
 export const USER_FORM_SCHEMA = yup.object({
     id: yup.number(),
     username: yup.string().min(5).max(15).matches(/^[aA-zZ\s]+$/,"should only be letters").required(),
-    password: yup.string().min(8).matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*^#?&])[A-Za-z\d@$!%^*#?&]{8,}$/,"should contain letters and at least one number and one special character(!@#$%^&)").required(),
+    password: yup.string().min(8).matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*^#?&])[A-Za-z\d@$!%^*#?&]{8,}$/,"should contain letters, at least one number and at least one special character(!@#$%^&)").required(),
     firstName: yup.string().min(2).max(15).required(),
     lastName: yup.string().min(2).max(15).required(),
     description: yup.string().max(512).optional(),

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { UserT } from "./model/UserT";
 import {
   AppBar,
@@ -7,11 +7,12 @@ import {
   Typography,
   Box,
   IconButton,
-  Button,
   Tooltip,
   Avatar,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from '@mui/icons-material/Home';
+import LogoutIcon from '@mui/icons-material/Logout';
+import LoginIcon from '@mui/icons-material/Login';
 import { APP_URL, AVATAR_FOLDER, DEFAULT_AVATAR } from "../config";
 import { Link, useNavigate } from "react-router-dom";
 import { Guest, USER_ROLE } from "./model/sharedTypes";
@@ -23,22 +24,29 @@ type Props = {
 
 const Header = ({ currentUser, setCurrentUser }: Props) => {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState("");
   //edit current user profile
   const handleEditProfile = () => {
-    navigate("/edit", { state: { user: currentUser } });
+    (currentUser!==Guest)?navigate("/edit", { state: { user: currentUser } }):setErrors("You must be logged in.");
+  };
+  const returnHome = () => {
+    setErrors("")
+    navigate("/");
   };
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <IconButton
+            onClick = {returnHome}
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            
           >
-            <MenuIcon />
+            <HomeIcon/>
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {currentUser.id
@@ -47,31 +55,28 @@ const Header = ({ currentUser, setCurrentUser }: Props) => {
                 }`
               : "Use the button to Login or Register..."}
           </Typography>
-
+          {(!currentUser.id)&&errors}
           {
             /* fix check when you get ID, pls */ currentUser.id === 0 ? (
-              <Button color="primary">
-                <Link style={{ textDecoration: "none" }} to="/login">
-                  Login or register
+              <IconButton>
+                <Link style={{ textDecoration: "none" }} to="/login" onClick={()=>{setErrors("")}}>
+                  <LoginIcon />
                 </Link>
-              </Button>
+              </IconButton>
             ) : (
-              <Link to="/" style={{ textDecoration: "none" }}>
-                <Button
-                  color="inherit"
-                  onClick={() => {
-                    setCurrentUser(Guest as UserT);
+              <Link to="/">
+                <IconButton onClick={() => {
+                    setCurrentUser(Guest);
                     localStorage.clear();
-                  }}
-                >
-                  Logout
-                </Button>
+                  }}>
+                  <LogoutIcon/>
+                </IconButton>
               </Link>
             )
           }
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Edit Profile">
               <IconButton onClick={handleEditProfile} sx={{ p: 0 }}>
                 <Avatar
                   alt=""

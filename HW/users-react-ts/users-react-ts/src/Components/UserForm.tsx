@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, FormEvent, useState } from "react";
+import React, { BaseSyntheticEvent, FormEvent} from "react";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { USER_FORM_SCHEMA } from "../config";
 import SendIcon from '@mui/icons-material/Send';
@@ -17,15 +17,15 @@ import {
 import { UserT } from "./model/UserT";
 
 import {
-  Guest,
   UserListener,
   USER_GENDER,
   USER_ROLE,
   USER_STATUS,
 } from "./model/sharedTypes";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import UserFormInputTextField from "./UserFormInputTextField";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 type Props = {
   currentUser: UserT;
@@ -61,10 +61,14 @@ const UserForm = ({
     if (location.state) {
       const locationState = location.state as LocationState;
       const passedUser = locationState.user;
-      return passedUser;}
-      else return Guest;
+
+      return passedUser;
     }
-  const { control, getValues, handleSubmit, reset, formState: {errors } } = useForm<FormData>({
+      else {
+        return undefined;
+    }
+  }
+  const { control, getValues, handleSubmit, reset, formState: {errors,isValid} } = useForm<FormData>({
     defaultValues: determineUser(),
     mode: 'onChange',
     resolver: yupResolver(USER_FORM_SCHEMA),
@@ -174,18 +178,17 @@ const UserForm = ({
           
         </>
       )}
-      <Button variant="contained" endIcon={<SendIcon />} type='submit'>
+            <Button variant="contained" endIcon={<SendIcon />} disabled={!isValid} type='submit'>
                 Submit
             </Button>
             <Button variant="contained" endIcon={<CancelIcon />} color='warning' type='reset'>
                 Reset
             </Button>
-
-<Button variant="contained" onClick={handleCancel}>
-        Cancel
-      </Button>
-</Box>
-    :<div className='errors'>Invalid User passed. Return to home.<Button onClick={()=>{navigate('/')}}>Home</Button></div>
+            <Button variant="contained" endIcon={<ExitToAppIcon />} onClick={handleCancel} color='error'>
+                    Cancel
+                  </Button>
+            </Box>
+    :<div className='errors'>Invalid User passed. Return to home.<Button endIcon={<ExitToAppIcon />}onClick={()=>{navigate('/')}}>Home</Button></div>
   );
 };
 export default UserForm;

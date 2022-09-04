@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import './App.css';
 import Header from './Components/Header';
 import { UserT } from './Components/model/UserT';
@@ -10,9 +10,6 @@ export const UserContext = React.createContext<UserT>(Guest as UserT);
 
 function App() {
   const [currentUser, setCurrentUser] = useState(Guest as UserT);
-  // useEffect(() => {
-    
-  // },[currentUser]);
 const logUser = (user:UserT) => {
   setCurrentUser(user);
 } 

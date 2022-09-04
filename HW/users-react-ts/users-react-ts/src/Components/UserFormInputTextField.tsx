@@ -1,4 +1,4 @@
-import TextField, { TextFieldPropsSizeOverrides } from '@mui/material/TextField';
+import TextField from '@mui/material/TextField';
 import { Control, Controller, FieldPath, FieldValues, Path, RegisterOptions } from "react-hook-form";
 import React from "react";
 

@@ -1,13 +1,14 @@
-import React, { BaseSyntheticEvent, useRef, useState } from "react";
-import { Box, Button, TextField} from "@mui/material";
-import { UserListener } from "./model/sharedTypes";
+import React, { BaseSyntheticEvent} from "react";
+import { Box, Button} from "@mui/material";
+import { Guest, UserListener } from "./model/sharedTypes";
 import { UserT } from "./model/UserT";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import UserFormInputTextField from "./UserFormInputTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { USER_FORM_SCHEMA, USER_LOGIN_SCHEMA } from "../config";
+import { USER_LOGIN_SCHEMA } from "../config";
 import SendIcon from '@mui/icons-material/Send';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 
 type Props = {
@@ -19,11 +20,13 @@ type loginFormInput = {
 }
 
 const LogIn = ({ handleLogin }: Props) => {  
-  const { control, handleSubmit, formState: {errors } } = useForm<loginFormInput>({
+  const navigate = useNavigate();
+  const { control, handleSubmit, formState: {errors,isValid} } = useForm<loginFormInput>({
     defaultValues: {username:"",password:""},
     mode: 'onChange',
     resolver: yupResolver(USER_LOGIN_SCHEMA),
 });
+
 
 const onSubmit = (data: loginFormInput, event: BaseSyntheticEvent<object, any, any> | undefined) => {
   event?.preventDefault();
@@ -34,6 +37,9 @@ const onSubmit = (data: loginFormInput, event: BaseSyntheticEvent<object, any, a
       } as UserT;
       handleLogin(user);
     }
+  };
+  const onRegister = ()=> {
+    navigate("/register", { state: { user: Guest } });
   };
   return (
 <Box
@@ -50,14 +56,12 @@ const onSubmit = (data: loginFormInput, event: BaseSyntheticEvent<object, any, a
 >
     <UserFormInputTextField name='username' label='Username' control={control} error={errors.username?.message} />
     <UserFormInputTextField name='password' label='Password' password control={control} error={errors.password?.message} />
-    <Button variant="contained" endIcon={<SendIcon />} type='submit'>
+    <Button variant="contained" endIcon={<SendIcon />} color='success' type='submit' disabled={!isValid}>
                 Log in
             </Button>
-        <Link to="/register">
-          <Button variant="contained" type="button">
+        <Button variant="contained" endIcon={<AppRegistrationIcon />} onClick = {onRegister}type='button'>
             Register
           </Button>
-        </Link>
     </Box>
   );
 };

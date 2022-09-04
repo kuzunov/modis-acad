@@ -21,7 +21,7 @@ export type UserP = {
 const User = ({ user, handleDelete }: UserP) => {
   const currentUser = useContext(UserContext);
   const navigate = useNavigate();
-  const handleEdit = () => {
+  const onEdit = () => {
     //edit user (ADMINs only)
     navigate("/edit", { state: { user: user } });
   };
@@ -46,18 +46,15 @@ const User = ({ user, handleDelete }: UserP) => {
           {user.username}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {user.firstName} {user.lastName} is {USER_ROLE[user.role]} and is{" "}
-          {USER_STATUS[user.status]}
+          {user.firstName} {user.lastName} is {USER_ROLE[user.role]} and is {USER_STATUS[user.status]}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Account was created on 
-          { new Date(user.registered).toLocaleString("bg-BG")} and was last edited
-          on {new Date(user.modified).toLocaleString("bg-BG")}
+          Account was created on {new Date(user.registered).toLocaleString("bg-BG")} and was last edited on {new Date(user.modified).toLocaleString("bg-BG")}
         </Typography>
       </CardContent>
       {currentUser.role === 2 && (
         <CardActions>
-          <Button size="small" onClick={handleEdit}>
+          <Button size="small" onClick={onEdit}>
             Edit
           </Button>
           <Button size="small" onClick={onDelete}>
