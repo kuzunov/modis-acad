@@ -1,5 +1,5 @@
 import React, { BaseSyntheticEvent, FormEvent } from 'react';
-import { Post, PostStatus } from '../model/posts';
+import { Post, PostCreateDto, PostStatus } from '../model/posts';
 import { IdType, Optional, PostListener } from '../model/shared-types';
 import { useForm } from "react-hook-form";
 import Box from '@mui/material/Box';
@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
 import FormInputText from './FormInputText';
+import FormInputSelect, { SelectOption } from './FormInputSelect';
 
 
 interface PostFormProps {
@@ -26,8 +27,20 @@ type FormData = {
     status: PostStatus;
     authorId: IdType;
 };
+// const EMPTY_POST = new Post(
+//     "",
+//     "",
+//     [],
+//     "",
+//     1,
+
+// );
 
 const TAGS_PATTERN = /^\w{2,}([,\s]+\w{2,})*$/;
+const POST_STATUS_SELECT_OPTIONS: SelectOption[] = Object.keys(PostStatus)
+.filter(item=>!isNaN(Number(item)))
+.map((ordinal:string) => parseInt(ordinal))
+.map((ordinal:number)=>({key:ordinal, value:PostStatus[ordinal]}));
 
 const schema = yup.object({
     id: yup.number().positive(),
@@ -40,7 +53,7 @@ const schema = yup.object({
   }).required();
 
 export default function PostForm({ post, onSubmitPost }: PostFormProps) {
-    const { control, register, setValue, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+    const { control, register, setValue, handleSubmit, reset, formState: { errors,isDirty,isValid } } = useForm<FormData>({
         defaultValues: { ...post, tags: post?.tags.join(', ') },
         mode: 'onChange',
         resolver: yupResolver(schema),
@@ -49,13 +62,14 @@ export default function PostForm({ post, onSubmitPost }: PostFormProps) {
     const onSubmit = (data: FormData, event: BaseSyntheticEvent<object, any, any> | undefined) => {
         event?.preventDefault();
         const post = { ...data, tags: data.tags.split(/,\s*/) }
-        console.log(post);
         onSubmitPost(post);
+        reset()
+
     }
 
     const onReset = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log('RESETING FORM');
+        reset()
     }
 
     return (
@@ -64,8 +78,8 @@ export default function PostForm({ post, onSubmitPost }: PostFormProps) {
             sx={{
                 backgroundColor: '#ddf',
                 padding: '20px',
-                '& .MuiTextField-root': { m: 1, width: 'calc(100% - 20px)' },
                 '& .MuiButton-root': { m: 1, width: '25ch' },
+                '& .MuiFormControl-root' : {m: 1, width: '100%'}
             }}
             noValidate
             autoComplete="off"
@@ -82,7 +96,9 @@ export default function PostForm({ post, onSubmitPost }: PostFormProps) {
             rules={{ required: true }} />
             <FormInputText name='authorId' label='Author ID' control={control} error={errors.authorId?.message}
             rules={{ required: true }} />
-            <Button variant="contained" endIcon={<SendIcon />} type='submit'>
+            <FormInputSelect name = "status" label= "Status" control = {control} error={errors.status?.message}
+            rules={{ required: true }} options = {POST_STATUS_SELECT_OPTIONS} defaultOptionIndex={1}/>
+            <Button variant="contained" endIcon={<SendIcon />} type='submit' disabled={!(isDirty && isValid)}>
                 Submit
             </Button>
             <Button variant="contained" endIcon={<CancelIcon />} color='warning' type='reset'>

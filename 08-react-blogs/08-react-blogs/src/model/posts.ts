@@ -1,7 +1,7 @@
 import { IdType } from "./shared-types.js";
 
 export enum PostStatus {
-    Published = 1, Draft
+    Published = 1, Draft, Outdated
 }
 
 export type FilterType = PostStatus | undefined;
@@ -19,7 +19,7 @@ export class PostCreateDto {
 
 export class Post extends PostCreateDto{
     constructor(
-        public id: IdType,
+        public id: IdType| undefined,
         title: string,
         content: string,
         tags: string[],
