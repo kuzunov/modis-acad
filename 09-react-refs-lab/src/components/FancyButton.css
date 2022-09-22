@@ -1,0 +1,7 @@
+.FancyButton {
+    background-color: cornflowerblue;
+    color:white;
+    border: 1px solid;
+    border-color: darkblue;
+    border-radius: 10px;
+}
