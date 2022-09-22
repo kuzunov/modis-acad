@@ -5,7 +5,7 @@ import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import Sidebar from './Sidebar';
 import Header from './Header';
 import Map from '../maps/GoogleMap';
-import { UserContext, UserContextProvider } from '../UserContext';
+import { UserContext, UserContextProvider } from '../users/UserContext';
 import Footer from './Footer';
 
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Outlet } from 'react-router-dom';
 import { mockEevents } from '../../mock-data';
 import { IEvent } from '../../model/event';
 import EventList from './EventList'
@@ -14,6 +15,7 @@ const EventController = (props: Props) => {
   
   return (<>
     <EventList events={events} />
+    <Outlet />
     </>
   )
 }

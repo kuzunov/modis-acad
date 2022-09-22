@@ -3,15 +3,16 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './components/main/App';
 import Dashboard from './components/Dashboard';
-import EditUserForm from './components/EditUserForm';
-import Login from './components/Login';
-import Profile from './components/Profile';
+import EditUserForm from './components/users/EditUserForm';
 import reportWebVitals from './reportWebVitals';
 import EventController from './components/events/EventController';
 import NotFound from './components/NotFound';
 import Sidebar from './components/main/Sidebar';
 import EventDetails from './components/events/EventDetails';
 import { mockEevents } from './mock-data';
+import OrganizationsController from './components/oragnizations/OrganizationsController';
+import Login from './components/users/Login';
+import Profile from './components/users/Profile';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -44,6 +45,14 @@ const router = createBrowserRouter([
         element: <EventController />,
         children:[
           {path:"/events/:eventId",
+          loader: ()=>{ return mockEevents[1]},
+          element:<EventDetails />,}
+        ]
+      },{
+        path: "/organizations",
+        element: <OrganizationsController />,
+        children:[
+          {path:"/organizations/:organizationId",
           loader: ()=>{ return mockEevents[1]},
           element:<EventDetails />,}
         ]

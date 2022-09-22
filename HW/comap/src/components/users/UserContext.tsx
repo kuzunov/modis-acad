@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Guest, IUser } from "../model/user";
+import { Guest, IUser } from "../../model/user";
 interface userState {
     isLoggedIn: boolean,
     isLoginPending: boolean,

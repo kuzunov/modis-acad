@@ -6,5 +6,7 @@ export interface IEvent {
     date:string,
     organizer:IUser,
     poster:string,
+    description:string,
+    location:google.maps.LatLngLiteral,
     participants: IUser[]
 }

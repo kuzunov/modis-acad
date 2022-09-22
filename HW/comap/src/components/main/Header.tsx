@@ -1,12 +1,10 @@
-
-
-import React, { useContext } from 'react'
-import HomeIcon from '@mui/icons-material/Home';
-import {Link as RouterLink} from 'react-router-dom';
-import { UserContext } from '../UserContext';
-import { USER_ROLE } from '../../model/user';
-import LogoutIcon from '@mui/icons-material/Logout';
-import LoginIcon from '@mui/icons-material/Login';
+import React, { useContext } from "react";
+import HomeIcon from "@mui/icons-material/Home";
+import { Link as RouterLink } from "react-router-dom";
+import { UserContext } from "../users/UserContext";
+import { USER_ROLE } from "../../model/user";
+import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
 import { APP_URL, AVATAR_FOLDER, DEFAULT_AVATAR } from "../../evn.var.config";
 import {
   AppBar,
@@ -17,12 +15,29 @@ import {
   IconButton,
   Tooltip,
   Avatar,
+  Popover,
+  ClickAwayListener,
 } from "@mui/material";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import Login from "../users/Login";
 
-type Props = {}
+type Props = {};
 
 const Header = (props: Props) => {
-  const {currentUserState} = useContext(UserContext);
+  const { currentUserState } = useContext(UserContext);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -38,32 +53,78 @@ const Header = (props: Props) => {
           >
             <HomeIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            component={RouterLink}
+            to="/events"
+          >
+            <CalendarMonthIcon />
+          </IconButton>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            component={RouterLink}
+            to="/organizations"
+          >
+            <Diversity3Icon />
+          </IconButton>
+          <Typography variant="overline" component="div" sx={{ flexGrow: 1 }}>
             {currentUserState.isLoggedIn
-              ? `Hello ${currentUserState.currentUser.username}! You're logged in as ${
+              ? `Hello ${
+                  currentUserState.currentUser.username
+                }! You're logged in as ${
                   USER_ROLE[currentUserState.currentUser.role]
                 }`
               : "Use the button to Login or Register..."}
           </Typography>
-            {!currentUserState.currentUser.isLoggedin? (
-              <IconButton>
-                <RouterLink style={{ textDecoration: "none" }} to="/login" onClick={()=>{}}>
-                  <LoginIcon />
-                </RouterLink>
+          {!currentUserState.currentUser.isLoggedin ? (<>
+            <IconButton onClick={handleClick}>
+              <LoginIcon />
+            </IconButton>
+            <ClickAwayListener onClickAway={handleClose}>
+            <Popover 
+               id={id}
+               open={open}
+               anchorEl={anchorEl}
+               onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                >
+                  <Login />
+              {/* <RouterLink
+                style={{ textDecoration: "none" }}
+                to="/login"
+                onClick={() => {}}
+              > */}
+               
+              {/* </RouterLink> */}
+              </Popover>
+            </ClickAwayListener>
+            </>
+          ) : (
+            <RouterLink to="/">
+              <IconButton onClick={() => {}}>
+                <LogoutIcon />
               </IconButton>
-            ) : (
-              <RouterLink to="/">
-                <IconButton onClick={() => {
-                  }}>
-                  <LogoutIcon/>
-                </IconButton>
-              </RouterLink>
-            )
-          }
+            </RouterLink>
+          )}
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Edit Profile">
-              <IconButton component={RouterLink} to='profile' sx={{ p: 0 }}>
+              <IconButton component={RouterLink} to="profile" sx={{ p: 0 }}>
                 <Avatar
                   alt=""
                   src={
@@ -82,6 +143,6 @@ const Header = (props: Props) => {
       </Container>
     </AppBar>
   );
-}
+};
 
-export default Header
+export default Header;
