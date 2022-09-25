@@ -7,6 +7,7 @@ import Header from './Header';
 import Map from '../maps/GoogleMap';
 import { UserContext, UserContextProvider } from '../users/UserContext';
 import Footer from './Footer';
+import { Container } from '@mui/material';
 
 
 function App() {
@@ -14,8 +15,10 @@ function App() {
     <>
     <UserContextProvider>
       <Header />
-      <Sidebar />
-      <Outlet />
+      <Container sx={{marginBottom:"100px", marginTop:"100px"}}>
+        <Sidebar />
+        <Outlet />
+      </Container>
       <Footer />
     </UserContextProvider>
     </>

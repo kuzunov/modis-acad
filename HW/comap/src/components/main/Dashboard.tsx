@@ -1,7 +1,10 @@
 import { height, width } from '@mui/system'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import MapHOC from './maps/MapHOC'
+import EventController from '../events/EventController'
+import EventList from '../events/EventList'
+import MapHOC from '../maps/MapHOC'
+import OrganizationsController from '../oragnizations/OrganizationsController'
 
 type Props = {}
 
@@ -21,7 +24,9 @@ const Dashboard = (props: Props) => {
     //     }
     // ]}
     //   />
-    <>DASH
+    <>
+      <EventController displ={"dash"} />
+      <OrganizationsController/>
     </>
   )
 }

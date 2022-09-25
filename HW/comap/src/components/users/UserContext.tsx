@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Guest, IUser } from "../../model/user";
+import { mock_user } from "../../mock-data";
+import { Guest, IUser, USER_ROLE } from "../../model/user";
 interface userState {
     isLoggedIn: boolean,
     isLoginPending: boolean,
     loginError: string|undefined,
+    isAdmin:boolean,
     currentUser: IUser,
 }
 
@@ -11,12 +13,13 @@ const userInitialState = {
         isLoggedIn: false,
         isLoginPending: false,
         loginError: undefined,
+        isAdmin: false,
         currentUser: Guest,
 }
 
 interface userContextType {
   currentUserState:userState,
-  login?: (email:string, password:string)=>IUser,
+  login?: (user:Partial<IUser>)=>void,
   logout?: () => void
 } 
 type ProviderProps = {children:React.ReactNode}
@@ -28,7 +31,7 @@ export const UserContextProvider:React.FC<ProviderProps> = (props: ProviderProps
     const setLoginSuccess = (isLoggedIn:boolean) => setCurrentUser({...currentUserState,isLoggedIn});
     const setLoginError = (loginError?:string) => setCurrentUser({...currentUserState,loginError});
 
-    const login = (email:string, password:string) => {
+    const login = (user:Partial<IUser>) => {
         setLoginPending(true);
         setLoginSuccess(false);
         setLoginError(undefined);
@@ -42,12 +45,14 @@ export const UserContextProvider:React.FC<ProviderProps> = (props: ProviderProps
         //     setLoginError(error);
         //   }
         // })
-        return Guest;
+        //if (retUser.role === USER_ROLE.ADMIN) {setCurrentUser({...currentUserState, isAdmin:true})}
+        setCurrentUser({...currentUserState, isLoggedIn: true, isAdmin: true, currentUser:mock_user});
       }
       const logout = () => {
         setLoginPending(false);
         setLoginSuccess(false);
         setLoginError(undefined);
+        setCurrentUser(userInitialState);
       };
       return (
         <UserContext.Provider value={{

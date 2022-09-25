@@ -16,3 +16,6 @@ export type FilterT = {
   role: USER_ROLE | undefined;
   status: USER_STATUS | undefined;
 };
+export type SKILLS = {
+  [key:string]: "beginner"|"intermediate"|"master";
+}

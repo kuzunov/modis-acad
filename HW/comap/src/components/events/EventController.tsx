@@ -1,22 +1,35 @@
+import { Button, Container } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { mockEevents } from '../../mock-data';
 import { IEvent } from '../../model/event';
 import EventList from './EventList'
 
 
-type Props = {}
+type Props = {displ:"dash"|undefined,eventsToDisplay?:IEvent[]}
 
-const EventController = (props: Props) => {
+const EventController = ({eventsToDisplay,displ}: Props) => {
   const [events, setEvents] = useState<IEvent[]>();
+  const navigate = useNavigate();
+  const dashEvents = () => {
+    setEvents(mockEevents.slice(0,3));
+  };
   useEffect(() => {
+    if(displ==="dash") {dashEvents()}else{ 
+    (eventsToDisplay)? setEvents(eventsToDisplay):setEvents(mockEevents)
     setEvents(mockEevents);
+    }
   }, [])
+  const addEvent = () => {
+    navigate("/events/add")
+  }
   
-  return (<>
+  return (
+  <Container sx={{margin:"20px"}}>
+    <Button variant="contained" sx={{color:"white",margin:"5px 0px"}} onClick={addEvent}>Add New Event</Button>
     <EventList events={events} />
-    <Outlet />
-    </>
+    
+  </Container>
   )
 }
 

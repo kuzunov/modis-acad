@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import HomeIcon from "@mui/icons-material/Home";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, NavLink } from "react-router-dom";
 import { UserContext } from "../users/UserContext";
 import { USER_ROLE } from "../../model/user";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -22,10 +22,14 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import Login from "../users/Login";
 
+
+
+
 type Props = {};
 
 const Header = (props: Props) => {
-  const { currentUserState } = useContext(UserContext);
+  const { currentUserState }= useContext(UserContext);
+  const { currentUser } = currentUserState;
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -39,53 +43,53 @@ const Header = (props: Props) => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <IconButton
+          <NavLink to="/" end children={({ isActive}) => {
+          return <IconButton
+          size="large"
+          edge="start"
+          aria-label="menu"
+          sx={{ mr: 2,color: isActive?"action":"white"  }}
+        >
+          <HomeIcon />
+        </IconButton>
+        }}/>
+          <NavLink to="/events" children={({ isActive }) => {
+            return <IconButton
             size="large"
             edge="start"
-            color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
-            component={RouterLink}
-            to="/"
-          >
-            <HomeIcon />
-          </IconButton>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            component={RouterLink}
-            to="/events"
+            sx={{ mr: 2, color: isActive? "grey":"white"   }}
           >
             <CalendarMonthIcon />
           </IconButton>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            component={RouterLink}
-            to="/organizations"
-          >
-            <Diversity3Icon />
-          </IconButton>
+          }}/>
+          
+          <NavLink to="/organizations"
+          children={({ isActive }) => {
+            return <IconButton
+          size="large"
+          edge="start"
+          aria-label="menu"
+          sx={{ mr: 2, color: isActive?"grey":"white" }}
+        >
+          <Diversity3Icon />
+        </IconButton>}}/>
+            
           <Typography variant="overline" component="div" sx={{ flexGrow: 1 }}>
             {currentUserState.isLoggedIn
               ? `Hello ${
-                  currentUserState.currentUser.username
+                  currentUser.username
                 }! You're logged in as ${
-                  USER_ROLE[currentUserState.currentUser.role]
+                  USER_ROLE[currentUser.role]
                 }`
               : "Use the button to Login or Register..."}
           </Typography>
-          {!currentUserState.currentUser.isLoggedin ? (<>
-            <IconButton onClick={handleClick}>
+          {!currentUserState.isLoggedIn ? (
+          <>
+            <IconButton onClick={handleClick} sx={{color:"white"}}>
               <LoginIcon />
             </IconButton>
             <ClickAwayListener onClickAway={handleClose}>

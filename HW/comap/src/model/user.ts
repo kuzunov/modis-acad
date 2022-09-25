@@ -1,4 +1,4 @@
-import { IdType } from "./sharedTypes";
+import { IdType, SKILLS } from "./sharedTypes";
 
 export interface IUser {
   [key: string]: any;
@@ -14,6 +14,9 @@ export interface IUser {
   registered: number;
   modified: number;
   description?: string;
+  location?:google.maps.LatLng|undefined;
+  skills?:SKILLS[];
+
 };
 
 export enum USER_STATUS {
@@ -23,8 +26,9 @@ export enum USER_STATUS {
   }
   export enum USER_ROLE {
     GUEST = 0,
-    USER = 1,
-    ADMIN = 2,
+    USER,
+    ORGANIZATOR,
+    ADMIN
   }
   export type USER_GENDER = "m" | "f";
 

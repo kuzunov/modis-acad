@@ -10,10 +10,11 @@ type EventListProps = {
 
 const EventList = ({events}: EventListProps) => {
   
-  return (<Grid container spacing={2}>
-          <Outlet />
+  return (<Grid container spacing={2}>    
           {(events)?events.map(event=>
-          <Grid item xs={4}><Event key={event.id} {...event}/></Grid>):<>No Ongoing Events</>}
+          <Grid key={event.id} item xs={4}><Event  {...event}/></Grid>):<>No Ongoing Events</>
+          }
+          <Outlet />
   </Grid>
   )
 }

@@ -22,6 +22,7 @@ const EventDetails = (props: Props) => {
         handleToggle();
     },[])
     const event = useLoaderData() as IEvent;
+    
   return (
     <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

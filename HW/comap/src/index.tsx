@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './components/main/App';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/main/Dashboard';
 import EditUserForm from './components/users/EditUserForm';
 import reportWebVitals from './reportWebVitals';
 import EventController from './components/events/EventController';
@@ -13,6 +13,7 @@ import { mockEevents } from './mock-data';
 import OrganizationsController from './components/oragnizations/OrganizationsController';
 import Login from './components/users/Login';
 import Profile from './components/users/Profile';
+import AddEvent from './components/events/AddEvent';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -24,12 +25,12 @@ const router = createBrowserRouter([
     element:<App />,
     children: [
       {
-        path: "/",
+        path: "/dashboard",
         element: <Dashboard />,
         
       },
       {
-        path: "/profile",
+        path: "/users/profile",
         element: <Profile />
       },
       {
@@ -42,11 +43,23 @@ const router = createBrowserRouter([
       },
       {
         path: "/events",
-        element: <EventController />,
+        element: <EventController displ={undefined}/>,
         children:[
-          {path:"/events/:eventId",
-          loader: ()=>{ return mockEevents[1]},
-          element:<EventDetails />,}
+          {
+          path:"/events/:eventId",
+          loader: ({params})=>{
+            if (params.eventId){
+            const eventId = parseInt(params.eventId);
+            return mockEevents[eventId-1];
+            }
+          },
+          element:<EventDetails />,
+          },
+          {
+          path:"/events/add",
+          element: <AddEvent/>
+          }
+
         ]
       },{
         path: "/organizations",
