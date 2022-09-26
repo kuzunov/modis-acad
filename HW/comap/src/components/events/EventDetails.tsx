@@ -12,7 +12,9 @@ const EventDetails = (props: Props) => {
     const [open, setOpen] = useState(false);
     const handleClose = () => {
       setOpen(false);
-      navigate(-1);
+      if (document.referrer && document.referrer.length > 0 && document.referrer.startsWith('http://localhost:3000/events')){
+      navigate(-1);}
+      else navigate("/dashboard");
     };
     const handleToggle = () => {
       setOpen(!open);
@@ -30,7 +32,7 @@ const EventDetails = (props: Props) => {
         onClick={handleClose}
       >
     {/* <ClickAwayListener onClickAway={handleClose}> */}
-    <Card sx={{ width: "50%", height:"70%"}} onClick={(e:React.MouseEvent)=>e.stopPropagation()}>
+    <Card  sx={{ width: "50%", maxHeight:"800px", overflowY: "auto"}} onClick={(e:React.MouseEvent)=>e.stopPropagation()}>
       <CardMedia
         component="img"
         alt={event.name}

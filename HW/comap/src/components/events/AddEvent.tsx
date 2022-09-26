@@ -78,7 +78,7 @@ const AddEvent = (props: Props) => {
         onClick={handleClose}
       >
     {/* <ClickAwayListener onClickAway={handleClose}> */}
-    <Card sx={{ width: "50%", height:"70%"}} onClick={(e:React.MouseEvent)=>e.stopPropagation()}>
+    <Card sx={{ width: "50%", maxHeight:"90%", overflowY:"auto"}} onClick={(e:React.MouseEvent)=>e.stopPropagation()}>
     <Box
     component="form"
     sx={{
@@ -91,7 +91,7 @@ const AddEvent = (props: Props) => {
     autoComplete="off"
     onSubmit={handleSubmit(onSubmit)} onReset={onReset}
 >
-      <CardContent>
+      <CardContent >
       <UserFormInputTextField name='name' label='Name' control={control} error={errors.name?.message} />
       <UserFormInputTextField name='description' label='Description' control={control} error={errors.description?.message} />
       <UserFormInputTextField name='poster' label='Poster' control={control} error={errors.poster?.message} />

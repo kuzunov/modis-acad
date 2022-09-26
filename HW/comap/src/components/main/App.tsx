@@ -16,7 +16,7 @@ function App() {
     <UserContextProvider>
       <Header />
       <Container sx={{marginBottom:"100px", marginTop:"100px"}}>
-        <Sidebar />
+        {/* <Sidebar /> */}
         <Outlet />
       </Container>
       <Footer />

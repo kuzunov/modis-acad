@@ -14,7 +14,7 @@ const Footer = (props: Props) => {
         overflow: "hidden",
         padding: "5px",
       }}>
-        <Grid direction="row">
+        <Grid container direction="row">
             <Grid item>
               <Link >
                 <Typography variant="overline" sx={{

@@ -9,6 +9,7 @@ export interface MapProps extends google.maps.MapOptions {
     onClick?: (e: google.maps.MapMouseEvent) => void;
     onIdle?: (map: google.maps.Map) => void;
     children?: React.ReactNode;
+    controlRef?: React.RefObject<HTMLElement|undefined>
   }
   
 export const GoogleMap: React.FC<MapProps> = ({
@@ -16,6 +17,7 @@ export const GoogleMap: React.FC<MapProps> = ({
     onIdle,
     children,
     style,
+    controlRef,
     ...options
   }) => {
     const ref = React.useRef<HTMLDivElement>(null);
@@ -26,6 +28,12 @@ export const GoogleMap: React.FC<MapProps> = ({
         setMap(new window.google.maps.Map(ref.current, {}));
       }
     }, [ref, map]);
+    React.useEffect(()=>{
+      if (controlRef?.current&&map){
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlRef.current);
+        map.setOptions({fullscreenControlOptions:{position:google.maps.ControlPosition.BOTTOM_LEFT}})
+      }
+    },[map])
   
     // because React does not do deep comparisons, a custom hook is used
     // see discussion in https://github.com/googlemaps/js-samples/issues/946

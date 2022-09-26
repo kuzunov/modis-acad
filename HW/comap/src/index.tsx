@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, useParams } from 'react-router-dom';
 import App from './components/main/App';
 import Dashboard from './components/main/Dashboard';
 import EditUserForm from './components/users/EditUserForm';
@@ -14,6 +14,8 @@ import OrganizationsController from './components/oragnizations/OrganizationsCon
 import Login from './components/users/Login';
 import Profile from './components/users/Profile';
 import AddEvent from './components/events/AddEvent';
+import OragnizationDetails from './components/oragnizations/OragnizationDetails';
+import AddOrganization from './components/oragnizations/AddOrganization';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -30,7 +32,7 @@ const router = createBrowserRouter([
         
       },
       {
-        path: "/users/profile",
+        path: "/users/:userId/profile",
         element: <Profile />
       },
       {
@@ -52,7 +54,7 @@ const router = createBrowserRouter([
             const eventId = parseInt(params.eventId);
             return mockEevents[eventId-1];
             }
-          },
+            },
           element:<EventDetails />,
           },
           {
@@ -65,9 +67,15 @@ const router = createBrowserRouter([
         path: "/organizations",
         element: <OrganizationsController />,
         children:[
-          {path:"/organizations/:organizationId",
+          {
+          path:"/organizations/:organizationId",
           loader: ()=>{ return mockEevents[1]},
-          element:<EventDetails />,}
+          element:<OragnizationDetails />,
+        },    {
+          path:"/organizations/add",
+          loader: ()=>{ return mockEevents[1]},
+          element:<AddOrganization />,
+        }
         ]
       },
       {

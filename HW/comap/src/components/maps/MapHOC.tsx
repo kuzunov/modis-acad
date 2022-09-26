@@ -28,7 +28,7 @@ const MapHOC = (props: MapHOCProps) => {
       suggestions: {status,data}
        ,clearSuggestions
       } = usePlacesAutocomplete();
-
+      const controlRef = useRef<HTMLDivElement>(null);
       const addMarker = (e:google.maps.MapMouseEvent) => {
         setMarkers([...markers, {position: {lat: e.latLng!.lat(), lng: e.latLng!.lng()}}]);
        };
@@ -44,22 +44,24 @@ const MapHOC = (props: MapHOCProps) => {
           setSelected({lat,lng});
         }
        };
+       const map = GoogleMap;
   return (
     
     <Wrapper apiKey={GOOGLE_MAPS_API_KEY}>
-    <Autocomplete 
+      <Autocomplete
       disabled={!ready}
       freeSolo
       inputValue={value}
       onChange={handleSelect}
       onInputChange={(e:any)=>{setValue(e.target.value);}}
       options={data.map(({place_id,description}) => description)}
-      renderInput={(params) => <TextField {...params} label="Search places" />}/>
+      renderInput={(params) => <TextField ref={controlRef} {...params} label="Search places" size="small" variant="filled" sx={{maxWidth:"60%"}}/>}/>
         <GoogleMap 
         center={selected}
         zoom={props.zoom}
         style={props.style} 
         onClick={props.editable?addMarker:()=>{}}
+        controlRef = {controlRef}
         >
         {markers.map((marker) => <Marker key={marker.position?.lat.toString()} {...marker} />)}
         </GoogleMap>
