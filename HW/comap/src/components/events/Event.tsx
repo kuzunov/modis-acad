@@ -1,10 +1,14 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@mui/material'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Form, Link, Navigate, useNavigate } from 'react-router-dom'
 import { IEvent } from '../../model/event'
 
 
 const Event = ({name,date,organizer,poster,participants,id}: IEvent) => {
+  const navigate=useNavigate();
+  const onDelete = () => {
+    navigate(`/events/${id}/delete`);
+  }
   return (
     <Card>
       <Link to={`/events/${id}`}>
@@ -26,6 +30,9 @@ const Event = ({name,date,organizer,poster,participants,id}: IEvent) => {
         <Button size="small" color="primary">
           Share
         </Button>
+        <Form method="delete" action={`delete/${id}`}>
+        <Button type="submit" size="small">DELETE</Button>
+        </Form>
       </CardActions>
     </Card>
   )

@@ -5,9 +5,15 @@ import { useNavigate, useLoaderData } from 'react-router-dom';
 import { IEvent } from '../../model/event';
 import { IUser } from '../../model/user';
 import MapHOC from '../maps/MapHOC';
-import UserFormInputTextField from '../users/UserFormInputTextField';
+import SendIcon from '@mui/icons-material/Send';
+import CancelIcon from '@mui/icons-material/Cancel';
 
-type Props = {}
+import UserFormInputTextField from '../users/UserFormInputTextField';
+import { EventsApi } from '../../service/rest-api-client';
+
+type Props = {
+  event?:IEvent
+}
 type FormData = {
   id:number;
   name:string,
@@ -15,12 +21,14 @@ type FormData = {
   organizer:IUser,
   poster:string,
   description:string,
-  location:google.maps.MarkerOptions[],
+  locations:google.maps.MarkerOptions[],
   participants: IUser[]
 };
 
 const AddEvent = (props: Props) => {
   const navigate = useNavigate();
+  const loaderEvent = useLoaderData() as IEvent;
+
   const determineEvent = () => {
     const newEvent = {
       id:undefined,
@@ -32,10 +40,10 @@ const AddEvent = (props: Props) => {
       locations:[] as google.maps.MarkerOptions[],
       participants:[] as IUser[],       
     } as IEvent;
-    return newEvent;
+    return (loaderEvent)?loaderEvent:newEvent;
   }
     const [open, setOpen] = useState(false);
-    // const [markers, setMarkers] = React.useState<google.maps.MarkerOptions[]>([]);
+    let markers:google.maps.MarkerOptions[] = [];
     const { control, getValues, handleSubmit, reset, formState: {errors,isValid} } = useForm<FormData>({
       defaultValues: determineEvent(),
       mode: 'onChange',
@@ -48,29 +56,24 @@ const AddEvent = (props: Props) => {
     const handleToggle = () => {
       setOpen(!open);
     };
-
+    const onReset = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      reset();
+    }
+    const updateMarkerArray = (mapMarkers:google.maps.MarkerOptions[]) => {
+      markers=mapMarkers;
+    };
     useEffect(()=>{
         handleToggle();
+        markers = (loaderEvent)?loaderEvent.locations:[];
     },[])
-  //  const addMarker = (e:google.maps.MapMouseEvent) => {
-  //   setMarkers([...markers, {position: {lat: e.latLng!.lat(), lng: e.latLng!.lng()}}]);
-  //  };
    const onSubmit = (data: FormData, event: BaseSyntheticEvent<object, any, any> | undefined) => {
     event?.preventDefault();
-    // if (data.role === USER_ROLE.GUEST)
-    // {
-    //   const userToReg = { ...data} as unknown as UserT;
-    //   onRegisterUser(userToReg) ;
-    // } else {
-    //   const userToEdit = { ...data} as unknown as UserT;
-    //   onEditUser(userToEdit);
-
-    // }
+    data.locations = markers;
+    (loaderEvent)?EventsApi.update(data):EventsApi.create(data)
+    navigate(-1);
   }
-   const onReset = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    reset();
-}
+
   return (
     <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -96,11 +99,15 @@ const AddEvent = (props: Props) => {
       <UserFormInputTextField name='description' label='Description' control={control} error={errors.description?.message} />
       <UserFormInputTextField name='poster' label='Poster' control={control} error={errors.poster?.message} />
       <UserFormInputTextField name='date' label='Date' type="datetime-local" control={control} error={errors.poster?.message} />
-      <MapHOC center={{ lat: -34.397, lng: 150.644 }} zoom={15} markers={[]} style={{width:"500px", height:"300px"}} editable/>
+      <MapHOC center={{ lat: -34.397, lng: 150.644 }} zoom={15} markers={[]} style={{width:"500px", height:"300px"}} updateMarkerArray={updateMarkerArray} editable/>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+      <Button variant="contained" endIcon={<SendIcon />} disabled={!isValid} type='submit'>
+                Submit
+            </Button>
+            <Button variant="contained" endIcon={<CancelIcon />} color='warning' type='reset'>
+                Reset
+            </Button>
       </CardActions>
       </Box>
     </Card>

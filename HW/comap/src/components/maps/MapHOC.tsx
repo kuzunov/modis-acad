@@ -13,13 +13,14 @@ type MapHOCProps = {
     style:React.CSSProperties,
     markers: google.maps.MarkerOptions[],
     editable?:boolean
+    updateMarkerArray?(markers:google.maps.MarkerOptions[]):void;
     //fRef: React.ForwardedRef<typeof GoogleMap>,
 
 }
 
 
-const MapHOC = (props: MapHOCProps) => {
-  const [markers, setMarkers] = useState<google.maps.MarkerOptions[]>([]);
+const MapHOC = ({center,markers,zoom,style,editable,updateMarkerArray}: MapHOCProps) => {
+  const [mapMarkers, setMarkers] = useState<google.maps.MarkerOptions[]>(markers);
   const [selected, setSelected] = useState<google.maps.LatLngLiteral>();
   const {
       ready,
@@ -30,11 +31,14 @@ const MapHOC = (props: MapHOCProps) => {
       } = usePlacesAutocomplete();
       const controlRef = useRef<HTMLDivElement>(null);
       const addMarker = (e:google.maps.MapMouseEvent) => {
-        setMarkers([...markers, {position: {lat: e.latLng!.lat(), lng: e.latLng!.lng()}}]);
+        setMarkers([...mapMarkers, {position: {lat: e.latLng!.lat(), lng: e.latLng!.lng()}}]);
        };
        useEffect(()=>{
-        setSelected(props.center);
+        setSelected(center);
        },[]);
+       useEffect(()=>{
+        if (updateMarkerArray) updateMarkerArray(mapMarkers);
+       },[mapMarkers,updateMarkerArray]);
        const handleSelect = async (e:React.SyntheticEvent<Element, Event>,address:string|null) => {
         if(address){  
         setValue(address,false);
@@ -44,7 +48,6 @@ const MapHOC = (props: MapHOCProps) => {
           setSelected({lat,lng});
         }
        };
-       const map = GoogleMap;
   return (
     
     <Wrapper apiKey={GOOGLE_MAPS_API_KEY}>
@@ -58,12 +61,12 @@ const MapHOC = (props: MapHOCProps) => {
       renderInput={(params) => <TextField ref={controlRef} {...params} label="Search places" size="small" variant="filled" sx={{maxWidth:"60%"}}/>}/>
         <GoogleMap 
         center={selected}
-        zoom={props.zoom}
-        style={props.style} 
-        onClick={props.editable?addMarker:()=>{}}
+        zoom={zoom}
+        style={style} 
+        onClick={editable?addMarker:()=>{}}
         controlRef = {controlRef}
         >
-        {markers.map((marker) => <Marker key={marker.position?.lat.toString()} {...marker} />)}
+        {mapMarkers.map((marker) => <Marker key={marker.position?.lat.toString()} {...marker} />)}
         </GoogleMap>
     </Wrapper>
   )

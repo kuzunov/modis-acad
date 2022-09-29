@@ -4,6 +4,7 @@ import { USER_GENDER, USER_ROLE, USER_STATUS } from "./model/user"
 
 
 
+
 export const validation = {
                     firstName: new RegExp(/^[a-zA-Z]{2,12}$/),
                     lastName:new RegExp(/^[a-zA-Z]{2,12}$/),

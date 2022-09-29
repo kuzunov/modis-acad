@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ErrorPage from './components/ErrorPage';
 import Contact from './components/contact';
+import HomePage from './components/HomePage';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
       path:"/contacts/:contactId",
       element:<Contact />,
+
+    },{
+      index:true,
+      element:<HomePage />,
 
     },
   ]

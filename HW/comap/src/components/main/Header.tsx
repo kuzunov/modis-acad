@@ -68,15 +68,15 @@ const Header = (props: Props) => {
           }}/>
           
           <NavLink to="/organizations"
-          children={({ isActive }) => {
-            return <IconButton
-          size="large"
-          edge="start"
-          aria-label="menu"
-          sx={{ mr: 2, color: isActive?"grey":"white" }}
-        >
-          <Diversity3Icon />
-        </IconButton>}}/>
+            children={({ isActive }) => {
+              return <IconButton
+            size="large"
+            edge="start"
+            aria-label="menu"
+            sx={{ mr: 2, color: isActive?"grey":"white" }}
+          >
+            <Diversity3Icon />
+          </IconButton>}}/>
             
           <Typography variant="overline" component="div" sx={{ flexGrow: 1 }}>
             {currentUserState.isLoggedIn
