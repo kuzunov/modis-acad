@@ -17,6 +17,7 @@ import Profile from "./components/users/Profile";
 import { mockEevents } from "./mock-data";
 import { EventsApi, OrganizationsApi } from "./service/rest-api-client";
 import Login from "./components/users/Login";
+import ShareButtons from "./components/main/ShareButtons";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -64,6 +65,12 @@ export const router = createBrowserRouter([
                     return await EventsApi.deleteById(eventId);
                   }
                 },
+                             
+                
+              },
+              {
+                path: "share",
+                element:<ShareButtons />,
               },
             ],
           },

@@ -1,6 +1,6 @@
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@mui/material'
-import React from 'react'
-import { Form, Link, Navigate, useFetcher, useNavigate } from 'react-router-dom'
+import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, ClickAwayListener, IconButton, IconButtonTypeMap, Popover, Typography } from '@mui/material'
+import React, { useRef } from 'react'
+import { Form, Link, Navigate, Outlet, useFetcher, useNavigate } from 'react-router-dom'
 import { IEvent } from '../../model/event'
 
 
@@ -27,10 +27,7 @@ const Event = ({name,date,organizer,poster,participants,id}: IEvent) => {
       </CardContent>
       </CardActionArea>
       </Link>
-      <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
+      <CardActions>        
         <fetcher.Form method="delete" action={`${id}/delete`}>
           <Button type="submit" size="small">DELETE</Button>
         </fetcher.Form>
