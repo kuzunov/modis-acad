@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import HomeIcon from "@mui/icons-material/Home";
-import { Link as RouterLink, NavLink } from "react-router-dom";
-import { UserContext } from "../users/UserContext";
+import { Link as RouterLink, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../users/UserContext";
 import { USER_ROLE } from "../../model/user";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
@@ -28,14 +28,25 @@ import Login from "../users/Login";
 type Props = {};
 
 const Header = (props: Props) => {
-  const { currentUserState }= useContext(UserContext);
+  const { currentUserState, logout }= useAuth();
   const { currentUser } = currentUserState;
+  let location = useLocation();
+  const navigate = useNavigate();
+  
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
+    navigate(location,{state:{from:location}, replace:true})
   };
+const onLogout = () => {
+  if (logout) 
+  {
+    logout(location);
+    handleClose();
+  }
+}
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -89,7 +100,7 @@ const Header = (props: Props) => {
           </Typography>
           {!currentUserState.isLoggedIn ? (
           <>
-            <IconButton onClick={handleClick} sx={{color:"white"}}>
+            <IconButton onClick={onLogin} sx={{color:"white"}}>
               <LoginIcon />
             </IconButton>
             <ClickAwayListener onClickAway={handleClose}>
@@ -119,11 +130,9 @@ const Header = (props: Props) => {
             </ClickAwayListener>
             </>
           ) : (
-            <RouterLink to="/">
-              <IconButton onClick={() => {}}>
+              <IconButton onClick={onLogout}>
                 <LogoutIcon />
               </IconButton>
-            </RouterLink>
           )}
 
           <Box sx={{ flexGrow: 0 }}>

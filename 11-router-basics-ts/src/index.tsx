@@ -1,31 +1,80 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './components/App';
 import reportWebVitals from './reportWebVitals';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ErrorPage from './components/ErrorPage';
-import Contact from './components/contact';
-import HomePage from './components/HomePage';
+import { createBrowserRouter, Params, redirect, RouterProvider } from 'react-router-dom';
+import ErrorPage from './pages/ErrorPage';
+import ContactPage from './pages/ContanctPage';
+import RootPage from './pages/RootPage';
+import { HomePage } from './pages/HomePage';
+import { PostsPage } from './pages/PostsPage';
+import PostPage from './pages/PostPage';
+import { PostsApi } from './service/rest-api-client';
+
+export async function postsLoader({request}: {request: Request}) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get('q');
+  if(q) {
+    return PostsApi.findByTitleLike(q);
+  } else {
+   return PostsApi.findAll();
+  }
+}
+export async function postAction({request, params}:{request:Request,params:Params}) {
+  if(request.method==='DELETE') {
+    params.postId && await PostsApi.deleteById(+params.postId);
+    return redirect('/posts')
+  } else {
+   let formData = await request.formData();
+   if(formData.get('favourite') &&params.postId) {
+    const post = await PostsApi.findById(+params.postId);
+    post.favorite = !post.favorite;
+    const updated = await await PostsApi.update(post);
+   }
+  }
+}
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <RootPage />,
     errorElement: <ErrorPage />,
-    children: [
-      {
-      path:"/contacts/:contactId",
-      element:<Contact />,
-
-    },{
-      index:true,
-      element:<HomePage />,
-
-    },
-  ]
-  },
-  
+    children: [{
+      errorElement: <ErrorPage />,
+      children: [{
+        index: true,
+        element: <HomePage />,
+      }, {
+        path: "contacts/:contactId",
+        element: <ContactPage />,
+      }, {
+        path: "posts",
+        loader: postsLoader,
+        element: <PostsPage />,
+        children: [{
+          errorElement: <ErrorPage />,
+          path: ":postId",
+          action: async ({ request, params }) => {
+            if (request.method === 'DELETE') {
+              params.postId && await PostsApi.deleteById(+params.postId);
+              return redirect('/posts');
+            }
+          },
+          loader: ({ params }) => {
+            if (params.postId) {
+              return PostsApi.findById(+params.postId);
+            } else {
+              throw new Error(`Invalid or missing post ID`);
+            }
+          },
+          element: <PostPage />,
+        }]
+      }, {
+        path: '*',
+        element: <ErrorPage />,
+      }]
+    }]
+  }
 ]);
 
 const root = ReactDOM.createRoot(
@@ -33,7 +82,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

@@ -10,6 +10,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 import UserFormInputTextField from '../users/UserFormInputTextField';
 import { EventsApi } from '../../service/rest-api-client';
+import { RequireAuth } from '../users/RequireAuth';
 
 type Props = {
   event?:IEvent
@@ -80,6 +81,7 @@ const AddEvent = (props: Props) => {
         open={open}
         onClick={handleClose}
       >
+        <RequireAuth>
     {/* <ClickAwayListener onClickAway={handleClose}> */}
     <Card sx={{ width: "50%", maxHeight:"90%", overflowY:"auto"}} onClick={(e:React.MouseEvent)=>e.stopPropagation()}>
     <Box
@@ -112,6 +114,7 @@ const AddEvent = (props: Props) => {
       </Box>
     </Card>
     {/* </ClickAwayListener> */}
+    </RequireAuth>
     </Backdrop>
   )
   }

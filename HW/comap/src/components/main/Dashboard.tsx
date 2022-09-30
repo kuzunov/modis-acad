@@ -4,7 +4,6 @@ import { Outlet } from 'react-router-dom'
 import EventController from '../events/EventController'
 import EventList from '../events/EventList'
 import MapHOC from '../maps/MapHOC'
-import OrganizationsController from '../oragnizations/OrganizationsController'
 
 type Props = {}
 
@@ -25,8 +24,7 @@ const Dashboard = (props: Props) => {
     // ]}
     //   />
     <>
-      <EventController displ={"dash"} />
-      <OrganizationsController/>
+      <EventController />
     </>
   )
 }

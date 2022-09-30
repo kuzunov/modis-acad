@@ -1,6 +1,7 @@
 
 import { API_ENDPOINT } from "../evn.var.config";
 import { IEvent } from "../model/event";
+import { IOrganization } from "../model/organization";
 import { Identifiable, IdType } from "../model/sharedTypes";
 import { IUser } from "../model/user";
 
@@ -80,6 +81,7 @@ export class ApiClientImpl<K, V extends Identifiable<K>>
   }
 }
 class EventsApiE extends ApiClientImpl<IdType, IEvent> {}
+class OrganizationsApiE extends ApiClientImpl<IdType, IOrganization> {}
 class UserApiE extends ApiClientImpl<IdType, IUser> implements UserApiClientI {
   findByName(term: string) {
     let srchUrl = `${API_BASE_URL}/${this.apiCollectionSuffix}/?q=${term}&attr=username,firstName,lastName`;
@@ -104,5 +106,6 @@ class UserApiE extends ApiClientImpl<IdType, IUser> implements UserApiClientI {
   };
 }
 export const EventsApi = new EventsApiE("events");
+export const OrganizationsApi = new OrganizationsApiE("organizations");
 // export const UsersApi: UserApiClientI = new UserApiE("users");
 export {};

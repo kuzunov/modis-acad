@@ -1,13 +1,14 @@
 import { Box, Button } from "@mui/material";
 import { BaseSyntheticEvent, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { USER_LOGIN_SCHEMA } from "../../config";
 import { UserListener } from "../../model/sharedTypes";
 import { Guest, IUser } from "../../model/user";
 import UserFormInputTextField from "./UserFormInputTextField"
 import SendIcon from '@mui/icons-material/Send';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';import { UserContext } from "./UserContext";
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import { useAuth } from "./UserContext";
 ;
 
 
@@ -20,9 +21,11 @@ type loginFormInput = {
   password:string,
 }
 
-const Login = ({}: Props) => {  
+export const Login = ({}: Props) => {  
   const navigate = useNavigate();
-  const userContext = useContext(UserContext);
+  const location = useLocation();
+  const userContext = useAuth();
+  let from = location.state?.from?.pathname || "/";
   const { control, handleSubmit, formState: {errors,isValid} } = useForm<loginFormInput>({
     defaultValues: {username:"",password:""},
     mode: 'onChange',
@@ -37,8 +40,7 @@ const onSubmit = (data: loginFormInput, event: BaseSyntheticEvent<object, any, a
         username: data.username,
         password: data.password,
       } as IUser;
-      if (userContext.login) userContext.login(user)
-      console.log(userContext.currentUserState.currentUser.username);
+      if (userContext.login){ userContext.login(user);navigate(from, {replace:true})}
     }
   };
   const onRegister = ()=> {

@@ -1,10 +1,23 @@
+import { Grid } from '@mui/material'
 import React from 'react'
+import { Outlet, useLoaderData } from 'react-router-dom'
+import { IOrganization } from '../../model/organization'
+import { IdType } from '../../model/sharedTypes'
+import { IUser } from '../../model/user'
+import Organization from './Organization'
 
-type Props = {}
+type Props = {  }
 
-const Oganizations = (props: Props) => {
+const Oganizations = ({}: Props) => {
+  const organizations = useLoaderData() as IOrganization[]
+
   return (
-    <div>Oganizations</div>
+    <Grid container spacing={2}>    
+          {(organizations)?organizations.map(organization=>
+          <Grid key={organization.id} item xs={4}><Organization  {...organization}/></Grid>):<>No organizations to show at the moment.</>
+          }
+          <Outlet />
+  </Grid>
   )
 }
 

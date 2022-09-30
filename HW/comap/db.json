@@ -1,24 +1,42 @@
 {
   "events": [
     {
-      "name": "asd123",
-      "date": "",
+      "name": "goose",
+      "date": "2022-09-08T02:32",
       "organizer": {},
-      "poster": "asd123",
-      "description": "asd123",
+      "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Anser_anser_1_%28Piotr_Kuczynski%29.jpg/1200px-Anser_anser_1_%28Piotr_Kuczynski%29.jpg",
+      "description": "duck duck",
       "locations": [
         {
           "position": {
-            "lat": -34.39700602436326,
-            "lng": 150.6424389329841
+            "lat": -34.39938403111644,
+            "lng": 150.6436566772461
+          }
+        },
+        {
+          "position": {
+            "lat": -34.39591375069695,
+            "lng": 150.64155382537842
           }
         }
       ],
       "participants": [],
-      "id": 1
+      "id": 3
     }
   ],
-  "organizations": [],
+  "organizations": [
+    {
+      "id": 1,
+      "name": "org1",
+      "members": [],
+      "mainLocation": {
+        "position": {
+          "lat": -34.39700602436326,
+          "lng": 150.6424389329841
+        }
+      }
+    }
+  ],
   "comments": [],
   "reviews": [],
   "users": [
