@@ -1,6 +1,5 @@
 import { Grid } from '@mui/material'
-import React from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { IEvent } from '../../model/event'
 import Event from "./Event"
 

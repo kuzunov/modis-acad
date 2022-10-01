@@ -1,9 +1,6 @@
 import { Grid } from '@mui/material'
-import React from 'react'
 import { Outlet, useLoaderData } from 'react-router-dom'
 import { IOrganization } from '../../model/organization'
-import { IdType } from '../../model/sharedTypes'
-import { IUser } from '../../model/user'
 import Organization from './Organization'
 
 type Props = {  }

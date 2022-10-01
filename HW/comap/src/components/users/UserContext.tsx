@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Location, Navigate, useLocation, useNavigate, useNavigation } from "react-router-dom";
+import { Location, useLocation, useNavigate } from "react-router-dom";
 import { mock_user } from "../../mock-data";
-import { Guest, IUser, USER_ROLE } from "../../model/user";
+import { Guest, IUser } from "../../model/user";
 interface userState {
     isLoggedIn: boolean,
     isLoginPending: boolean,

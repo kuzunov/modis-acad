@@ -1,6 +1,5 @@
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, ClickAwayListener, IconButton, IconButtonTypeMap, Popover, Typography } from '@mui/material'
-import React, { useRef } from 'react'
-import { Form, Link, Navigate, Outlet, useFetcher, useNavigate } from 'react-router-dom'
+import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@mui/material'
+import { Link, useFetcher, useNavigate } from 'react-router-dom'
 import { IEvent } from '../../model/event'
 
 

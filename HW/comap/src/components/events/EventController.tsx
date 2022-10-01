@@ -1,9 +1,6 @@
 import { Button, Container } from '@mui/material';
-import React, { useEffect, useState } from 'react'
-import { Form, Outlet, useFetcher, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
-import { mockEevents } from '../../mock-data';
+import { Form, useFetcher, useLoaderData, useNavigate } from 'react-router-dom';
 import { IEvent } from '../../model/event';
-import { EventsApi } from '../../service/rest-api-client';
 import EventList from './EventList'
 
 

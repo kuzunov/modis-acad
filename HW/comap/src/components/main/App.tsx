@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-import { createBrowserRouter, Outlet } from 'react-router-dom';
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { Outlet } from 'react-router-dom';
 
-import Sidebar from './Sidebar';
 import Header from './Header';
-import Map from '../maps/GoogleMap';
 import { UserContextProvider } from '../users/UserContext';
 import Footer from './Footer';
 import { Container } from '@mui/material';

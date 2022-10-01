@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import { Link as RouterLink, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../users/UserContext";

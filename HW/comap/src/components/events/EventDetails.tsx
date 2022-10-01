@@ -1,7 +1,7 @@
-import { Button, Card, CardActions, CardContent, CardMedia, ClickAwayListener, Container, IconButton, Popover, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardMedia, ClickAwayListener, IconButton, Popover, Typography } from '@mui/material';
 import Backdrop from '@mui/material/Backdrop/Backdrop';
-import { useEffect, useState } from 'react';
-import { Form, Outlet, useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { Form, Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { IEvent } from '../../model/event';
 import MapHOC from '../maps/MapHOC';
 import ShareIcon from '@mui/icons-material/Share';
@@ -11,7 +11,8 @@ type Props = {}
 
 const EventDetails = (props: Props) => {
   const {event,local} = useLoaderData() as {event: IEvent, local:boolean};
-  const navigate = useNavigate();const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const location = useLocation();
   const openShare = (e:React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

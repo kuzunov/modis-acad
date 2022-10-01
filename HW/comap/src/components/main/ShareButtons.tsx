@@ -1,6 +1,6 @@
-import { Backdrop, Card, ClickAwayListener, Popover } from '@mui/material'
-import React, { useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom';
+import { Card } from '@mui/material'
+import React from 'react'
+import { useLocation } from 'react-router-dom';
 import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
 import { API_BASE_URL } from '../../evn.var.config';
 

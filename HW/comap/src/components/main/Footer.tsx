@@ -1,5 +1,4 @@
-import { Container, Grid, Link, Typography, useTheme } from '@mui/material'
-import React from 'react'
+import { Container, Grid, Link, Typography } from '@mui/material'
 
 type Props = {}
 
