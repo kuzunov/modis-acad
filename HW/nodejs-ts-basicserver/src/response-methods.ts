@@ -1,5 +1,9 @@
+//functions that handle responses from the server to user
+
 import * as http from "http";
 import { getFromUsers,handleDb } from "./db-methods";
+
+//response from collection
 export const usersApiCollectionResponse = async (
     req: http.IncomingMessage,
     res: http.ServerResponse
@@ -18,7 +22,7 @@ export const usersApiCollectionResponse = async (
       respondWithError(res, 405, "Invalid request method.");
     }
   };
-  
+  //respond with resource
 export const usersApiResourceResponse = async (
     id: number,
     req: http.IncomingMessage,
@@ -36,6 +40,8 @@ export const usersApiResourceResponse = async (
       respondWithError(res, 405, "Request method not allowed");
     }
   };
+
+  //respond with error
 export const respondWithError = (
     res: http.ServerResponse,
     status: number,

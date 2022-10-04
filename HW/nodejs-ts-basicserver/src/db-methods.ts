@@ -1,9 +1,11 @@
+//functions that handle db interaction
 import * as fs from "node:fs/promises";
 import * as http from "http";
 import { readFromReq } from "./request-methods";
 import { respondWithError } from "./response-methods";
 import { DB_FILE,HOSTNAME,PORT } from "./config";
 
+//get from db. if id is passed, return entity and index, otherwise return collection
 export const getFromUsers = async (id?: number) => {
     let file = await fs.readFile(DB_FILE, "utf-8");
     let json = await JSON.parse(file);
@@ -15,7 +17,7 @@ export const getFromUsers = async (id?: number) => {
       return user ? { index: index, user: user } : undefined;
     }
   };
-  
+  //handle reading/writing to db and return response to user //FIX THIS TO HANDLE DB ONLY
 export const handleDb = async (
     req: http.IncomingMessage,
     res: http.ServerResponse,
@@ -58,7 +60,7 @@ export const handleDb = async (
       }
         fs.writeFile(DB_FILE, JSON.stringify(users));
         res.end();
-    } else respondWithError(res, 400, "Entity does not exist");
+    } else respondWithError(res, 404, "Entity does not exist");
     } catch(err) {
         console.log(err);
         respondWithError(res, 500, "Something went wrong",err);

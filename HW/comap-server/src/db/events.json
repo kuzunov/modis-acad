@@ -1,0 +1,34 @@
+[
+  {
+    "id": "114bde57-7c9e-47a2-9b7a-aa43d9d4e5f5",
+    "name": "peshlaka1",
+    "date": 1705,
+    "poster": "https://poster.triennial.orbitel.bg/wp-content/uploads/2021/06/10r-poster-935x400.jpg",
+    "location": { "lat": -34.397, "lng": 150.644 },
+    "participants": []
+  },
+  {
+    "id": "214bde57-7c9e-47a2-9b7a-aa43d9d4e5f5",
+    "name": "peshlaka2",
+    "date": 1705,
+    "poster": "https://poster.triennial.orbitel.bg/wp-content/uploads/2021/06/10r-poster-935x400.jpg",
+    "location": { "lat": -34.397, "lng": 150.644 },
+    "participants": []
+  },
+  {
+    "id": "314bde57-7c9e-47a2-9b7a-aa43d9d4e5f5",
+    "name": "peshlaka3",
+    "date": 1705,
+    "poster": "https://poster.triennial.orbitel.bg/wp-content/uploads/2021/06/10r-poster-935x400.jpg",
+    "location": { "lat": -34.397, "lng": 150.644 },
+    "participants": []
+  },
+  {
+    "id": "eb8cede4-aeb6-4bc1-9bda-db3b2df62b5f",
+    "name": "editednewpeshlaka2",
+    "date": 1705,
+    "poster": "https://poster.triennial.orbitel.bg/wp-content/uploads/2021/06/10r-poster-935x400.jpg",
+    "location": { "lat": -34.397, "lng": 150.644 },
+    "participants": []
+  }
+]
