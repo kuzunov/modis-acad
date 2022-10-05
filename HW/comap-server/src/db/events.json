@@ -30,5 +30,11 @@
     "poster": "https://poster.triennial.orbitel.bg/wp-content/uploads/2021/06/10r-poster-935x400.jpg",
     "location": { "lat": -34.397, "lng": 150.644 },
     "participants": []
+  },
+  {
+    "name": "Ivans event",
+    "date": "1234",
+    "organizer": "f5a8ba34-fa7f-4d94-bafb-ad8c39d2c512",
+    "id": "573b4c20-6d03-4a5d-9caf-4944a1e0feb1"
   }
 ]

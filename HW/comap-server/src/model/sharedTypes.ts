@@ -9,6 +9,8 @@ export interface Identifiable<IdType> {
 
 export interface ChildEntity<IdType> extends Identifiable<IdType>{
   parentEntityId: IdType;
+  created:number,
+  modified:number,
 }
 
 export type IdType = string | undefined;

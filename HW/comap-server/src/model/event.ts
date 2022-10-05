@@ -8,5 +8,7 @@ export interface IEvent {
     poster:string,
     description:string,
     locations:google.maps.MarkerOptions[],
-    participants: IUser[]
+    participants: IUser[],
+    created:number,
+    modified:number,
 }

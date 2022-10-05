@@ -30,7 +30,7 @@
   "scripts": {
     "server": "node --inspect=5858 -r ts-node/register ./src/comap-server.ts",
     "tsc": "tsc -w",
-    "start": "nodemon -w ./dist",
+    "start": "nodemon -w ./src",
     "build": "tsc",
     "nodemon": "nodemon"
   }

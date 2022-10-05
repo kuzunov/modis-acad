@@ -11,7 +11,7 @@ export interface IUser {
   role: USER_ROLE;
   status: USER_STATUS;
   avatar: string | undefined;
-  registered: number;
+  created: number;
   modified: number;
   description?: string;
   location?:google.maps.LatLng|undefined;
@@ -42,7 +42,7 @@ export enum USER_STATUS {
     status: USER_STATUS.ACTIVE,
     avatar: "",
     description:"",
-    registered: 0,
+    created: 0,
     modified: 0,
     role: USER_ROLE.GUEST,
   };

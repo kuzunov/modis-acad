@@ -6,4 +6,6 @@ export interface IOrganization {
     name:string;
     members:IUser[];
     mainLocation: google.maps.LatLngLiteral;
+    created:number;
+    modified:number;
 };
