@@ -33,7 +33,7 @@ export enum USER_STATUS {
   export type USER_GENDER = "m" | "f";
 
   export const Guest: IUser = {
-    id:0,
+    id:"0",
     username: "Guest",
     firstName: "",
     lastName: "",

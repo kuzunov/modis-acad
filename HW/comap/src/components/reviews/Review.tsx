@@ -1,8 +1,15 @@
 import React from 'react'
+import { IdType } from '../../model/sharedTypes';
 
-type Props = {}
+type Props = {    
+  id:IdType,
+  body:string,
+  authorId:string,
+  created:string,
+  modified:string,
+  rating:number;}
 
-const Review = (props: Props) => {
+const Review = ({id,body,authorId,created,modified,rating}: Props) => {
   return (
     <div>Review</div>
   )

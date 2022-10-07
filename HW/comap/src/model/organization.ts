@@ -5,5 +5,5 @@ export interface IOrganization {
     id:IdType;
     name:string;
     members:IUser[];
-    mainLocation: google.maps.LatLngLiteral;
+    mainLocation: google.maps.MarkerOptions;
 };

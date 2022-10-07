@@ -1,8 +1,7 @@
-import { IdType, SKILLS } from "./sharedTypes";
+import { Identifiable, IdType, SKILLS } from "./sharedTypes";
 
-export interface IUser {
+export interface IUser extends Identifiable<IdType>{
   [key: string]: any;
-  id: IdType|undefined;
   firstName: string;
   lastName: string;
   username: string;
@@ -11,8 +10,6 @@ export interface IUser {
   role: USER_ROLE;
   status: USER_STATUS;
   avatar: string | undefined;
-  created: number;
-  modified: number;
   description?: string;
   location?:google.maps.LatLng|undefined;
   skills?:SKILLS[];

@@ -5,6 +5,8 @@ export type STATUS_FILTER = USER_STATUS | undefined;
 
 export interface Identifiable<IdType> {
   id: IdType;
+  created:number,
+  modified:number,
 }
 
 export interface ChildEntity<IdType> extends Identifiable<IdType>{

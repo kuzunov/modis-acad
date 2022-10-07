@@ -3,7 +3,7 @@ import { IUser } from "./user";
 
 export interface IReview extends ChildEntity<IdType>{
     body:string,
-    author:IUser,
+    authorId:string,
     rating:number;
     reviewedId:string;
 }

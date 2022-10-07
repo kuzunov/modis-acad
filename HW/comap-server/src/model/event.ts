@@ -1,7 +1,7 @@
+import { Identifiable, IdType } from "./sharedTypes";
 import { IUser } from "./user";
 
-export interface IEvent {
-    id:string;
+export interface IEvent extends Identifiable<IdType>{
     name:string,
     date:string,
     organizer:IUser,
@@ -9,6 +9,4 @@ export interface IEvent {
     description:string,
     locations:google.maps.MarkerOptions[],
     participants: IUser[],
-    created:number,
-    modified:number,
 }

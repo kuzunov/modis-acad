@@ -18,6 +18,8 @@ import { mockEevents } from "./mock-data";
 import { EventsApi, OrganizationsApi } from "./service/rest-api-client";
 import Login from "./components/users/Login";
 import ShareButtons from "./components/main/ShareButtons";
+import ErrorComponent from "./components/ErrorComponent";
+import UsersList from "./components/users/UsersList";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -26,6 +28,7 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard />,
+        errorElement: <ErrorComponent/>,
       },
       {
         path: "/users/:userId/profile",
@@ -34,24 +37,28 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+        errorElement: <ErrorComponent/>,
       },
       {
         path: "/register",
         element: <EditUserForm />,
+        errorElement: <ErrorComponent/>,
       },
       {
         path: "/events",
         element: <EventController />,
+        errorElement: <ErrorComponent/>,
         loader: () => {
           return EventsApi.findAll();
         },
         children: [
           {
             path: ":eventId",
+            errorElement: <ErrorComponent/>,
             loader: async ({ params }) => {
               if (params.eventId) {
-                const eventId = parseInt(params.eventId);
-                return { event: await EventsApi.findById(eventId), local: "" };
+                const eventId = params.eventId;
+                return { event: await EventsApi.findById(eventId), local: "", comments: [{id:1,body:1},{id:1,body:1},{id:1,body:1}]};
               }
           
             },
@@ -61,7 +68,7 @@ export const router = createBrowserRouter([
                 path: "delete",
                 action: async ({ params }) => {
                   if (params.eventId) {
-                    const eventId = parseInt(params.eventId);
+                    const eventId = params.eventId;
                     return await EventsApi.deleteById(eventId);
                   }
                 },
@@ -77,12 +84,14 @@ export const router = createBrowserRouter([
           {
             path: "add",
             element: <AddEvent />,
+            errorElement: <ErrorComponent/>,
           },
           {
             path: ":eventId/edit",
+            errorElement: <ErrorComponent/>,
             loader: ({ params }) => {
               if (params.eventId) {
-                const eventId = parseInt(params.eventId);
+                const eventId = params.eventId;
                 return EventsApi.findById(eventId);
               }
             },
@@ -92,6 +101,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/organizations",
+        errorElement: <ErrorComponent/>,
         element: <Organizations />,
         loader: () => {
           return OrganizationsApi.findAll();
@@ -99,13 +109,16 @@ export const router = createBrowserRouter([
         children: [
           {
             path: ":organizationId",
-            loader: () => {
-              return mockEevents[1];
-            },
+            errorElement: <ErrorComponent/>,
+            loader:  async ({ params }) => {
+              if (params.organizationId) {
+              return { event: await EventsApi.findById(params.organizationId), local: "", comments: [{id:1,body:1},{id:1,body:1},{id:1,body:1}]};
+            }},
             element: <OragnizationDetails />,
           },
           {
             path: "add",
+            errorElement: <ErrorComponent/>,
             loader: () => {
               return mockEevents[1];
             },
@@ -114,13 +127,35 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: "/reviews",
-        element: <ReviewList />,
+        path: "/users",
+        element: <UsersList />,
+        errorElement: <ErrorComponent/>,
+        loader: () => {},
         children: [
-          {
-            path: ":reviewId",
-            element: <Review />,
-          },
+         { 
+          path:":userId",
+          errorElement: <ErrorComponent/>,
+          loader: () => {},
+          children: [
+            {
+            path:"edit",
+            element: <EditUserForm/>,
+            loader: () => {},
+            
+          }
+          ]
+        },
+        ],
+      },
+      {
+        path: "/reviews",
+        errorElement: <ErrorComponent/>,
+        element: <LatestReviews />,
+        children: [
+          // {
+          //   path: ":reviewId",
+          //   element: <Review {}/>,
+          // },
           {
             path: "latest",
             element: <LatestReviews />,

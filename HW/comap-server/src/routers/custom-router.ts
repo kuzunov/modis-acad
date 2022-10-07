@@ -1,26 +1,29 @@
 import * as express from 'express';
-import { getJsonFromFile, sendErrorResponse, writeJsonToFile } from '../utils/utils';
+import { sendErrorResponse} from '../utils/utils';
 import * as indicative from 'indicative';
 import { v4 as uuidv4 } from 'uuid';
 import { entities, Identifiable, IdType } from '../model/sharedTypes';
 import { Router } from 'express';
 import { IComment } from '../model/comment';
 import childRouter from './modifyChildRouter';
+import { getJsonFromFile, writeJsonToFile } from '../dao/entity-repository';
+import { IRepository } from '../dao/repository';
 
-type customRouterType = <T>(dbFile:string,
+type customRouterType = <T extends Identifiable<IdType>>(
+    repo:IRepository<T>,
     entityName:entities,
     childRouter?:boolean,
-    validationSchema?:any, // fix with type
-    )=> Router;
+    validationSchema?:{id:any,entity:any,entityToDelete:any,childEntity:any}, // fix with type
+    ) => Router;
 
 
-const customRouter:customRouterType = <T extends Identifiable<IdType>>(dbFile,entityName,childRouter=false,validationSchema:{id:any,entity:any,entityToDelete:any,childEntity:any}) => {
+const customRouter:customRouterType = <T>(repo:IRepository<T>, entityName,childRouter=false,validationSchema) => {
     const router = (childRouter)?express.Router({mergeParams:true}):express.Router();
     router
     .get('/', async (req, res,next) => {
         if(childRouter) {return next()}
         try {
-            const entities = await getJsonFromFile<T[]>(dbFile);
+            const entities = await repo.findAll();
             res.json(entities);
         } catch (err) {
             sendErrorResponse(req, res, 500, `Server error: ${err.message}`, err);
@@ -31,8 +34,7 @@ const customRouter:customRouterType = <T extends Identifiable<IdType>>(dbFile,en
             const params = req.params;
             const idToCheck = (childRouter)?params.childid:params.parentid
             await indicative.validator.validate(idToCheck, (childRouter)?validationSchema.childEntity:validationSchema.id);
-            const entities = await getJsonFromFile<T[]>(dbFile);
-            const entity:T = entities.find(entity => entity.id === idToCheck);
+            const entity = await repo.findById(idToCheck);
             (entity)?res.json(entity):sendErrorResponse(req,res,404,`Entity ${params.parentid} not found`,new Error())
         }
         catch(err){
@@ -44,14 +46,9 @@ const customRouter:customRouterType = <T extends Identifiable<IdType>>(dbFile,en
         const entity = req.body;
         try{
             await indicative.validator.validate(entity,validationSchema.entity);
-            const entities = await getJsonFromFile<T[]>(dbFile);
-            entity.id = uuidv4();
-            entity.created = Date.now();
-            entity.modified = Date.now();
-            entities.push(entity);
             try {
-                writeJsonToFile(dbFile,entities)
-                res.json(entity);
+                const returnEntity = await repo.create(entity)
+                res.status(201).json(returnEntity);
             } catch (err) {
                 console.error(`Unable to create ${entityName}: ${entity.id}.`);
                 console.error(err);
@@ -63,15 +60,11 @@ const customRouter:customRouterType = <T extends Identifiable<IdType>>(dbFile,en
     })
     .put('/', async (req, res)=> {
         const entity = req.body;
-        console.log(entity);
         try {
             await indicative.validator.validate(entity,validationSchema.entity)
-            const entities = await getJsonFromFile<T[]>(dbFile);
-            entity.modified = Date.now();
-            entities.splice(entities.findIndex(dbEntity => dbEntity.id ===entity.id),1,entity);
             try {
-                writeJsonToFile(dbFile,entities);
-                res.json(entity);
+                const entityToReturn = await repo.update(entity);
+                res.json(entityToReturn)
             } catch(err){
                 console.error(`Unable to update ${entityName}: ${entity.id}.`);
                 console.error(err);
@@ -85,12 +78,8 @@ const customRouter:customRouterType = <T extends Identifiable<IdType>>(dbFile,en
         const entity = req.body;
         try {
             await indicative.validator.validate(entity,validationSchema.entityToDelete)
-            const entities = await getJsonFromFile<T[]>(dbFile);
-            const indexToDelete = entities.findIndex(dbEntity => dbEntity.id ===entity.id);
-            const deletedEntity = entities[indexToDelete];
-            entities.splice(indexToDelete,1);
             try {
-                writeJsonToFile(dbFile,entities);
+                const deletedEntity = await repo.deleteById(entity.id);
                 res.json(deletedEntity);
             } catch(err){
                 console.error(`Unable to delete ${entityName}: ${entity.id}.`);

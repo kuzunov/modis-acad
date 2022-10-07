@@ -36,7 +36,7 @@ export const mockEevents = [
         participants: []}as unknown as IEvent,
 ];
 export const mock_user:IUser = {
-    id: 1,
+    id:" 1",
     firstName: "Ivan",
     lastName: "Petkan",
     username: "ivankata",

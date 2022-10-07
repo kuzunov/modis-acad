@@ -1,8 +1,9 @@
 import * as express from 'express';
-import { getJsonFromFile, sendErrorResponse, writeJsonToFile } from '../utils/utils';
+import {sendErrorResponse} from '../utils/utils';
 import * as indicative from 'indicative';
 import { v4 as uuidv4 } from 'uuid';
 import { ChildEntity, IdType } from '../model/sharedTypes';
+import { getJsonFromFile, writeJsonToFile } from '../dao/entity-repository';
 
 
 const modifyChildRouter = <T extends ChildEntity<IdType>>(router:express.Router, dbFile,validationSchema:{id:any,entity:any,entityToDelete:any}) => {
@@ -29,7 +30,7 @@ const modifyChildRouter = <T extends ChildEntity<IdType>>(router:express.Router,
             entities.push(entity);
             try {
                 writeJsonToFile(dbFile,entities)
-                res.json(entity);
+                res.status(201).json(entity);
             } catch (err) {
                 console.error(`Unable to create entity: ${entity.id}.`);
                 console.error(err);

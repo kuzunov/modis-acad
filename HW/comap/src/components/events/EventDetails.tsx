@@ -5,12 +5,14 @@ import { Form, Outlet, useLoaderData, useLocation, useNavigate } from 'react-rou
 import { IEvent } from '../../model/event';
 import MapHOC from '../maps/MapHOC';
 import ShareIcon from '@mui/icons-material/Share';
+import CommentsList from '../comments/CommentsList';
+import { IComment } from '../../model/comment';
 
 
 type Props = {}
 
 const EventDetails = (props: Props) => {
-  const {event,local} = useLoaderData() as {event: IEvent, local:boolean};
+  const {event,local, comments} = useLoaderData() as {event: IEvent, local:boolean,comments:IComment[]};
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const location = useLocation();
@@ -73,6 +75,7 @@ const EventDetails = (props: Props) => {
                   }}
                 ><Outlet /></Popover>
         </ClickAwayListener>
+        <CommentsList comments={comments}/>
       <CardActions>
         <IconButton  size="small" color="primary" onClick={openShare}>
           <ShareIcon/>

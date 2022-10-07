@@ -7,7 +7,7 @@ export interface Identifiable<IdType> {
   id: IdType;
 }
 
-export type IdType = number | undefined;
+export type IdType = string | undefined;
 
 export type UserListener = (user: IUser) => void;
 

@@ -11,12 +11,13 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import UserFormInputTextField from '../users/UserFormInputTextField';
 import { EventsApi } from '../../service/rest-api-client';
 import { RequireAuth } from '../users/RequireAuth';
+import { IdType } from '../../model/sharedTypes';
 
 type Props = {
   event?:IEvent
 }
 type FormData = {
-  id:number;
+  id:IdType;
   name:string,
   date:string,
   organizer:IUser,

@@ -16,11 +16,3 @@ export const replace_id = function (entity) {
     delete entity._id;
     return entity;
 }
-export const getJsonFromFile = async <T>(dbFile:string) => {
-    const fileData = await promises.readFile(dbFile)
-    const JSONentity:T = JSON.parse(fileData.toString());
-    return JSONentity;
-}
-export const writeJsonToFile = async (dbFile:string, entity) => {
-    promises.writeFile(dbFile, JSON.stringify(entity));
-}

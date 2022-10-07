@@ -27,6 +27,8 @@ app.use('/api/places', placesRouter);
 
 
 
+
+
 // app.use(function (err, req, res, next) {
 //     console.error(err.stack)
 //     sendErrorResponse(req, res, err.status || 500, `Server error: ${err.message}`, err);

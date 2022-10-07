@@ -1,7 +1,8 @@
+import { IdType } from "./sharedTypes";
 import { IUser } from "./user";
 
 export interface IEvent {
-    id:number|undefined;
+    id:IdType,
     name:string,
     date:string,
     organizer:IUser,

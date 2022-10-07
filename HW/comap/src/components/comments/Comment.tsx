@@ -1,10 +1,10 @@
 import React from 'react'
+import { IComment } from '../../model/comment'
 
-type Props = {}
 
-const Comment = (props: Props) => {
+const Comment = ({id, created,modified,body,authorId}: IComment) => {
   return (
-    <div>Comment</div>
+    <div>Comment: {`${id}, ${created},${modified},${body},${authorId}}`}</div>
   )
 }
 
