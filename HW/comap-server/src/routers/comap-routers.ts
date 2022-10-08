@@ -5,25 +5,27 @@ import { IPlace } from "../model/place";
 import { IReview } from "../model/review";
 import { IUser } from "../model/user";
 import { commentValidationSchema, eventValidationSchema, organizationValidationSchema, reviewValidationSchema, userValidationsSchema } from "../utils/validationSchemas";
+import { AuthRouter } from "./auth-router";
 import customRouter from "./custom-router";
 import modifyChildRouter from "./modifyChildRouter";
-import { EventsRepository, CommentsRepository, OrganizationsRepository, PlacesRepository, ReviewsRepository, UsersRepository } from "../dao/repository";
+// import { EventsRepository, CommentsRepository, OrganizationsRepository, PlacesRepository, ReviewsRepository, UsersRepository } from "../dao/repository";
 
-const childCommentsRouter = customRouter<IComment>(CommentsRepository,'comment',true,commentValidationSchema)
-modifyChildRouter<IComment>(childCommentsRouter,process.env.DB_FOLDER+process.env.COMMENTS_DB,commentValidationSchema);
-const childReviewsRouter = customRouter<IReview>(ReviewsRepository,'review',true,reviewValidationSchema)
-modifyChildRouter<IReview>(childReviewsRouter,process.env.DB_FOLDER+process.env.COMMENTS_DB,reviewValidationSchema);
+const childCommentsRouter = customRouter<IComment>('comment',true,commentValidationSchema)
+modifyChildRouter(childCommentsRouter,'comment',commentValidationSchema);
+const childReviewsRouter = customRouter<IReview>('review',true,reviewValidationSchema)
+modifyChildRouter(childReviewsRouter,'review',reviewValidationSchema);
 
 
-export const eventsRouter = customRouter<IEvent>(EventsRepository, 'event',false,eventValidationSchema);
+export const eventsRouter = customRouter<IEvent>('event',false,eventValidationSchema);
 eventsRouter.use('/:parentid/comments',childCommentsRouter );
 
-export const usersRouter = customRouter<IUser>(UsersRepository, 'user',false,userValidationsSchema)
+export const usersRouter = customRouter<IUser>('user',false,userValidationsSchema)
 usersRouter.use('/:parentid/comments',childCommentsRouter )
 
-export const organizationsRouter = customRouter<IOrganization>(OrganizationsRepository, 'organization',false,organizationValidationSchema);
+export const organizationsRouter = customRouter<IOrganization>('organization',false,organizationValidationSchema);
 organizationsRouter.use('/:parentid/comments',childCommentsRouter)
 
-export const commentsRouter = customRouter<IComment>(CommentsRepository, 'comment');
-export const reviewsRouter =  customRouter<IReview>(ReviewsRepository, 'review');
-export const placesRouter = customRouter<IPlace>(PlacesRepository, 'place');
+export const commentsRouter = customRouter<IComment>('comment');
+export const reviewsRouter =  customRouter<IReview>('review');
+export const placesRouter = customRouter<IPlace>('place');
+export const authRouter = AuthRouter();

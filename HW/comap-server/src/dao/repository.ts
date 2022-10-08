@@ -4,9 +4,12 @@ import { IEvent } from "../model/event"
 import { IOrganization } from "../model/organization"
 import { IPlace } from "../model/place"
 import { IReview } from "../model/review"
-import { Identifiable, IdType } from "../model/sharedTypes"
+import { Identifiable, IdType} from "../model/sharedTypes"
 import { IUser } from "../model/user"
 import { v4 as uuidv4 } from 'uuid';
+import { Db, ObjectId, ObjectID, OptionalUnlessRequiredId, WithId } from "mongodb"
+import { replace_IdWithId } from "../utils/utils"
+import { AppError } from "../model/errors"
 
 
 export interface IRepository<T> {
@@ -19,62 +22,67 @@ export interface IRepository<T> {
 }
 
 export class RepositoryImpl<T extends Identifiable<IdType>> implements IRepository<T> {
-    constructor(private dbFile:string){}
+    constructor(protected db:Db,protected collection: string){}
 
     async create(entity: T): Promise<T> {
-        const entities = await this.findAll();
-        entity.id = uuidv4();
+        delete entity.id;
         entity.created = Date.now();
         entity.modified = Date.now();
-        entities.push(entity)
-        this.writeJsonToFile(entities);
-        return entity;
+        const document = entity as OptionalUnlessRequiredId<T>;
+        const { acknowledged, insertedId } = await this.db.collection<T>(this.collection).insertOne(document);
+        if (acknowledged) {
+            console.log(`Successfully inserted 1 document with ID ${insertedId}`);
+        }
+        return replace_IdWithId(document);
+        
     }
     async update(entity: T): Promise<T> {
-        const entities = await this.findAll();
-        const index = entities.findIndex(entityToUpdate => entity.id === entityToUpdate.id);
+        if (!entity.id) {
+            throw new AppError(400, `ID can not be undefined.`)
+        }
+        const found =  await this.findById(entity.id);
+        if (!found) {
+            throw new AppError(404, `ID="${entity.id} does not exist and can not be modified.`);
+        }
         entity.modified = Date.now();
-        entities[index] = entity;
-        this.writeJsonToFile(entities);
-        return entity;
-
+        var myquery = { _id: new ObjectId(entity.id) };
+        var newvalues = { $set: entity };
+        const updateRes = await this.db.collection(this.collection)
+            .updateOne(myquery, newvalues);
+        // console.log(updateRes);
+        if (updateRes.acknowledged && updateRes.modifiedCount === 1) {
+            console.log(`Successfully updated: ${JSON.stringify(entity)}`);
+            return entity;
+        }
+        throw new AppError(500, `Error inserting: "${JSON.stringify(entity)}"`);
     }
     async deleteById(id: string): Promise<T> {
-        const entities = await this.findAll();
-        const indexToDelete = entities.findIndex(dbEntity => dbEntity.id === id);
-        if (indexToDelete <0) {throw new Error();}
-        const deletedEntity = entities[indexToDelete];
-        entities.splice(indexToDelete,1);
-        this.writeJsonToFile(entities)
-        return deletedEntity;
+        const found = await this.findById(id);
+        if (!found) {
+            throw new AppError(404, `ID="${id} does not exist and can't be modified.`);
+        }
+        const res = await this.db.collection(this.collection).deleteOne({_id: new ObjectId(id)});
+        if (res.acknowledged && res.deletedCount === 1) {
+            console.log(`Deleted: ${JSON.stringify(found)}`);
+            return found;
+        }
+        throw new AppError(500, `Error deleting: "${JSON.stringify(found)}"`);
     }
     async findAll(): Promise<T[]> {
-        return await this.getJsonFromFile();   
+        const entities = await this.db.collection<T>(this.collection).find().toArray()
+        return entities.map(result => replace_IdWithId<T>(result));
     }
     async findById(id: string): Promise<T> {
-        const entities = await this.getJsonFromFile();
-        const entity:T = entities.find(entity => entity.id === id);
-        return entity;
+        try {
+            const entity = await this.db.collection(this.collection).findOne({_id: new ObjectId(id)})as unknown as WithId<T>;
+            return replace_IdWithId(entity)
+        } catch(err) {
+            throw new AppError(404, err.message);
+        }
     }
     async count(): Promise<number> {
-        const entities = await this.getJsonFromFile();
-        return entities.length;
-    }
+        return this.db.collection(this.collection).count();
 
-    private getJsonFromFile = async () => {
-        const fileData = await promises.readFile(this.dbFile)
-        const JSONentity = JSON.parse(fileData.toString());
-        return JSONentity;
     }
-    private writeJsonToFile = async (entity) => {
-        promises.writeFile(this.dbFile, JSON.stringify(entity));
-    }
-
 }
 
-export const EventsRepository = new RepositoryImpl<IEvent>(process.env.DB_FOLDER+process.env.EVENTS_DB);
-export const OrganizationsRepository = new RepositoryImpl<IOrganization>(process.env.DB_FOLDER+process.env.ORGANIZATIONS_DB);
-export const UsersRepository = new RepositoryImpl<IUser>(process.env.DB_FOLDER+process.env.USERS_DB);
-export const PlacesRepository = new RepositoryImpl<IPlace>(process.env.DB_FOLDER+process.env.PLACES_DB);
-export const ReviewsRepository = new RepositoryImpl<IReview>(process.env.DB_FOLDER+process.env.REVIEWS_DB);
-export const CommentsRepository = new RepositoryImpl<IComment>(process.env.DB_FOLDER+process.env.COMMENTS_DB);

@@ -32,3 +32,11 @@ export const USER_LOGIN_SCHEMA = yup.object({
     password: yup.string().min(8).required()
 
 }).required();
+
+export const EVENT_ADD_SCHEMA = yup.object({
+    name:yup.string().min(3).max(15).required(),
+    // date:yup.date(),
+    organizer:yup.string(),
+    poster:yup.string(),
+    description:yup.string().min(2).max(512).required(),
+})

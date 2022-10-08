@@ -104,21 +104,20 @@ class validationSchema {
     constructor (entitySchema) {
         this.entity = entitySchema;
     };
-    id = {parentid: 'required|regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'}
+    id = {parentid: 'required'}
     entity = {}
     entityToDelete = {
-        id: 'required|regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+        id: 'required',
     }
     childEntity = {
-        childid: 'required|regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+        childid: 'required',
 
     }
 }
 export const eventValidationSchema = new validationSchema({
-    id: 'regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
     name: 'required|string|min:3|max:60',
     date: 'required|string|max:30',
-    organizer: 'required|regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+    organizer: 'required',
     poster: 'url',
     description: 'string|min:3|max:1024',
     created:"number",
@@ -130,7 +129,6 @@ export const eventValidationSchema = new validationSchema({
 });
 
 export const organizationValidationSchema = new validationSchema({
-    id:'regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
     name: 'required|string|min:3|max:40',
     members: 'array',
     'members.*':'object',
@@ -140,36 +138,32 @@ export const organizationValidationSchema = new validationSchema({
 })
 
 export const userValidationsSchema = new validationSchema({
-    id:'regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
     firstName: 'required|string|min:3|max:20',
     lastName: 'required|string|min:3|max:20',
     username: 'required|string|min:3|max:20',
     password: 'required|string|min:3|max:20',
     gender: 'required|string|min:1|max:1',
-    role: 'required|string|min:3|max:10',
-    status: 'required|string|min:3|max:10',
     avatar: 'url',
-    created: 'number',
-    modified: "number",
     description: "string",
-    location:"object",
+    location:"string",
     skills:"array",
     'skills.*':'string'
 });
 
 export const commentValidationSchema = new validationSchema( {
-    id: 'regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
     body:'required|string|min:2|max:512',
+    authorId: 'required',
     created:"number",
     modified:"number",
-    authorId:'required|regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 });
 export const reviewValidationSchema = new validationSchema({
-    id: 'regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
     created:"number",
     modified:"number",
-    authorId:'required|regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
     rating:'number',
-    reviewedId:'required|regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
-
+    authorId:'required'
 });
+
+export const credentialsValidationSchema = {
+        username: 'required|string|min:3|max:20',
+        password: 'required|string|min:3|max:20'
+}

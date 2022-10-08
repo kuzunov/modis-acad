@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { IUser, USER_ROLE, USER_STATUS } from "./user";
 
 
@@ -7,10 +8,10 @@ export interface Identifiable<IdType> {
   id: IdType;
   created:number,
   modified:number,
+  _id?:IdType;
 }
-
 export interface ChildEntity<IdType> extends Identifiable<IdType>{
-  parentEntityId: IdType;
+  parentEntityId: ObjectId;
   created:number,
   modified:number,
 }

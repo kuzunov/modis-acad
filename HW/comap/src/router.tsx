@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/register",
-        element: <EditUserForm />,
+        // element: <EditUserForm />,
         errorElement: <ErrorComponent/>,
       },
       {
@@ -139,7 +139,7 @@ export const router = createBrowserRouter([
           children: [
             {
             path:"edit",
-            element: <EditUserForm/>,
+            // element: <EditUserForm/>,
             loader: () => {},
             
           }

@@ -12,6 +12,8 @@ import UserFormInputTextField from '../users/UserFormInputTextField';
 import { EventsApi } from '../../service/rest-api-client';
 import { RequireAuth } from '../users/RequireAuth';
 import { IdType } from '../../model/sharedTypes';
+import { EVENT_ADD_SCHEMA, USER_FORM_SCHEMA } from '../../config';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 type Props = {
   event?:IEvent
@@ -46,10 +48,11 @@ const AddEvent = (props: Props) => {
   }
     const [open, setOpen] = useState(false);
     let markers:google.maps.MarkerOptions[] = [];
+    const [error,setError] = useState({valid:true,message:''});
     const { control, getValues, handleSubmit, reset, formState: {errors,isValid} } = useForm<FormData>({
       defaultValues: determineEvent(),
       mode: 'onChange',
-      // resolver: yupResolver(USER_FORM_SCHEMA),
+      resolver: yupResolver(EVENT_ADD_SCHEMA),
   })
     const handleClose = () => {
       setOpen(false);
@@ -71,9 +74,9 @@ const AddEvent = (props: Props) => {
     },[])
    const onSubmit = (data: FormData, event: BaseSyntheticEvent<object, any, any> | undefined) => {
     event?.preventDefault();
-    data.locations = markers;
-    (loaderEvent)?EventsApi.update(data):EventsApi.create(data)
-    navigate(-1);
+      data.locations = markers;
+      (loaderEvent)?EventsApi.update(data):EventsApi.create(data)
+      navigate(-1);
   }
 
   return (
@@ -85,6 +88,7 @@ const AddEvent = (props: Props) => {
         <RequireAuth>
     {/* <ClickAwayListener onClickAway={handleClose}> */}
     <Card sx={{ width: "50%", maxHeight:"90%", overflowY:"auto"}} onClick={(e:React.MouseEvent)=>e.stopPropagation()}>
+      {(!error.valid) && <>Error message: {error.message}</>} 
     <Box
     component="form"
     sx={{
@@ -105,7 +109,7 @@ const AddEvent = (props: Props) => {
       <MapHOC center={{ lat: -34.397, lng: 150.644 }} zoom={15} markers={[]} style={{width:"500px", height:"300px"}} updateMarkerArray={updateMarkerArray} editable/>
       </CardContent>
       <CardActions>
-      <Button variant="contained" endIcon={<SendIcon />} disabled={!isValid} type='submit'>
+      <Button variant="contained" endIcon={<SendIcon />} disabled={!isValid||!error.valid} type='submit'>
                 Submit
             </Button>
             <Button variant="contained" endIcon={<CancelIcon />} color='warning' type='reset'>

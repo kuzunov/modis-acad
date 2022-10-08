@@ -15,6 +15,10 @@ export interface IUser extends Identifiable<IdType>{
   skills?:SKILLS[];
 
 };
+export interface UserCredentials {
+  username:string;
+  password:string;
+};
 
 export enum USER_STATUS {
     ACTIVE = 1,
